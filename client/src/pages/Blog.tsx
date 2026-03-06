@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { articles } from "@/lib/articles";
+import { useMeta } from "@/hooks/useMeta";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -17,6 +18,13 @@ const fadeUp = {
 };
 
 export default function Blog() {
+  useMeta({
+    title: "Блог о депрессии, тревоге и психическом здоровье",
+    description: "Статьи психолога Александры Федоровой о депрессии, тревожных расстройствах, панических атаках и повседневных ситуациях. Научно обоснованная информация и практические советы.",
+    keywords: "блог психолога, статьи о депрессии, статьи о тревоге, психическое здоровье, КПТ, ACT, психология",
+    ogType: "website",
+  });
+
   return (
     <div>
       {/* Header */}

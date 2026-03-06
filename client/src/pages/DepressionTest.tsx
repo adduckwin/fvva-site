@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Progress } from "@/components/ui/progress";
+import { useMeta } from "@/hooks/useMeta";
 
 interface Question {
   id: number;
@@ -262,6 +263,12 @@ function getResult(score: number) {
 }
 
 export default function DepressionTest() {
+  useMeta({
+    title: "Тест на депрессию онлайн — Шкала депрессии Бека (BDI-II)",
+    description: "Пройдите бесплатный анонимный тест на депрессию по шкале Бека. 21 вопрос, 10 минут, мгновенный результат с интерпретацией. Данные не сохраняются.",
+    keywords: "тест на депрессию, шкала Бека, тест Бека, BDI, депрессия тест онлайн, самодиагностика депрессия, опросник депрессии",
+  });
+
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [showResult, setShowResult] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);

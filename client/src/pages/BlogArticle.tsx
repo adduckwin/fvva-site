@@ -8,10 +8,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { articles } from "@/lib/articles";
 import { Streamdown } from "streamdown";
+import { useMeta } from "@/hooks/useMeta";
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
   const article = articles.find((a) => a.slug === slug);
+
+  useMeta({
+    title: article?.meta.title || "Статья не найдена",
+    description: article?.meta.description,
+    keywords: article?.meta.keywords,
+    ogImage: article?.image,
+    ogType: "article",
+  });
 
   if (!article) {
     return (

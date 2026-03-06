@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowRight, Brain, Heart, BookOpen, GraduationCap, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useMeta } from "@/hooks/useMeta";
 
 const SASHA_IMG = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663384785665/FvJWuxSjZGXMebLm.jpg?Expires=1804361729&Signature=Hkt7PYTSfD~s7vo8jzoUOxioSF0UuEfVtxV~UqINFnETsoIaRp1fQMmBGfjlG56ejschSoRZhAYuZ0AQOxerUatfgJhooHO0lBGYWVZMPV74Ke9kx8W5si4ELjlRmWMKOb0uSMuC4nTTj77nBFzHLkXp7nIf-qPc~~YsEFLW~pAyv3Smof0kEgiKzneqWJB0M9B3~cdUyjUB1q2fP0516~vpPiWcYGmtR8Hbk-2sNdULg1EnbtKm-Ogg1dIY9m7Y1aWgockukECWFUhzsqYqSEEn5iZSVb6PyE457d~O8TpkM6BbYyj7p2YhJ-8abHuTQdoSMmTzsR~LcDrBuVAbWw__&Key-Pair-Id=K2HSFNDJXOU9YS";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/hero-bg-dXo9LMeWHMi9W5Mb64eQn8.webp";
@@ -25,6 +26,14 @@ const fadeUp = {
 };
 
 export default function Home() {
+  useMeta({
+    title: "Психолог Александра Федорова — помощь при депрессии и тревоге",
+    description: "Психолог Александра Федорова. Профессиональная помощь при депрессии и тревоге методами когнитивно-поведенческой терапии (КПТ) и терапии принятия и ответственности (ACT). Пройдите тесты Бека онлайн.",
+    keywords: "психолог, депрессия, тревога, КПТ, ACT, Александра Федорова, когнитивно-поведенческая терапия, тест Бека, психолог онлайн",
+    ogType: "website",
+    ogImage: SASHA_IMG,
+  });
+
   return (
     <div>
       {/* Hero Section */}

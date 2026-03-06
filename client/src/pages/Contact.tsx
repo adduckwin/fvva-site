@@ -5,6 +5,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, MessageCircle, Send } from "lucide-react";
 import { Link } from "wouter";
+import { useMeta } from "@/hooks/useMeta";
 
 const TELEGRAM_QR = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663384785665/trMGCIWCcHrHSHjI.jpg?Expires=1804361729&Signature=WHKk7Y9jKZLtVBKuA9-SWXUqUaJ0NiZt5EI3CBH1rcyUgm7aEdC~~b3HSFfUuJcZk~Otw0l7WIQ2q~73w2~2wIiN40xTkwWQLMHgdydgRbh~dA~WEVpfyVAbMzJr~PHYWEx80aYZNBIkiBSOz6blEawoRA8vLOa3t6OxejdkkIRYBf8rQ-eS7XuKXDB-6zs~nxGkpdOSVX1nYi6h6A~Sz0lMS2zckmRUAvLU9JhWMmsUd4OKQh24SkrgqWayX~VotGoHU-Vb~cEpS~tFmyO9NTwSVgo3Au25szPGLTnk1nvMzLxFTS8UDG7p390ElB1L6sTpjyUYkTWxhfGPY8br0w__&Key-Pair-Id=K2HSFNDJXOU9YS";
 const MAX_QR = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663384785665/zyRItrxdDiEbRkqH.png?Expires=1804361729&Signature=cztF19QqTwB0JuLIkz~NsJAaVgal~amAOiKgSE5mSRso1UrLemWDGWpp-rdVXsiCCr7n6VW~wJHkzPpmC2JaL4NF-6MDGB8iCj8sRP5FPK1mu6iXNwjqkBqrySkJdliaBllu0GVr6aW5zLSyWyw6xpWZcRPqUn2Y-uI3i-oKfRt2CENNlRZ8~Bp2agQtzzPebTk0~yzEKxtjLctyZETzEoBt403BhZ01LJEs-0BFkKsebUoc8rSCoWCmyKgfNLW-pUwuznKTD5Dbl5U4G5bYLTPYELn8OvOclLwdd9fo4h2JfsXt169auIhWxFTit56QXn4uM2JVsBybW9R3-QpX9Q__&Key-Pair-Id=K2HSFNDJXOU9YS";
@@ -20,6 +21,12 @@ const fadeUp = {
 };
 
 export default function Contact() {
+  useMeta({
+    title: "Контакты — запись на консультацию психолога",
+    description: "Свяжитесь с психологом Александрой Федоровой через Telegram (@ALEKSA_FVVA) или мессенджер Max. Консультации по депрессии и тревоге методами КПТ и ACT.",
+    keywords: "контакты психолога, запись к психологу, Александра Федорова, психолог телеграм, консультация психолога онлайн",
+  });
+
   return (
     <div>
       {/* Header */}

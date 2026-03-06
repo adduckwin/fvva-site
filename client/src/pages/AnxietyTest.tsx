@@ -8,6 +8,7 @@ import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Progress } from "@/components/ui/progress";
+import { useMeta } from "@/hooks/useMeta";
 
 interface Symptom {
   id: number;
@@ -79,6 +80,12 @@ function getResult(score: number) {
 }
 
 export default function AnxietyTest() {
+  useMeta({
+    title: "Тест на тревогу онлайн — Шкала тревоги Бека (BAI)",
+    description: "Пройдите бесплатный анонимный тест на тревогу по шкале Бека. 21 симптом, 10 минут, мгновенный результат с интерпретацией. Данные не сохраняются.",
+    keywords: "тест на тревогу, шкала тревоги Бека, BAI, тревожность тест, тревога онлайн тест, самодиагностика тревога, опросник тревоги",
+  });
+
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [showResult, setShowResult] = useState(false);
 
