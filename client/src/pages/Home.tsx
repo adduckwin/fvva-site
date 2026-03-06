@@ -8,13 +8,12 @@ import { ArrowRight, Brain, Heart, BookOpen, GraduationCap, Leaf } from "lucide-
 import { Button } from "@/components/ui/button";
 import { useMeta } from "@/hooks/useMeta";
 
-const SASHA_IMG = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663384785665/FvJWuxSjZGXMebLm.jpg?Expires=1804361729&Signature=Hkt7PYTSfD~s7vo8jzoUOxioSF0UuEfVtxV~UqINFnETsoIaRp1fQMmBGfjlG56ejschSoRZhAYuZ0AQOxerUatfgJhooHO0lBGYWVZMPV74Ke9kx8W5si4ELjlRmWMKOb0uSMuC4nTTj77nBFzHLkXp7nIf-qPc~~YsEFLW~pAyv3Smof0kEgiKzneqWJB0M9B3~cdUyjUB1q2fP0516~vpPiWcYGmtR8Hbk-2sNdULg1EnbtKm-Ogg1dIY9m7Y1aWgockukECWFUhzsqYqSEEn5iZSVb6PyE457d~O8TpkM6BbYyj7p2YhJ-8abHuTQdoSMmTzsR~LcDrBuVAbWw__&Key-Pair-Id=K2HSFNDJXOU9YS";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/hero-bg-dXo9LMeWHMi9W5Mb64eQn8.webp";
 const CBT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/cbt-illustration-Vsva5MoBuVjgshu8Wn5TAx.webp";
 const TEST_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/test-section-bg-mbkAt6tMDaoBZKeZjwCtQL.webp";
 const DEPRESSION_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-depression-Pu5MMRsUqY9xHfEgrZPRfn.webp";
 const ANXIETY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-anxiety-iMHxqrrbVmvhkS2gkZebNY.webp";
-const RGGU_IMG = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663384785665/IxJtjnFmkbkFEaWZ.jpg?Expires=1804361729&Signature=rpLFXlz73kMp3FqidGt9Z1WsvRyZTFtLMckPYWEltfBCyeyDQTbHJxZC4m~aWJRrHLnJmq-gTL4I3R0iJGy9dFMPEISCMuqsqZkPRDnCaiiDKrBH1dp-kJF4LEU0Pue-MmulVJnZ4qunm50W5wZY~mvA41oOeDwIT~Tq3lpi~YNqPoFJ41zbgWA3OE9Ybszf9rFmAgxD4Up8kcYaA99L9pAdAyF5E3uMezVRojhMhHtnKLHdyPw-zYjsMThpS8c4B7YLcJCQXCYf5TGDSrPhEH-cpx64FnYCmY9tWiSElofhBP-~QOH3F6rxGSttr0uhGiGoLweaefUqID4Tu5kWnA__&Key-Pair-Id=K2HSFNDJXOU9YS";
+const RGGU_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/rggu-building_df7c8ed6.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -31,7 +30,7 @@ export default function Home() {
     description: "Психолог Александра Федорова. Профессиональная помощь при депрессии и тревоге методами когнитивно-поведенческой терапии (КПТ) и терапии принятия и ответственности (ACT). Пройдите тесты Бека онлайн.",
     keywords: "психолог, депрессия, тревога, КПТ, ACT, Александра Федорова, когнитивно-поведенческая терапия, тест Бека, психолог онлайн",
     ogType: "website",
-    ogImage: SASHA_IMG,
+    ogImage: HERO_BG,
   });
 
   return (
@@ -46,76 +45,53 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1A3C34]/90 via-[#1A3C34]/70 to-transparent" />
         </div>
-        <div className="container relative z-10 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              className="max-w-xl"
+        <div className="container relative z-10 py-24">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            className="max-w-3xl"
+          >
+            <motion.p
+              custom={0}
+              variants={fadeUp}
+              className="text-[#C4785B] font-medium tracking-widest uppercase text-sm mb-4"
             >
-              <motion.p
-                custom={0}
-                variants={fadeUp}
-                className="text-[#C4785B] font-medium tracking-widest uppercase text-sm mb-4"
-              >
-                Психолог &middot; КПТ &middot; ACT
-              </motion.p>
-              <motion.h1
-                custom={1}
-                variants={fadeUp}
-                className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#FDF8F0] leading-tight mb-6"
-              >
-                Александра
-                <br />
-                <span className="italic">Федорова</span>
-              </motion.h1>
-              <motion.p
-                custom={2}
-                variants={fadeUp}
-                className="text-[#FDF8F0]/85 text-lg leading-relaxed mb-8"
-              >
-                Помогаю справиться с депрессией и тревогой с помощью
-                доказательных методов — когнитивно-поведенческой терапии и
-                терапии принятия и ответственности.
-              </motion.p>
-              <motion.div custom={3} variants={fadeUp} className="flex flex-wrap gap-4">
-                <Link href="/contact">
-                  <Button className="bg-[#C4785B] hover:bg-[#B06A4F] text-white px-8 py-6 text-base font-medium">
-                    Записаться на консультацию
-                  </Button>
-                </Link>
-                <Link href="/test/depression">
-                  <Button
-                    variant="outline"
-                    className="border-[#FDF8F0]/40 text-[#FDF8F0] hover:bg-[#FDF8F0]/10 px-8 py-6 text-base"
-                  >
-                    Пройти тест
-                  </Button>
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="hidden lg:flex justify-end"
+              Психолог &middot; КПТ &middot; ACT
+            </motion.p>
+            <motion.h1
+              custom={1}
+              variants={fadeUp}
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#FDF8F0] leading-tight mb-6"
             >
-              <div className="relative">
-                <div className="w-80 h-96 rounded-2xl overflow-hidden shadow-2xl border-4 border-[#FDF8F0]/20">
-                  <img
-                    src={SASHA_IMG}
-                    alt="Александра Федорова — психолог"
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-                <div className="absolute -bottom-4 -left-4 bg-[#FDF8F0]/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-[#1A3C34]/10">
-                  <p className="text-[#1A3C34] font-serif text-sm font-medium">КПТ &middot; ACT</p>
-                  <p className="text-[#C4785B] text-xs">Доказательные методы</p>
-                </div>
-              </div>
+              Александра
+              <br />
+              <span className="italic">Федорова</span>
+            </motion.h1>
+            <motion.p
+              custom={2}
+              variants={fadeUp}
+              className="text-[#FDF8F0]/85 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl"
+            >
+              Помогаю справиться с депрессией и тревогой с помощью
+              доказательных методов — когнитивно-поведенческой терапии и
+              терапии принятия и ответственности.
+            </motion.p>
+            <motion.div custom={3} variants={fadeUp} className="flex flex-wrap gap-4">
+              <Link href="/contact">
+                <Button className="bg-[#C4785B] hover:bg-[#B06A4F] text-white px-8 py-6 text-base font-medium">
+                  Записаться на консультацию
+                </Button>
+              </Link>
+              <Link href="/test/depression">
+                <Button
+                  variant="outline"
+                  className="border-[#FDF8F0]/40 text-[#FDF8F0] hover:bg-[#FDF8F0]/10 px-8 py-6 text-base"
+                >
+                  Пройти тест
+                </Button>
+              </Link>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 

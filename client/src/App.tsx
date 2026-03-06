@@ -10,22 +10,30 @@ import BlogArticle from "./pages/BlogArticle";
 import DepressionTest from "./pages/DepressionTest";
 import AnxietyTest from "./pages/AnxietyTest";
 import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
 
 function Router() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/blog/:slug" component={BlogArticle} />
-        <Route path="/test/depression" component={DepressionTest} />
-        <Route path="/test/anxiety" component={AnxietyTest} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <Switch>
+      {/* Admin page without Layout wrapper */}
+      <Route path="/admin" component={Admin} />
+      {/* Public pages with Layout */}
+      <Route>
+        <Layout>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/blog/:slug" component={BlogArticle} />
+            <Route path="/test/depression" component={DepressionTest} />
+            <Route path="/test/anxiety" component={AnxietyTest} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/404" component={NotFound} />
+            <Route component={NotFound} />
+          </Switch>
+        </Layout>
+      </Route>
+    </Switch>
   );
 }
 

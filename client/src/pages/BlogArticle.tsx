@@ -1,30 +1,41 @@
 /**
  * BlogArticle page — Editorial Design
- * Renders individual blog articles with markdown content
+ * Renders individual blog articles from the database with markdown content
  */
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { articles } from "@/lib/articles";
+import { trpc } from "@/lib/trpc";
 import { Streamdown } from "streamdown";
 import { useMeta } from "@/hooks/useMeta";
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
-  const article = articles.find((a) => a.slug === slug);
+  const { data: article, isLoading } = trpc.blog.getBySlug.useQuery(
+    { slug: slug || "" },
+    { enabled: !!slug }
+  );
 
   useMeta({
-    title: article?.meta.title || "Статья не найдена",
-    description: article?.meta.description,
-    keywords: article?.meta.keywords,
-    ogImage: article?.image,
+    title: article?.metaTitle || article?.title || "Статья не найдена",
+    description: article?.metaDescription || article?.excerpt,
+    keywords: article?.metaKeywords || undefined,
+    ogImage: article?.image || undefined,
     ogType: "article",
   });
 
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center bg-[#FDF8F0]">
+        <Loader2 className="animate-spin text-[#1A3C34]" size={40} />
+      </div>
+    );
+  }
+
   if (!article) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center bg-[#FDF8F0]">
         <div className="text-center">
           <h1 className="font-serif text-3xl text-[#1A3C34] mb-4">
             Статья не найдена
