@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-depression-Pu5MMRsUqY9xHfEgrZPRfn.webp', '/images/blog-depression.jpg') WHERE image LIKE '%blog-depression%';\nUPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-anxiety-iMHxqrrbVmvhkS2gkZebNY.webp', '/images/blog-anxiety.jpg') WHERE image LIKE '%blog-anxiety%';\nUPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/cbt-illustration-Vsva5MoBuVjgshu8Wn5TAx.webp', '/images/cbt-illustration.jpg') WHERE image LIKE '%cbt-illustration%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user gznyzXDW7QJADV3.root --database 3ShoP3Y4fpqCsCeNyB6Wwy --execute UPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-depression-Pu5MMRsUqY9xHfEgrZPRfn.webp', '/images/blog-depression.jpg') WHERE image LIKE '%blog-depression%';\nUPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-anxiety-iMHxqrrbVmvhkS2gkZebNY.webp', '/images/blog-anxiety.jpg') WHERE image LIKE '%blog-anxiety%';\nUPDATE blog_articles SET image = REPLACE(image, 'https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/cbt-illustration-Vsva5MoBuVjgshu8Wn5TAx.webp', '/images/cbt-illustration.jpg') WHERE image LIKE '%cbt-illustration%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 130
+}

@@ -1,0 +1,38 @@
+{
+  "query": "SELECT slug, image FROM blog_articles;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user gznyzXDW7QJADV3.root --database 3ShoP3Y4fpqCsCeNyB6Wwy --execute SELECT slug, image FROM blog_articles;",
+  "rows": [
+    {
+      "slug": "chto-takoe-depressiya",
+      "image": "/images/blog-depression.jpg"
+    },
+    {
+      "slug": "trevoga-norma-ili-rasstrojstvo",
+      "image": "/images/blog-anxiety.jpg"
+    },
+    {
+      "slug": "kak-kpt-pomogaet",
+      "image": "/images/cbt-illustration.jpg"
+    },
+    {
+      "slug": "prokrastinaciya-i-depressiya",
+      "image": "NULL"
+    },
+    {
+      "slug": "panicheskie-ataki",
+      "image": "NULL"
+    },
+    {
+      "slug": "son-i-psihicheskoe-zdorovie",
+      "image": "NULL"
+    },
+    {
+      "slug": "kak-podderzhit-blizkogo-s-depressiej",
+      "image": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "slug\timage\nchto-takoe-depressiya\t/images/blog-depression.jpg\ntrevoga-norma-ili-rasstrojstvo\t/images/blog-anxiety.jpg\nkak-kpt-pomogaet\t/images/cbt-illustration.jpg\nprokrastinaciya-i-depressiya\tNULL\npanicheskie-ataki\tNULL\nson-i-psihicheskoe-zdorovie\tNULL\nkak-podderzhit-blizkogo-s-depressiej\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

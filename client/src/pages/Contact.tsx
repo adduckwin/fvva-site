@@ -7,7 +7,7 @@ import { ArrowLeft, Send, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { useMeta } from "@/hooks/useMeta";
 
-const SASHA_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/САША_24b40fe3.jpg";
+const SASHA_IMG = "/images/sasha.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

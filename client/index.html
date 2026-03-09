@@ -10,9 +10,42 @@
     <meta name="description" content="Психолог Александра Федорова. Помощь при депрессии и тревоге методами когнитивно-поведенческой терапии (КПТ) и терапии принятия и ответственности (ACT). Пройдите тесты Бека онлайн." />
     <meta name="keywords" content="психолог, депрессия, тревога, КПТ, ACT, когнитивно-поведенческая терапия, тест Бека, шкала депрессии, шкала тревоги, Александра Федорова" />
     <!-- Fonts loaded via @fontsource packages for Russia accessibility -->
+    <!-- Global error protection: prevent blocked external scripts from crashing the app -->
+    <script>
+      // Catch errors from blocked external scripts (analytics, CDN, etc.)
+      window.addEventListener('error', function(e) {
+        // If error is from an external script that failed to load, suppress it
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK' || e.target.tagName === 'IMG')) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.warn('[Blocked resource]', e.target.src || e.target.href);
+          return false;
+        }
+      }, true);
+      // Catch unhandled promise rejections from blocked fetch calls
+      window.addEventListener('unhandledrejection', function(e) {
+        if (e.reason && (
+          String(e.reason).includes('Failed to fetch') ||
+          String(e.reason).includes('NetworkError') ||
+          String(e.reason).includes('net::ERR') ||
+          String(e.reason).includes('Load failed')
+        )) {
+          e.preventDefault();
+          console.warn('[Network error suppressed]', e.reason);
+          return false;
+        }
+      });
+    </script>
   </head>
 
   <body>
+    <noscript>
+      <div style="text-align:center;padding:40px;font-family:sans-serif;">
+        <h1>Психолог Александра Федорова</h1>
+        <p>Для работы сайта необходимо включить JavaScript в настройках браузера.</p>
+        <p>Связаться: <a href="https://t.me/aleksa_fvva">Telegram @aleksa_fvva</a></p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script

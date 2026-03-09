@@ -8,12 +8,12 @@ import { ArrowRight, Brain, Heart, BookOpen, GraduationCap, Leaf } from "lucide-
 import { Button } from "@/components/ui/button";
 import { useMeta } from "@/hooks/useMeta";
 
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/hero-bg-dXo9LMeWHMi9W5Mb64eQn8.webp";
-const CBT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/cbt-illustration-Vsva5MoBuVjgshu8Wn5TAx.webp";
-const TEST_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/test-section-bg-mbkAt6tMDaoBZKeZjwCtQL.webp";
-const DEPRESSION_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-depression-Pu5MMRsUqY9xHfEgrZPRfn.webp";
-const ANXIETY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-anxiety-iMHxqrrbVmvhkS2gkZebNY.webp";
-const RGGU_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/rggu-building_df7c8ed6.jpg";
+const HERO_BG = "/images/hero-bg.jpg";
+const CBT_IMG = "/images/cbt-illustration.jpg";
+const TEST_BG = "/images/test-section-bg.jpg";
+const DEPRESSION_IMG = "/images/blog-depression.jpg";
+const ANXIETY_IMG = "/images/blog-anxiety.jpg";
+const RGGU_IMG = "/images/rggu-building.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },

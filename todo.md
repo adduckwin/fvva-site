@@ -10,3 +10,4 @@
 - [x] Add robots.txt for SEO
 - [x] SEO meta tags for all pages
 - [x] Blog CRUD vitest tests
+- [ ] Fix website not loading from Russia without VPN - identify and replace all blocked external resources

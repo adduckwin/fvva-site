@@ -1,6 +1,6 @@
-const DEPRESSION_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-depression-Pu5MMRsUqY9xHfEgrZPRfn.webp";
-const ANXIETY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/blog-anxiety-iMHxqrrbVmvhkS2gkZebNY.webp";
-const CBT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663384785665/3ShoP3Y4fpqCsCeNyB6Wwy/cbt-illustration-Vsva5MoBuVjgshu8Wn5TAx.webp";
+const DEPRESSION_IMG = "/images/blog-depression.jpg";
+const ANXIETY_IMG = "/images/blog-anxiety.jpg";
+const CBT_IMG = "/images/cbt-illustration.jpg";
 
 export interface Article {
   slug: string;
