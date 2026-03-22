@@ -47,9 +47,9 @@ export default defineConfig(async () => ({
       ".manusvm.computer",
       "localhost",
       "127.0.0.1",
-      // Production domain - add your .ru domain here:
-      // "your-domain.ru",
-      // "www.your-domain.ru",
+      // Production domain
+      "fvva.ru",
+      "www.fvva.ru",
     ],
     fs: {
       strict: true,

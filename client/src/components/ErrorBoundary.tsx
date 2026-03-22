@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Component, ReactNode } from "react";
 
@@ -24,32 +23,35 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex items-center justify-center min-h-screen p-8 bg-background">
-          <div className="flex flex-col items-center w-full max-w-2xl p-8">
+        <div className="flex items-center justify-center min-h-screen p-8 bg-[#FDF8F0]">
+          <div className="flex flex-col items-center w-full max-w-md text-center">
             <AlertTriangle
               size={48}
-              className="text-destructive mb-6 flex-shrink-0"
+              className="text-[#C4785B] mb-6 flex-shrink-0"
             />
 
-            <h2 className="text-xl mb-4">An unexpected error occurred.</h2>
+            <h2 className="font-serif text-2xl text-[#1A3C34] mb-3">
+              Что-то пошло не так
+            </h2>
 
-            <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
-              <pre className="text-sm text-muted-foreground whitespace-break-spaces">
-                {this.state.error?.stack}
-              </pre>
-            </div>
+            <p className="text-[#1A3C34]/60 mb-8">
+              Произошла непредвиденная ошибка. Попробуйте обновить страницу.
+            </p>
 
             <button
               onClick={() => window.location.reload()}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg",
-                "bg-primary text-primary-foreground",
-                "hover:opacity-90 cursor-pointer"
-              )}
+              className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#1A3C34] text-white hover:bg-[#152F29] transition-colors cursor-pointer"
             >
               <RotateCcw size={16} />
-              Reload Page
+              Обновить страницу
             </button>
+
+            <a
+              href="https://t.me/aleksa_fvva"
+              className="mt-4 text-[#C4785B] hover:underline text-sm"
+            >
+              Написать в Telegram
+            </a>
           </div>
         </div>
       );

@@ -1,37 +1,26 @@
 /**
  * BlogArticle page — Editorial Design
- * Renders individual blog articles from the database with markdown content
+ * Renders individual blog articles from static data (articles.ts)
  */
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/lib/trpc";
+import { articles } from "@/lib/articles";
 import { Streamdown } from "streamdown";
 import { useMeta } from "@/hooks/useMeta";
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: article, isLoading } = trpc.blog.getBySlug.useQuery(
-    { slug: slug || "" },
-    { enabled: !!slug }
-  );
+  const article = articles.find((a) => a.slug === slug);
 
   useMeta({
-    title: article?.metaTitle || article?.title || "Статья не найдена",
-    description: article?.metaDescription || article?.excerpt,
-    keywords: article?.metaKeywords || undefined,
+    title: article?.meta.title || article?.title || "Статья не найдена",
+    description: article?.meta.description || article?.excerpt,
+    keywords: article?.meta.keywords || undefined,
     ogImage: article?.image || undefined,
     ogType: "article",
   });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-[#FDF8F0]">
-        <Loader2 className="animate-spin text-[#1A3C34]" size={40} />
-      </div>
-    );
-  }
 
   if (!article) {
     return (

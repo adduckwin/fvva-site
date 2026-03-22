@@ -1,11 +1,11 @@
 /**
  * Blog page — Editorial Design
- * Lists all blog articles from the database
+ * Lists all blog articles from static data (articles.ts)
  */
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { trpc } from "@/lib/trpc";
+import { ArrowRight } from "lucide-react";
+import { articles } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
 
 const fadeUp = {
@@ -18,7 +18,6 @@ const fadeUp = {
 };
 
 export default function Blog() {
-  const { data: articles, isLoading } = trpc.blog.list.useQuery();
 
   useMeta({
     title: "Блог о депрессии, тревоге и психическом здоровье",
@@ -55,11 +54,7 @@ export default function Blog() {
       {/* Articles Grid */}
       <section className="py-16 bg-[#FDF8F0]">
         <div className="container">
-          {isLoading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="animate-spin text-[#1A3C34]" size={40} />
-            </div>
-          ) : !articles || articles.length === 0 ? (
+          {articles.length === 0 ? (
             <p className="text-center text-[#1A3C34]/60 py-20 text-lg">
               Статьи скоро появятся.
             </p>
