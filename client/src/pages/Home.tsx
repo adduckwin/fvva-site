@@ -65,7 +65,7 @@ export default function Home() {
             >
               Александра
               <br />
-              <span className="italic">Федорова</span>
+              Федорова
             </motion.h1>
             <motion.p
               custom={2}
