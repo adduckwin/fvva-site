@@ -8,7 +8,7 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 // Self-hosted fonts (no Google Fonts dependency for Russia)
 import "@fontsource/playfair-display/400.css";
-import "@fontsource/playfair-display/400-italic.css";
+
 import "@fontsource/playfair-display/500.css";
 import "@fontsource/playfair-display/600.css";
 import "@fontsource/playfair-display/700.css";
