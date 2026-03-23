@@ -61,7 +61,7 @@ export default function Home() {
             <motion.h1
               custom={1}
               variants={fadeUp}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl text-[#FDF8F0] leading-tight mb-6"
+              className="font-serif not-italic text-4xl md:text-5xl lg:text-6xl text-[#FDF8F0] leading-tight mb-6"
             >
               Александра
               <br />
