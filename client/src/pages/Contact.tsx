@@ -149,7 +149,7 @@ export default function Contact() {
               <motion.a
                 custom={2}
                 variants={fadeUp}
-                href="https://max.ru"
+                href="https://max.ru/u/f9LHodD0cOKoOcVdY7nuS0tflUZbFozx6cdcx1vdjY4DPD1D1_7ad0ciLo0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group bg-white rounded-2xl p-8 shadow-sm border border-[#1A3C34]/5 hover:shadow-lg hover:border-[#FF6B35]/30 transition-all duration-300 no-underline block"
