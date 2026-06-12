@@ -8,6 +8,7 @@ interface MetaOptions {
   ogDescription?: string;
   ogImage?: string;
   ogType?: string;
+  robots?: string;
 }
 
 const BASE_TITLE = "Психолог Александра Федорова";
@@ -46,6 +47,9 @@ export function useMeta(opts: MetaOptions) {
     if (opts.keywords) {
       setMeta("keywords", opts.keywords);
     }
+    if (opts.robots) {
+      setMeta("robots", opts.robots);
+    }
 
     // Open Graph
     setMeta("og:title", opts.ogTitle || opts.title, true);
@@ -62,5 +66,5 @@ export function useMeta(opts: MetaOptions) {
       document.title = prev;
       tags.forEach((t) => t.remove());
     };
-  }, [opts.title, opts.description, opts.keywords, opts.ogTitle, opts.ogDescription, opts.ogImage, opts.ogType]);
+  }, [opts.title, opts.description, opts.keywords, opts.ogTitle, opts.ogDescription, opts.ogImage, opts.ogType, opts.robots]);
 }

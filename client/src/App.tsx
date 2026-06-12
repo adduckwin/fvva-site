@@ -9,15 +9,16 @@ import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import DepressionTest from "./pages/DepressionTest";
 import AnxietyTest from "./pages/AnxietyTest";
+import PanicAttack from "./pages/PanicAttack";
+import Faq from "./pages/Faq";
+import SelfCheck from "./pages/SelfCheck";
+import Glossary from "./pages/Glossary";
 import Contact from "./pages/Contact";
-import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
 
 function Router() {
   return (
     <Switch>
-      {/* Admin page without Layout wrapper */}
-      <Route path="/admin" component={Admin} />
       {/* Public pages with Layout */}
       <Route>
         <Layout>
@@ -27,6 +28,10 @@ function Router() {
             <Route path="/blog/:slug" component={BlogArticle} />
             <Route path="/test/depression" component={DepressionTest} />
             <Route path="/test/anxiety" component={AnxietyTest} />
+            <Route path="/panicheskaya-ataka" component={PanicAttack} />
+            <Route path="/faq" component={Faq} />
+            <Route path="/proverit-sebya" component={SelfCheck} />
+            <Route path="/slovar" component={Glossary} />
             <Route path="/contact" component={Contact} />
             <Route path="/404" component={NotFound} />
             <Route component={NotFound} />
