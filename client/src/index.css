@@ -297,6 +297,13 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
 
+  /* Sticky header & mobile menu: translucent glass-dark washes out over light
+     pages, dropping text contrast. Inside the header it gets a stronger forest
+     tint — readable on ANY background, still see-through (not a solid slab). */
+  header .glass-dark {
+    background: color-mix(in srgb, var(--forest-deep), transparent 42%);
+  }
+
   /* Specular sheen — top-left light catch */
   .glass,
   .glass-dark {

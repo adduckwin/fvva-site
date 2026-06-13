@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero — glass card over an atmospheric image */}
-      <section className="relative min-h-[88vh] flex items-center overflow-hidden">
+      <section className="relative -mt-[78px] min-h-[88vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img src={HERO_BG} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-br from-forest/70 via-forest/45 to-transparent" />
@@ -169,7 +169,7 @@ export default function Home() {
             <motion.p
               custom={1}
               variants={fadeUp}
-              className="text-ink/75 text-lg leading-relaxed"
+              className="text-ink/90 text-lg leading-relaxed"
             >
               Просить о помощи — не слабость. Тревога и депрессия — это
               состояния, с которыми сталкиваются миллионы людей, и они поддаются
@@ -225,7 +225,7 @@ export default function Home() {
             <motion.p
               custom={1}
               variants={fadeUp}
-              className="dropcap text-lg leading-relaxed text-ink/80 mb-6"
+              className="dropcap text-lg leading-relaxed text-ink/90 mb-6"
             >
               Я работаю в рамках доказательных подходов —
               когнитивно-поведенческой терапии (КПТ), терапии принятия и
@@ -238,7 +238,7 @@ export default function Home() {
             <motion.p
               custom={2}
               variants={fadeUp}
-              className="text-lg leading-relaxed text-ink/80"
+              className="text-lg leading-relaxed text-ink/90"
             >
               Моя задача — помочь вам понять механизмы, которые поддерживают ваше
               состояние, и вместе найти путь к более осознанной и наполненной
@@ -276,7 +276,7 @@ export default function Home() {
             <motion.p
               custom={2}
               variants={fadeUp}
-              className="text-ink/70 max-w-2xl mx-auto mt-4 text-lg"
+              className="text-ink/90 max-w-2xl mx-auto mt-4 text-lg"
             >
               Первая встреча — это знакомство. Мы просто смотрим, подходим ли
               друг другу и с чего начать. Никаких «правильных» ответов и никакого
@@ -317,7 +317,7 @@ export default function Home() {
                   {s.n}
                 </span>
                 <h3 className="text-lg text-forest mt-2 mb-2">{s.t}</h3>
-                <p className="text-ink/70 text-sm leading-relaxed">{s.d}</p>
+                <p className="text-ink/90 text-sm leading-relaxed">{s.d}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -369,7 +369,7 @@ export default function Home() {
                     <h3 className="text-xl text-forest mb-2">
                       Когнитивно-поведенческая терапия (КПТ)
                     </h3>
-                    <p className="text-ink/75 leading-relaxed">
+                    <p className="text-ink/90 leading-relaxed">
                       КПТ помогает выявить и изменить негативные паттерны
                       мышления, которые поддерживают депрессию и тревогу. Мы
                       работаем с автоматическими мыслями, убеждениями и
@@ -393,7 +393,7 @@ export default function Home() {
                     <h3 className="text-xl text-forest mb-2">
                       Терапия принятия и ответственности (ACT)
                     </h3>
-                    <p className="text-ink/75 leading-relaxed">
+                    <p className="text-ink/90 leading-relaxed">
                       ACT учит принимать сложные эмоции и мысли, не борясь с
                       ними, а направляя энергию на действия, соответствующие
                       вашим ценностям. Подход развивает психологическую гибкость
@@ -416,7 +416,7 @@ export default function Home() {
                     <h3 className="text-xl text-forest mb-2">
                       Терапия, сфокусированная на сострадании (CFT)
                     </h3>
-                    <p className="text-ink/75 leading-relaxed">
+                    <p className="text-ink/90 leading-relaxed">
                       CFT помогает мягче относиться к себе: работать с
                       самокритикой, чувством вины и стыда, формировать ощущение
                       внутренней безопасности и эмоциональную устойчивость.
@@ -535,7 +535,7 @@ export default function Home() {
             <motion.p
               custom={2}
               variants={fadeUp}
-              className="text-ink/70 max-w-2xl mx-auto text-lg"
+              className="text-ink/90 max-w-2xl mx-auto text-lg"
             >
               Шкалы депрессии и тревоги Бека — признанные инструменты
               самодиагностики. Тесты анонимны, данные не сохраняются.
@@ -660,7 +660,7 @@ export default function Home() {
                     <h3 className="text-lg text-forest mb-3 group-hover:text-terracotta transition-colors">
                       {article.title}
                     </h3>
-                    <p className="text-ink/65 text-sm leading-relaxed">
+                    <p className="text-ink/90 text-sm leading-relaxed">
                       {article.excerpt}
                     </p>
                   </div>
