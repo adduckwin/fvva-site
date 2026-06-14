@@ -232,7 +232,7 @@ const fadeUp = {
 function Row({ item, id }: { item: Item; id: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="glass rounded-2xl overflow-hidden">
+    <div className="glass-dark rounded-2xl overflow-hidden">
       <h3 className="m-0">
         <button
           id={`${id}-btn`}

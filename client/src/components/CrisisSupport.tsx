@@ -8,7 +8,7 @@ import { Link } from "wouter";
 
 export default function CrisisSupport() {
   return (
-    <div className="glass rounded-2xl p-6 md:p-7 border-l-2 border-l-terracotta mb-8">
+    <div className="glass-dark rounded-2xl p-6 md:p-7 border-l-2 border-l-terracotta mb-8">
       <div className="flex items-start gap-4">
         <div className="w-10 h-10 rounded-full bg-terracotta/15 flex items-center justify-center shrink-0">
           <Heart className="text-terracotta" size={20} />

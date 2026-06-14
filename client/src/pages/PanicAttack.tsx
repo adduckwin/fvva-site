@@ -29,7 +29,7 @@ function Grounding() {
   const Icon = item.icon;
 
   return (
-    <div className="glass rounded-3xl p-8 md:p-10 max-w-xl mx-auto">
+    <div className="glass-dark rounded-3xl p-8 md:p-10 max-w-xl mx-auto">
       {!done ? (
         <div className="text-center">
           <div className="w-14 h-14 rounded-full bg-terracotta/12 flex items-center justify-center mx-auto mb-5">
@@ -183,7 +183,7 @@ export default function PanicAttack() {
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={fadeUp}
-            className="glass rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
+            className="glass-dark rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
           >
             <div className="w-14 h-14 rounded-2xl bg-terracotta/12 flex items-center justify-center shrink-0">
               <FileText className="text-terracotta" size={26} />
@@ -213,7 +213,7 @@ export default function PanicAttack() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="glass rounded-3xl p-8 md:p-10"
+            className="glass-dark rounded-3xl p-8 md:p-10"
           >
             <motion.h2
               custom={0}

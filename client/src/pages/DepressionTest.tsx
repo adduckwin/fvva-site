@@ -363,7 +363,7 @@ export default function DepressionTest() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <div className="glass rounded-2xl p-8 md:p-12">
+                <div className="glass-dark rounded-2xl p-8 md:p-12">
                   <h2 className="text-2xl text-forest mb-6 text-center">
                     Результат теста
                   </h2>
@@ -496,7 +496,7 @@ export default function DepressionTest() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="glass rounded-2xl p-6 md:p-8"
+                    className="glass-dark rounded-2xl p-6 md:p-8"
                   >
                     <h3 className="text-xl text-forest mb-6">
                       {currentQ + 1}. {questions[currentQ].title}

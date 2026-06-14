@@ -7,7 +7,7 @@ export default function NotFound() {
   useMeta({ title: "Страница не найдена", robots: "noindex,nofollow" });
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-6">
-      <div className="glass rounded-3xl p-10 md:p-12 text-center max-w-md mx-auto">
+      <div className="glass-dark rounded-3xl p-10 md:p-12 text-center max-w-md mx-auto">
         <p className="eyebrow eyebrow-center mb-4">404</p>
         <h1 className="text-3xl md:text-4xl text-forest mb-4">
           Страница не найдена

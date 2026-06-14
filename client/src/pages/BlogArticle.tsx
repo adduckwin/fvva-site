@@ -25,7 +25,7 @@ export default function BlogArticle() {
   if (!article) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="glass rounded-3xl p-10 text-center">
+        <div className="glass-dark rounded-3xl p-10 text-center">
           <h1 className="text-3xl text-forest mb-4">Статья не найдена</h1>
           <Link href="/blog">
             <Button className="rounded-full bg-forest hover:bg-forest-deep text-cream">
@@ -89,7 +89,7 @@ export default function BlogArticle() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="glass rounded-3xl p-8 md:p-10"
+            className="glass-dark rounded-3xl p-8 md:p-10"
           >
             <div
               className="prose prose-lg max-w-none

@@ -172,7 +172,7 @@ export default function AnxietyTest() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <div className="glass rounded-2xl p-8 md:p-12">
+                <div className="glass-dark rounded-2xl p-8 md:p-12">
                   <h2 className="text-2xl text-forest mb-6 text-center">
                     Результат теста
                   </h2>
@@ -288,7 +288,7 @@ export default function AnxietyTest() {
                 </div>
 
                 {/* All symptoms in a table-like layout */}
-                <div className="glass rounded-2xl overflow-hidden">
+                <div className="glass-dark rounded-2xl overflow-hidden">
                   {/* Header row - visible on md+ */}
                   <div className="hidden md:grid md:grid-cols-[1fr_repeat(4,120px)] bg-forest text-cream p-4 text-xs font-medium">
                     <span>Симптом</span>

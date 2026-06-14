@@ -94,7 +94,7 @@ export default function Contact() {
             <motion.div
               custom={0}
               variants={fadeUp}
-              className="glass rounded-2xl p-8 md:p-10 mb-8"
+              className="glass-dark rounded-2xl p-8 md:p-10 mb-8"
             >
               <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
                 <div className="w-28 h-28 rounded-full overflow-hidden shrink-0 ring-2 ring-terracotta">
@@ -132,7 +132,7 @@ export default function Contact() {
             <motion.div
               custom={1}
               variants={fadeUp}
-              className="glass rounded-2xl p-5 md:p-6 mb-8 text-center"
+              className="glass-dark rounded-2xl p-5 md:p-6 mb-8 text-center"
             >
               <p className="text-ink/75 text-sm leading-relaxed">
                 Первая встреча — это знакомство, она{" "}
@@ -157,7 +157,7 @@ export default function Contact() {
                 {PRACTICE_FACTS.map((f) => {
                   const Icon = FACT_ICONS[f.key];
                   return (
-                    <div key={f.key} className="glass rounded-2xl p-5 flex items-start gap-3">
+                    <div key={f.key} className="glass-dark rounded-2xl p-5 flex items-start gap-3">
                       <div className="w-10 h-10 rounded-xl bg-terracotta/12 flex items-center justify-center shrink-0">
                         <Icon className="text-terracotta" size={18} />
                       </div>

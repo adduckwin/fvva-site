@@ -70,7 +70,7 @@ export default function Blog() {
                     href={`/blog/${article.slug}`}
                     className="no-underline block group h-full"
                   >
-                    <div className="glass rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-1 h-full flex flex-col">
+                    <div className="glass-dark rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-1 h-full flex flex-col">
                       {article.image && (
                         <div className="h-48 overflow-hidden">
                           <img

@@ -89,7 +89,7 @@ export default function Glossary() {
 
       {/* Search */}
       <div className="max-w-xl mx-auto mb-8">
-        <div className="glass rounded-full flex items-center gap-3 px-5 py-3">
+        <div className="glass-dark rounded-full flex items-center gap-3 px-5 py-3">
           <Search size={18} className="text-muted-foreground shrink-0" />
           <input
             value={q}
@@ -111,7 +111,7 @@ export default function Glossary() {
             animate="visible"
             custom={Math.min(i, 8)}
             variants={fadeUp}
-            className="glass rounded-2xl p-5 md:p-6 scroll-mt-24"
+            className="glass-dark rounded-2xl p-5 md:p-6 scroll-mt-24"
           >
             <h2 className="font-serif text-lg text-forest mb-1.5">{t.term}</h2>
             <p className="text-ink/75 text-sm leading-relaxed">{t.definition}</p>

@@ -43,7 +43,7 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
   const result = tiers[tier];
 
   return (
-    <div className="glass rounded-3xl p-6 md:p-8">
+    <div className="glass-dark rounded-3xl p-6 md:p-8">
       <span className="eyebrow">{eyebrow}</span>
       <h2 className="font-serif text-2xl text-forest mt-3 mb-1">{title}</h2>
       <p className="text-muted-foreground text-sm mb-5">

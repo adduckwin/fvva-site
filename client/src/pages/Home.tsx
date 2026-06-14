@@ -157,7 +157,7 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="glass rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center"
+            className="glass-dark rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center"
           >
             <motion.h2
               custom={0}
@@ -190,7 +190,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-              className="glass rounded-3xl p-2 lg:p-2.5"
+              className="glass-dark rounded-3xl p-2 lg:p-2.5"
             >
               <div className="relative h-full min-h-[340px] rounded-[1.35rem] overflow-hidden">
                 <img
@@ -214,7 +214,7 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
-              className="glass rounded-3xl p-8 md:p-10"
+              className="glass-dark rounded-3xl p-8 md:p-10"
             >
             <motion.div custom={0} variants={fadeUp}>
               <span className="eyebrow">О подходе</span>
@@ -311,7 +311,7 @@ export default function Home() {
                 key={s.n}
                 custom={i}
                 variants={fadeUp}
-                className="glass rounded-2xl p-6"
+                className="glass-dark rounded-2xl p-6"
               >
                 <span className="font-serif text-2xl text-terracotta">
                   {s.n}
@@ -359,7 +359,7 @@ export default function Home() {
               <motion.div
                 custom={0}
                 variants={fadeUp}
-                className="glass rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
+                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-forest to-forest-deep shadow-inner">
@@ -383,7 +383,7 @@ export default function Home() {
               <motion.div
                 custom={1}
                 variants={fadeUp}
-                className="glass rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
+                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-terracotta to-terracotta-light shadow-inner">
@@ -406,7 +406,7 @@ export default function Home() {
               <motion.div
                 custom={2}
                 variants={fadeUp}
-                className="glass rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
+                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-[#6b9b76] to-[#4c785a] shadow-inner">
@@ -653,7 +653,7 @@ export default function Home() {
                   href={`/blog/${article.slug}`}
                   className="no-underline block group h-full"
                 >
-                  <div className="glass rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1 h-full">
+                  <div className="glass-dark rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1 h-full">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 text-cream bg-gradient-to-br from-forest to-forest-deep group-hover:from-terracotta group-hover:to-terracotta-light transition-colors">
                       {article.icon}
                     </div>
