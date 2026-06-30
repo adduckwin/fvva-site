@@ -6,12 +6,9 @@ export default function MaxButton() {
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-transform hover:scale-110"
       style={{
-        background: "linear-gradient(135deg, rgba(255,107,53,0.75), rgba(255,143,53,0.65))",
-        backdropFilter: "blur(16px) saturate(180%)",
-        WebkitBackdropFilter: "blur(16px) saturate(180%)",
-        border: "1px solid rgba(255, 255, 255, 0.25)",
+        background: "linear-gradient(135deg, #471AFF, #9500FF)",
         boxShadow:
-          "0 1px 2px rgba(0, 0, 0, 0.06), 0 14px 30px -14px rgba(255, 107, 53, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35)",
+          "0 1px 2px rgba(0, 0, 0, 0.06), 0 14px 30px -14px rgba(71, 26, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25)",
       }}
       aria-label="Написать в Макс"
     >
@@ -20,14 +17,39 @@ export default function MaxButton() {
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.45), rgba(255,255,255,0) 45%)",
+            "linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 50%)",
           mixBlendMode: "screen",
-          opacity: 0.6,
+          opacity: 0.5,
         }}
       />
-      <svg viewBox="0 0 32 32" fill="none" className="relative z-10 h-7 w-7 drop-shadow-sm">
-        <path d="M8 10L16 18L24 10" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M8 16L16 24L24 16" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
+      <svg
+        viewBox="0 0 100 100"
+        fill="none"
+        className="relative z-10 h-8 w-8 drop-shadow-sm"
+      >
+        {/* Outer circle with speech bubble tail */}
+        <path
+          d="M50.76 0.26C78.29 0.26 99.89 22.6 99.89 50.15C99.89 77.7 77.61 99.49 51.02 99.49C41.59 99.49 37.01 98.16 29.65 92.95C29.14 92.59 28.45 92.68 28.02 93.14C22.36 99.18 7.85 103.43 7.19 95.18C7.19 80.79 0 71.45 0 49.88C0 21.55 23.22 0.26 50.76 0.26Z"
+          fill="white"
+        />
+        {/* Inner circle cutout */}
+        <path
+          d="M51.53 24.81C38.46 24.13 28.26 33.2 26.01 47.38C24.15 59.13 27.45 73.45 30.28 74.18C31.48 74.48 34.36 72.28 36.46 70.3C36.85 69.93 37.45 69.86 37.91 70.15C41.18 72.15 44.88 73.65 48.96 73.86C62.37 74.56 74.26 64.06 74.96 50.65C75.66 37.23 64.94 25.5 51.53 24.8Z"
+          fill="url(#maxGrad)"
+        />
+        <defs>
+          <linearGradient
+            id="maxGrad"
+            x1="26"
+            y1="24"
+            x2="75"
+            y2="75"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#471AFF" />
+            <stop offset="1" stopColor="#9500FF" />
+          </linearGradient>
+        </defs>
       </svg>
     </a>
   );
