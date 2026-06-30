@@ -471,7 +471,7 @@ export default function Home() {
               <motion.h2
                 custom={1}
                 variants={fadeUp}
-                className="text-3xl md:text-4xl mt-4 mb-7 text-cream"
+                className="text-3xl md:text-4xl mt-4 mb-7 text-forest"
               >
                 Образование и квалификация
               </motion.h2>
@@ -485,13 +485,13 @@ export default function Home() {
                     key={i}
                     className="border-l-2 border-terracotta-light/40 pl-4"
                   >
-                    <p className="text-cream font-medium leading-snug">
+                    <p className="text-ink font-medium leading-snug">
                       {e.school}
                     </p>
-                    <p className="text-cream/75 text-sm leading-relaxed mt-0.5">
+                    <p className="text-ink/80 text-sm leading-relaxed mt-0.5">
                       {e.program}
                     </p>
-                    <p className="text-terracotta-light text-sm font-serif italic mt-1">
+                    <p className="text-terracotta-text text-sm font-serif italic mt-1">
                       {e.year}
                     </p>
                   </div>

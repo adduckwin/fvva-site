@@ -112,63 +112,63 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="glass-dark rounded-3xl p-8 md:p-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div>
-                <h3 className="font-serif text-xl text-cream mb-4">
-                  Александра Федорова
-                </h3>
-                <p className="text-sm leading-relaxed text-cream/75">
-                  Психолог · КПТ, ACT и CFT. Помощь при тревоге, депрессии,
-                  последствиях травмы и высокой самокритике. Онлайн.
-                </p>
+              <h3 className="font-serif text-xl text-forest mb-4">
+                Александра Федорова
+              </h3>
+              <p className="text-sm leading-relaxed text-ink/80">
+                Психолог · КПТ, ACT и CFT. Помощь при тревоге, депрессии,
+                последствиях травмы и высокой самокритике. Онлайн.
+              </p>
               </div>
               <div>
-                <h4 className="font-serif text-lg text-cream mb-4">Навигация</h4>
+                <h4 className="font-serif text-lg text-forest mb-4">Навигация</h4>
                 <div className="flex flex-col gap-2">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-sm text-cream/75 hover:text-terracotta-light transition-colors no-underline w-fit"
+                      className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline w-fit"
                     >
                       {link.label}
                     </Link>
                   ))}
                   <Link
                     href="/faq"
-                    className="text-sm text-cream/75 hover:text-terracotta-light transition-colors no-underline w-fit"
+                    className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline w-fit"
                   >
                     Частые вопросы
                   </Link>
                   <Link
                     href="/proverit-sebya"
-                    className="text-sm text-cream/75 hover:text-terracotta-light transition-colors no-underline w-fit"
+                    className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline w-fit"
                   >
                     Быстрая самопроверка
                   </Link>
                   <Link
                     href="/slovar"
-                    className="text-sm text-cream/75 hover:text-terracotta-light transition-colors no-underline w-fit"
+                    className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline w-fit"
                   >
                     Словарь терминов
                   </Link>
                 </div>
               </div>
               <div>
-                <h4 className="font-serif text-lg text-cream mb-4">Контакты</h4>
-                <p className="text-sm mb-2 text-cream/75">
+                <h4 className="font-serif text-lg text-forest mb-4">Контакты</h4>
+                <p className="text-sm mb-2 text-ink/80">
                   Telegram: @ALEKSA_FVVA
                 </p>
-                <p className="text-sm text-cream/75">Мессенджер Max</p>
+                <p className="text-sm text-ink/80">Мессенджер Max</p>
                 <a
                   href="https://vk.com/fedorovaapsy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-cream/75 hover:text-terracotta-light transition-colors no-underline inline-block mt-2"
+                  className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline inline-block mt-2"
                 >
                   ВКонтакте: vk.com/fedorovaapsy
                 </a>
               </div>
             </div>
-            <div className="border-t border-cream/10 mt-8 pt-6 text-center text-xs text-cream/55">
+            <div className="border-t border-ink/10 mt-8 pt-6 text-center text-xs text-ink/50">
               <p>
                 Результаты тестов носят информационный характер и не являются
                 диагнозом. При необходимости обратитесь к специалисту.
