@@ -6,9 +6,13 @@ export default function MaxButton() {
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-transform hover:scale-110"
       style={{
-        background: "linear-gradient(135deg, #471AFF, #9500FF)",
+        background:
+          "linear-gradient(135deg, rgba(71,26,255,0.55), rgba(149,0,255,0.45))",
+        backdropFilter: "blur(16px) saturate(180%)",
+        WebkitBackdropFilter: "blur(16px) saturate(180%)",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
         boxShadow:
-          "0 1px 2px rgba(0, 0, 0, 0.06), 0 14px 30px -14px rgba(71, 26, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25)",
+          "0 1px 2px rgba(0, 0, 0, 0.06), 0 14px 30px -14px rgba(71, 26, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
       }}
       aria-label="Написать в Макс"
     >
@@ -17,9 +21,9 @@ export default function MaxButton() {
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 50%)",
+            "linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0) 45%)",
           mixBlendMode: "screen",
-          opacity: 0.5,
+          opacity: 0.6,
         }}
       />
       <svg
@@ -31,11 +35,13 @@ export default function MaxButton() {
         <path
           d="M50.76 0.26C78.29 0.26 99.89 22.6 99.89 50.15C99.89 77.7 77.61 99.49 51.02 99.49C41.59 99.49 37.01 98.16 29.65 92.95C29.14 92.59 28.45 92.68 28.02 93.14C22.36 99.18 7.85 103.43 7.19 95.18C7.19 80.79 0 71.45 0 49.88C0 21.55 23.22 0.26 50.76 0.26Z"
           fill="white"
+          fillOpacity="0.9"
         />
         {/* Inner circle cutout */}
         <path
           d="M51.53 24.81C38.46 24.13 28.26 33.2 26.01 47.38C24.15 59.13 27.45 73.45 30.28 74.18C31.48 74.48 34.36 72.28 36.46 70.3C36.85 69.93 37.45 69.86 37.91 70.15C41.18 72.15 44.88 73.65 48.96 73.86C62.37 74.56 74.26 64.06 74.96 50.65C75.66 37.23 64.94 25.5 51.53 24.8Z"
           fill="url(#maxGrad)"
+          fillOpacity="0.85"
         />
         <defs>
           <linearGradient
