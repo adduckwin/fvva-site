@@ -7,7 +7,7 @@ import { Link, useLocation } from "wouter";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import TelegramButton from "./TelegramButton";
+import MaxButton from "./MaxButton";
 
 const navLinks = [
   { href: "/", label: "Главная" },
@@ -181,7 +181,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
-      <TelegramButton />
+      <MaxButton />
     </div>
   );
 }
