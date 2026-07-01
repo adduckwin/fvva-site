@@ -43,7 +43,7 @@ export default function Contact() {
   useMeta({
     title: "Контакты — запись на консультацию психолога",
     description:
-      "Свяжитесь с психологом Александрой Федоровой через Telegram (@ALEKSA_FVVA) или мессенджер Max. Консультации по депрессии и тревоге методами КПТ и ACT.",
+      "Свяжитесь с психологом Александрой Федоровой через Telegram (@ALEKSA_FVVA) или мессенджер Max. Консультации по тревоге и сниженному настроению методами КПТ и ACT.",
     keywords:
       "контакты психолога, запись к психологу, Александра Федорова, психолог телеграм, консультация психолога онлайн",
   });
@@ -112,7 +112,7 @@ export default function Contact() {
                     Психолог &middot; КПТ &middot; ACT
                   </p>
                   <p className="text-ink/70 text-sm leading-relaxed">
-                    Работаю с депрессией, тревожными расстройствами, паническими
+                    Работаю с апатией, тревожными расстройствами, паническими
                     атаками. Помогаю обрести психологическую гибкость и вернуть
                     качество жизни.
                   </p>
@@ -135,9 +135,9 @@ export default function Contact() {
               className="glass-dark rounded-2xl p-5 md:p-6 mb-8 text-center"
             >
               <p className="text-ink/75 text-sm leading-relaxed">
-                Первая встреча — это знакомство, она{" "}
+                Полноценная работа начинается{" "}
                 <span className="text-forest font-medium">
-                  ни к чему не обязывает
+                  с первой сессии
                 </span>
                 . Не знаете, с чего начать — нажмите на мессенджер ниже, и
                 готовое первое сообщение скопируется само. Останется вставить и
@@ -266,8 +266,8 @@ export default function Contact() {
                   Сообщество ВКонтакте
                 </h3>
                 <p className="text-ink/65 text-sm leading-relaxed">
-                  Полезные материалы и публикации о тревоге, депрессии и
-                  психотерапии.
+                   Полезные материалы и публикации о тревоге, апатии и
+                   психологии.
                 </p>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-[#0077FF] text-sm font-medium shrink-0 group-hover:gap-3 transition-all">

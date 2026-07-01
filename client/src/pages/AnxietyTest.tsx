@@ -258,7 +258,7 @@ export default function AnxietyTest() {
                     </Link>
                   </div>
                   <p className="text-center text-muted-foreground text-sm mt-4">
-                    Первая консультация — знакомство, ни к чему не обязывает.
+                    Полноценная работа начинается с первой сессии.
                   </p>
                   <div className="mt-5 text-center">
                     <Link

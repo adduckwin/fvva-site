@@ -116,7 +116,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Александра Федорова
               </h3>
               <p className="text-sm leading-relaxed text-ink/80">
-                Психолог · КПТ, ACT и CFT. Помощь при тревоге, депрессии,
+                Психолог · КПТ, ACT и CFT. Помощь при тревоге, апатии,
                 последствиях травмы и высокой самокритике. Онлайн.
               </p>
               </div>
