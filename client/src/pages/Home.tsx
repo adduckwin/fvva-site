@@ -461,17 +461,17 @@ export default function Home() {
             <div className="relative">
               <motion.div custom={0} variants={fadeUp}>
                 <GraduationCap
-                  className="mx-auto mb-4 text-terracotta-light"
+                  className="mx-auto mb-4 text-terracotta-text"
                   size={40}
                 />
-                <span className="eyebrow eyebrow-center text-terracotta-light">
+                <span className="eyebrow eyebrow-center text-terracotta-text">
                   Образование
                 </span>
               </motion.div>
               <motion.h2
                 custom={1}
                 variants={fadeUp}
-                className="text-3xl md:text-4xl mt-4 mb-7 text-terracotta-text"
+                className="text-3xl md:text-4xl mt-4 mb-7 text-forest"
               >
                 Образование и квалификация
               </motion.h2>
