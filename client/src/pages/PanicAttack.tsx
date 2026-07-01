@@ -263,10 +263,7 @@ export default function PanicAttack() {
                 <ArrowRight size={18} />
               </button>
             </Link>
-            <p className="text-sm text-muted-foreground mt-6">
-              Если вы не уверены, что это паническая атака, чувствуете сильную боль
-              в груди или вам становится хуже — позвоните 112.
-            </p>
+
           </motion.div>
         </section>
       </div>
