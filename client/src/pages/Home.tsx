@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMeta } from "@/hooks/useMeta";
+import { BOOKING_TERMS } from "@/lib/practice";
 
 const HERO_BG = "/images/hero-bg.jpg";
 const CBT_IMG = "/images/cbt-illustration.jpg";
@@ -72,9 +73,9 @@ const fadeUp = {
 
 export default function Home() {
   useMeta({
-    title: "Психолог Александра Федорова — помощь при тревоге и сниженном настроении",
+    title: "КПТ-психолог онлайн при тревоге и апатии — Александра Федорова",
     description:
-      "Психолог Александра Федорова. Помощь при тревоге, апатии, последствиях травмы и высокой самокритике — методами КПТ, ACT и CFT. Онлайн-консультации, тесты Бека.",
+      `Консультации Александры Федоровой при тревоге, панических атаках и апатии. ${BOOKING_TERMS}`,
     keywords:
       "психолог, сниженное настроение, апатия, тревога, КПТ, ACT, CFT, ПТСР, психология эмиграции, Александра Федорова, когнитивно-поведенческий подход, тест Бека, психолог онлайн",
     ogType: "website",
@@ -104,7 +105,7 @@ export default function Home() {
               variants={fadeUp}
               className="eyebrow text-terracotta-light mb-5"
             >
-              Психолог · КПТ · ACT · CFT
+              Александра Федорова · психолог
             </motion.span>
             <motion.h1
               custom={1}
@@ -121,8 +122,9 @@ export default function Home() {
               variants={fadeUp}
               className="text-cream/85 text-lg md:text-xl leading-relaxed mb-9 max-w-xl font-light"
             >
-              Помогаю справиться с тревогой, апатией и последствиями
-              сложного опыта с помощью доказательных методов — КПТ, ACT и CFT.
+              Работаю в когнитивно-поведенческом подходе (КПТ).
+              Помогаю разобраться, что поддерживает тревогу и апатию
+              и с чего можно начать изменения.
             </motion.p>
             <motion.div
               custom={3}
@@ -149,7 +151,7 @@ export default function Home() {
               variants={fadeUp}
               className="text-cream/65 text-sm mt-4"
             >
-              Полноценная работа начинается с первой сессии.
+              {BOOKING_TERMS}
             </motion.p>
           </motion.div>
         </div>
@@ -169,17 +171,19 @@ export default function Home() {
               variants={fadeUp}
               className="text-2xl md:text-3xl text-forest mb-4"
             >
-              Если вы читаете это — вы уже сделали первый шаг
+              Когда стоит обратиться с тревогой
             </motion.h2>
             <motion.p
               custom={1}
               variants={fadeUp}
               className="text-ink/90 text-lg leading-relaxed"
             >
-              Просить о помощи — не слабость. Тревога и апатия — это
-              состояния, с которыми сталкиваются миллионы людей, и они поддаются
-              работе. Не нужно ждать, пока станет «совсем плохо», и не нужно
-              справляться в одиночку.
+              Например, если вы долго прокручиваете разговоры в голове,
+              избегаете встреч или откладываете важные дела из-за беспокойства.
+              На консультации можно начать с одной такой ситуации.{" "}
+              <Link href="/blog/trevoga-norma-ili-rasstrojstvo" className="text-terracotta-text underline underline-offset-4">
+                Подробнее о том, когда тревога начинает мешать
+              </Link>
             </motion.p>
           </motion.div>
         </div>
@@ -256,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* What to expect — first session */}
-      <section className="py-16">
+      <section id="pervaya-vstrecha" className="scroll-mt-24 py-16">
         <div className="container">
           <motion.div
             initial="hidden"
@@ -276,16 +280,16 @@ export default function Home() {
               variants={fadeUp}
               className="text-3xl md:text-4xl text-forest mt-4"
             >
-              Как проходит первая сессия
+              Как проходит первая консультация
             </motion.h2>
             <motion.p
               custom={2}
               variants={fadeUp}
               className="text-ink/90 max-w-2xl mx-auto mt-4 text-lg"
             >
-              Полноценная работа начинается с первого шага. Вы рассказываете, что
-              вас беспокоит, в удобном темпе. Я слушаю, задаю уточняющие вопросы,
-              и вместе намечаем, с чего начать.
+              Можно прийти без готового запроса. Для начала подойдёт пример
+              из вашей жизни. Скажем, вы хотите выйти из дома, но тревога
+              каждый раз заставляет менять планы.
             </motion.p>
           </motion.div>
 
@@ -303,8 +307,8 @@ export default function Home() {
               },
               {
                 n: "02",
-                t: "Что поддерживает",
-                d: "Вместе смотрим, что поддерживает ваше состояние и какие методы могут помочь именно вам.",
+                t: "Разбор ситуации",
+                d: "Вместе разбираем, какие мысли возникли, что вы почувствовали и как поступили в тот момент.",
               },
               {
                 n: "03",
@@ -326,6 +330,11 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
+          <p className="mt-6 text-center">
+            <Link href="/faq" className="text-terracotta-text underline underline-offset-4">
+              Вопросы перед первой встречей с психологом
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -726,8 +735,7 @@ export default function Home() {
               variants={fadeUp}
               className="text-white text-lg mb-8 max-w-xl mx-auto font-light"
             >
-              Запишитесь на первую консультацию. Вместе мы найдём путь к вашему
-              благополучию.
+              Напишите мне, чтобы узнать стоимость и выбрать время для разговора.
             </motion.p>
             <motion.div custom={2} variants={fadeUp}>
               <Button asChild className="rounded-full bg-forest hover:bg-forest-deep text-white px-10 py-6 text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">

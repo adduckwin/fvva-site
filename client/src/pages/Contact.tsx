@@ -3,7 +3,7 @@ import { ArrowLeft, Copy, ExternalLink, Video, Clock, CalendarDays, Wallet, User
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { useMeta } from "@/hooks/useMeta";
-import { CONTACT_LINKS, PRACTICE, PRACTICE_FACTS } from "@/lib/practice";
+import { BOOKING_TERMS, CONTACT_LINKS, PRACTICE_FACTS } from "@/lib/practice";
 
 const FACT_ICONS: Record<string, typeof Video> = {
   format: Video,
@@ -28,9 +28,9 @@ const fadeUp = {
 
 export default function Contact() {
   useMeta({
-    title: "Контакты — запись на консультацию психолога",
+    title: "Запись на онлайн-консультацию — психолог Александра Федорова",
     description:
-      "Свяжитесь с психологом Александрой Федоровой через Telegram (@ALEKSA_FVVA) или мессенджер Max. Консультации по тревоге и сниженному настроению методами КПТ и ACT.",
+      `Запись к психологу Александре Федоровой через Telegram или MAX. ${BOOKING_TERMS}`,
     keywords:
       "контакты психолога, запись к психологу, Александра Федорова, психолог телеграм, консультация психолога онлайн",
   });
@@ -62,10 +62,10 @@ export default function Contact() {
               <ArrowLeft size={14} /> На главную
             </Link>
             <h1 className="text-4xl md:text-5xl text-cream">
-              Связаться со мной
+              Запись на онлайн-консультацию
             </h1>
             <p className="text-cream/75 mt-4 max-w-2xl text-lg">
-              {PRACTICE.reply}
+              {BOOKING_TERMS}
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a

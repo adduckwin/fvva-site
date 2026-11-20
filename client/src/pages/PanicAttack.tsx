@@ -117,7 +117,7 @@ export default function PanicAttack() {
             variants={fadeUp}
             className="text-3xl md:text-5xl text-forest mt-4 mb-5"
           >
-            Что делать при приступе паники
+            Что делать в момент панической атаки
           </motion.h1>
           <motion.p
             custom={2}
@@ -246,6 +246,17 @@ export default function PanicAttack() {
               посмотреть вокруг и назвать несколько предметов рядом.
               Если упражнение вызывает дискомфорт, его можно остановить.
             </motion.p>
+            <p className="text-ink/75 leading-relaxed mt-4">
+              Когда приступ пройдёт, можно прочитать,{" "}
+              <Link href="/blog/panicheskie-ataki" className="underline underline-offset-2">
+                что происходит во время панической атаки
+              </Link>
+              , или выбрать{" "}
+              <Link href="/blog/dyhatelnye-tehniki-pri-trevoge" className="underline underline-offset-2">
+                дыхательное упражнение для практики в спокойное время
+              </Link>
+              .
+            </p>
           </motion.div>
         </section>
 
@@ -258,9 +269,8 @@ export default function PanicAttack() {
             variants={fadeUp}
           >
             <p className="text-ink/75 leading-relaxed mb-5">
-              Если приступы повторяются — с паническими атаками хорошо работает
-              подход: можно научиться их предупреждать и меньше их бояться. Когда
-              будете готовы, это можно обсудить — без обязательств.
+              Если страх нового приступа мешает вам выходить из дома или
+              заниматься привычными делами, об этом можно поговорить на консультации.
             </p>
             <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
               Написать Александре

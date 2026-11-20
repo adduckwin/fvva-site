@@ -5,13 +5,15 @@ export const CONTACT_LINKS = {
 };
 
 export const PRACTICE = {
-  format: "онлайн, по видеосвязи",
+  format: "онлайн по видеосвязи",
   sessionLength: "1,5 часа",
   frequency: "раз в неделю",
   price: "По запросу в личных сообщениях",
   firstSession: "Оплачивается как обычная сессия",
-  reply: "Я отвечу в течение 24 часов.",
 };
+
+export const BOOKING_TERMS =
+  `Встреча проходит ${PRACTICE.format} и длится ${PRACTICE.sessionLength}. Стоимость — ${PRACTICE.price.toLowerCase()}.`;
 
 export interface PracticeFact {
   key: string;
