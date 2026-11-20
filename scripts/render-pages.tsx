@@ -9,6 +9,10 @@ import { SITE_ORIGIN } from "../shared/const";
 function Head({ title, canonical, name, property }: PageHead) {
   return <>
     <title>{title}</title>
+    {canonical === SITE_ORIGIN + "/" && <>
+      <meta name="google-site-verification" content="gTejAmDgFXA-K8FQnNupahrW1K3y2mQquNLIxy1Tvss" />
+      <meta name="yandex-verification" content="7ad7ffe81607f17b" />
+    </>}
     {canonical && <link rel="canonical" href={canonical} />}
     {Object.entries(name).map(([key, content]) =>
       content && <meta key={key} name={key} content={content} />
