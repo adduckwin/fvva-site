@@ -4,7 +4,8 @@
  * Glass material + tokens live in index.css (.glass-dark, palette mesh).
  */
 import { Link, useLocation } from "wouter";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { CONTACT_LINKS } from "@/lib/practice";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MaxButton from "./MaxButton";
@@ -21,6 +22,82 @@ const navLinks = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const mainRef = useRef<HTMLElement>(null);
+
+  // Wouter keeps the document mounted across routes. Track positions by
+  // history entry so repeated visits to the same URL restore independently.
+  useLayoutEffect(() => {
+    const saved = new Map<string, number>();
+    const restoreMode = history.scrollRestoration;
+    history.scrollRestoration = "manual";
+    let frame = 0;
+    let tagging = false;
+
+    function tagEntry() {
+      const key = Math.random().toString(36).slice(2);
+      tagging = true;
+      try {
+        history.replaceState({ ...history.state, fvvaScrollKey: key }, "");
+      } finally {
+        tagging = false;
+      }
+      return key;
+    }
+
+    let currentKey = history.state?.fvvaScrollKey || tagEntry();
+
+    function showPage(y?: number) {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (y !== undefined) {
+          window.scrollTo({ top: y, behavior: "instant" });
+          return;
+        }
+        const main = mainRef.current;
+        if (!main) return;
+        let anchor: HTMLElement | null = null;
+        try {
+          anchor = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+        } catch {
+          // Invalid URL escapes have no corresponding fragment.
+        }
+        const target = anchor || main.querySelector("h1") || main;
+        if (target.tabIndex < 0) target.tabIndex = -1;
+        target.focus({ preventScroll: true });
+        if (anchor) anchor.scrollIntoView({ behavior: "instant" });
+        else window.scrollTo({ top: 0, behavior: "instant" });
+      });
+    }
+
+    function onPush() {
+      saved.set(currentKey, window.scrollY);
+      currentKey = tagEntry();
+      showPage();
+    }
+    function onReplace() {
+      if (tagging) return;
+      currentKey = history.state?.fvvaScrollKey || tagEntry();
+      showPage();
+    }
+    function onPop() {
+      saved.set(currentKey, window.scrollY);
+      currentKey = history.state?.fvvaScrollKey || tagEntry();
+      showPage(saved.get(currentKey));
+    }
+
+    if (window.location.hash) showPage();
+    window.addEventListener("pushState", onPush, true);
+    window.addEventListener("replaceState", onReplace, true);
+    window.addEventListener("popstate", onPop, true);
+    return () => {
+      cancelAnimationFrame(frame);
+      history.scrollRestoration = restoreMode;
+      window.removeEventListener("pushState", onPush, true);
+      window.removeEventListener("replaceState", onReplace, true);
+      window.removeEventListener("popstate", onPop, true);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -65,6 +142,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="lg:hidden p-2 text-cream"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Меню"
+                aria-expanded={mobileOpen}
               >
                 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -104,7 +182,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main content */}
-      <main className="flex-1">{children}</main>
+      <main ref={mainRef} tabIndex={-1} className="flex-1 [&_[id]]:scroll-mt-24">{children}</main>
 
       {/* Glass footer */}
       <footer className="pt-12 pb-8">
@@ -154,12 +232,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <div>
                 <h4 className="font-serif text-lg text-forest mb-4">Контакты</h4>
-                <p className="text-sm mb-2 text-ink/80">
-                  Telegram: @ALEKSA_FVVA
-                </p>
-                <p className="text-sm text-ink/80">Мессенджер Max</p>
                 <a
-                  href="https://vk.com/fedorovaapsy"
+                  href={CONTACT_LINKS.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mb-2 block w-fit text-sm text-ink/80 hover:text-terracotta-text hover:underline"
+                >
+                  Telegram @ALEKSA_FVVA
+                </a>
+                <a
+                  href={CONTACT_LINKS.max}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-fit text-sm text-ink/80 hover:text-terracotta-text hover:underline"
+                >
+                  Написать в MAX
+                </a>
+                <a
+                  href={CONTACT_LINKS.vk}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-ink/80 hover:text-terracotta-text transition-colors no-underline inline-block mt-2"

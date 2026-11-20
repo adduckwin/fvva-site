@@ -125,14 +125,18 @@ export default function BlogArticle() {
                   Записаться на консультацию
                 </Button>
               </Link>
-              <Link href="/test/depression">
+              {article.relatedTest && (
                 <Button
+                  asChild
                   variant="outline"
                   className="rounded-full bg-cream/10 backdrop-blur border-cream/30 text-cream hover:bg-cream/20 hover:text-cream px-8 py-5"
                 >
-                  Пройти тест <ArrowRight size={16} className="ml-2" />
+                  <Link href={`/test/${article.relatedTest}`}>
+                    {article.relatedTest === "anxiety" ? "Пройти тест на тревогу" : "Пройти тест на депрессию"}
+                    <ArrowRight size={16} className="ml-2" />
+                  </Link>
                 </Button>
-              </Link>
+              )}
             </div>
           </motion.div>
         </div>

@@ -2,9 +2,8 @@
  * Markdown Component
  *
  * A template-ready markdown renderer using Streamdown with:
- * - Shiki syntax highlighting for code blocks (via @streamdown/code)
- * - Mermaid diagram support (via @streamdown/mermaid)
- * - Line numbers on code blocks (built-in to Streamdown 2.x)
+ * - Shiki syntax highlighting for code blocks
+ * - Mermaid diagram support
  * - Fine-grained control over each element via components prop
  * - Memoized for optimal performance during streaming
  *
@@ -16,7 +15,7 @@
  *
  * Installation:
  * ```bash
- * pnpm add streamdown @streamdown/code @streamdown/mermaid
+ * pnpm add streamdown
  * ```
  *
  * Basic Usage:
@@ -47,7 +46,7 @@
  *
  * Streaming Mode (for AI chat):
  * ```tsx
- * <Markdown mode="streaming" isAnimating={isStreaming}>
+ * <Markdown isAnimating={isStreaming}>
  *   {streamingContent}
  * </Markdown>
  * ```
@@ -63,15 +62,13 @@
 
 import { memo, type ReactNode, type ComponentProps } from "react";
 import { Streamdown } from "streamdown";
-import { code } from "@streamdown/code";
-import { mermaid } from "@streamdown/mermaid";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
 // DEFAULT COMPONENT OVERRIDES
 // Customize individual markdown elements here.
 // Note: We don't override `pre` or `code` - let Streamdown/Shiki handle those
-// to preserve syntax highlighting and line numbers.
+// to preserve syntax highlighting.
 // @see https://streamdown.ai/docs/configuration#components
 // ============================================================================
 
@@ -166,13 +163,9 @@ const components = {
 // MARKDOWN COMPONENT
 // ============================================================================
 
-type MarkdownProps = Omit<ComponentProps<typeof Streamdown>, "components" | "plugins"> & {
+type MarkdownProps = Omit<ComponentProps<typeof Streamdown>, "components"> & {
   /** Override specific element renderers */
   components?: Partial<typeof components>;
-  /** Enable/disable code syntax highlighting (default: true) */
-  enableCode?: boolean;
-  /** Enable/disable mermaid diagrams (default: true) */
-  enableMermaid?: boolean;
 };
 
 /**
@@ -180,7 +173,6 @@ type MarkdownProps = Omit<ComponentProps<typeof Streamdown>, "components" | "plu
  *
  * Features:
  * - Syntax highlighting with 200+ languages via Shiki
- * - Line numbers on code blocks
  * - Mermaid diagrams with interactive controls
  * - Copy/download buttons on code blocks and diagrams
  * - Streaming support for AI chat applications
@@ -192,7 +184,7 @@ type MarkdownProps = Omit<ComponentProps<typeof Streamdown>, "components" | "plu
  *
  * @example
  * // Streaming mode for AI chat
- * <Markdown mode="streaming" isAnimating={isLoading}>
+ * <Markdown isAnimating={isLoading}>
  *   {streamingResponse}
  * </Markdown>
  */
@@ -202,22 +194,12 @@ export const Markdown = memo(function Markdown({
   components: customComponents,
   shikiTheme = ["github-light", "github-dark"],
   controls = true,
-  enableCode = true,
-  enableMermaid = true,
   ...props
 }: MarkdownProps) {
-  // Build plugins object based on what's enabled
-  // @see https://streamdown.ai/docs/code-blocks
-  // @see https://streamdown.ai/docs/mermaid
-  const plugins: Record<string, unknown> = {};
-  if (enableCode) plugins.code = code;
-  if (enableMermaid) plugins.mermaid = mermaid;
-
   return (
     <Streamdown
       className={cn("text-foreground leading-relaxed", className)}
       components={{ ...components, ...customComponents }}
-      plugins={plugins}
       shikiTheme={shikiTheme}
       controls={controls}
       {...props}

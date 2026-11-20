@@ -57,7 +57,7 @@ import { cn } from "@/lib/utils";
 import { Loader2, Send, Sparkles } from "lucide-react";
 import { useState, useRef, useEffect, ReactNode } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, isStaticToolUIPart } from "ai";
 
 // ============================================================================
 // TYPES
@@ -65,7 +65,7 @@ import { DefaultChatTransport } from "ai";
 // import them directly from "ai" package in your consuming code.
 // ============================================================================
 
-import type { UIMessage, UIMessagePart, UIToolInvocation } from "ai";
+import type { UIMessage, ToolUIPart, UIToolInvocation } from "ai";
 
 /**
  * Tool invocation state derived from AI SDK's UIToolInvocation type.
@@ -104,7 +104,7 @@ export function isToolComplete(state: ToolInvocationState): boolean {
  */
 export interface ToolPartRendererProps {
   /** The tool part from the message - type is `tool-${toolName}` */
-  part: UIMessagePart & { type: `tool-${string}` };
+  part: ToolUIPart;
   /** Extracted tool name for convenience */
   toolName: string;
   /** Current state of the tool invocation */
@@ -245,7 +245,7 @@ function MessageBubble({
             }
             return (
               <div key={i} className="prose prose-sm dark:prose-invert max-w-none">
-                <Markdown mode={isStreaming ? "typewriter" : "static"} typewriterSpeed={50}>
+                <Markdown isAnimating={isStreaming} parseIncompleteMarkdown={isStreaming}>
                   {part.text}
                 </Markdown>
               </div>
@@ -253,25 +253,14 @@ function MessageBubble({
           }
 
           // Tool parts - type is `tool-${toolName}`
-          if (part.type.startsWith("tool-")) {
-            const toolName = part.type.replace("tool-", "");
-            // Cast to access tool-specific properties
-            const toolPart = part as UIMessagePart & {
-              type: `tool-${string}`;
-              toolCallId: string;
-              state: ToolInvocationState;
-              input?: unknown;
-              output?: unknown;
-              errorText?: string;
-            };
-
+          if (isStaticToolUIPart(part)) {
             const rendererProps: ToolPartRendererProps = {
-              part: toolPart,
-              toolName,
-              state: toolPart.state,
-              input: toolPart.input,
-              output: toolPart.output,
-              errorText: toolPart.errorText,
+              part,
+              toolName: part.type.slice("tool-".length),
+              state: part.state,
+              input: part.input,
+              output: part.output,
+              errorText: part.errorText,
             };
 
             // Try custom renderer first, fall back to default

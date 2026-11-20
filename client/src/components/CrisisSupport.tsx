@@ -1,12 +1,7 @@
-/**
- * CrisisSupport — спокойный поддерживающий блок для тяжёлых результатов тестов
- * и при ненулевом ответе на пункт о тяжёлых мыслях.
- * Без телефонов: мягкое сообщение и прямая ссылка на связь с Александрой.
- */
 import { Heart, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
-export default function CrisisSupport() {
+export default function CrisisSupport({ urgent = false }: { urgent?: boolean }) {
   return (
     <div className="glass-dark rounded-2xl p-6 md:p-7 border-l-2 border-l-terracotta mb-8">
       <div className="flex items-start gap-4">
@@ -15,20 +10,28 @@ export default function CrisisSupport() {
         </div>
         <div className="min-w-0">
           <h3 className="text-lg text-forest mb-2">
-            Вам сейчас тяжело — и вы не одни
+            {urgent ? "Поддержка прямо сейчас" : "С кем обсудить результат"}
           </h3>
           <p className="text-ink/75 text-sm leading-relaxed mb-4">
-            То, что вы чувствуете, — это состояние, а не вы, и оно может меняться.
-            Не обязательно переносить это в одиночку — можно написать Александре,
-            и она ответит.
+            {urgent
+              ? "Если вы уже причинили себе вред или чувствуете, что можете сделать это в ближайшее время, вызовите местную экстренную службу сейчас. Если можете, попросите человека рядом побыть с вами и помочь вызвать помощь."
+              : "Если вам тяжело, можно обсудить своё состояние с врачом или психологом и вместе выбрать следующий шаг."}
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-6 py-3 text-sm font-medium transition-colors no-underline active:scale-[0.98]"
-          >
-            Написать Александре
-            <ArrowRight size={16} />
-          </Link>
+          {urgent ? (
+            <p className="text-ink/80 text-sm leading-relaxed">
+              Даже если сейчас вы в безопасности, расскажите об этих мыслях
+              человеку, которому доверяете, и как можно скорее обратитесь к врачу
+              или в местную службу психического здоровья.
+            </p>
+          ) : (
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-6 py-3 text-sm font-medium transition-colors no-underline active:scale-[0.98]"
+            >
+              Запись на консультацию
+              <ArrowRight size={16} />
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -30,13 +30,17 @@ interface MiniCheckProps {
 function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: MiniCheckProps) {
   const [sel, setSel] = useState<Set<number>>(new Set());
   const [shown, setShown] = useState(false);
+  const [noneSelected, setNoneSelected] = useState(false);
 
-  const toggle = (i: number) =>
+  const toggle = (i: number) => {
+    setNoneSelected(false);
+    setShown(false);
     setSel((prev) => {
       const n = new Set(prev);
       n.has(i) ? n.delete(i) : n.add(i);
       return n;
     });
+  };
 
   const count = sel.size;
   const tier = count <= 1 ? 0 : count <= 3 ? 1 : 2;
@@ -75,12 +79,25 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
             </button>
           );
         })}
+        <button
+          type="button"
+          aria-pressed={noneSelected}
+          onClick={() => {
+            setSel(new Set());
+            setNoneSelected(!noneSelected);
+            setShown(false);
+          }}
+          className="w-full rounded-2xl border px-4 py-3 text-left text-sm aria-pressed:border-forest aria-pressed:bg-forest/10"
+        >
+          Ничего из перечисленного
+        </button>
       </div>
 
       {!shown ? (
         <button
+          disabled={count === 0 && !noneSelected}
           onClick={() => setShown(true)}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-forest hover:bg-forest-deep text-cream px-6 py-3 text-sm font-medium transition-colors active:scale-[0.98]"
+          className="disabled:opacity-50 mt-6 inline-flex items-center gap-2 rounded-full bg-forest hover:bg-forest-deep text-cream px-6 py-3 text-sm font-medium transition-colors active:scale-[0.98]"
         >
           Посмотреть результат
           <ArrowRight size={16} />
@@ -110,6 +127,7 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
             <button
               onClick={() => {
                 setShown(false);
+                setNoneSelected(false);
                 setSel(new Set());
               }}
               className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-forest text-sm transition-colors"

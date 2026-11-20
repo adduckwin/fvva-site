@@ -4,7 +4,7 @@
  * Brand chrome uses design tokens (forest / cream / terracotta).
  * Severity colors are an intentional clinical scale — single source: RESULT_LEVELS.
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -284,7 +284,7 @@ export default function DepressionTest() {
   useMeta({
     title: "Тест на депрессию онлайн — Шкала депрессии Бека (BDI-II)",
     description:
-      "Пройдите бесплатный анонимный тест по шкале Бека. 21 вопрос, 10 минут, мгновенный результат с интерпретацией. Данные не сохраняются.",
+      "Бесплатный тест на депрессию по шкале Бека: 21 вопрос, около 10 минут. Вы увидите результат сразу. Ответы остаются в вашей вкладке.",
     keywords:
       "тест на депрессию, шкала Бека, тест Бека, BDI, депрессия тест онлайн, самодиагностика, опросник",
   });
@@ -298,15 +298,21 @@ export default function DepressionTest() {
   const progress = (answeredCount / totalQuestions) * 100;
   const score = Object.values(answers).reduce((sum, v) => sum + v, 0);
   const result = getResult(score);
-  // Пункт №9 — мысли о суициде. Показываем поддержку при любом ненулевом ответе
-  // или при умеренном/выраженном уровне.
-  const suicidalAnswer = answers[9] ?? 0;
-  const showCrisis = score > 19 || suicidalAnswer > 0;
+  const hasSuicidalThoughts = (answers[9] ?? 0) > 0;
+  const showImmediateSupport = !showResult && questions[currentQ].id === 9 && hasSuicidalThoughts;
+  const supportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showImmediateSupport) {
+      supportRef.current?.focus({ preventScroll: true });
+      supportRef.current?.scrollIntoView({ block: "start" });
+    }
+  }, [showImmediateSupport]);
 
   const handleAnswer = (questionId: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
-    if (currentQ < totalQuestions - 1) {
-      setTimeout(() => setCurrentQ(currentQ + 1), 300);
+    if (currentQ < totalQuestions - 1 && !(questionId === 9 && value > 0)) {
+      setCurrentQ(currentQ + 1);
     }
   };
 
@@ -347,7 +353,7 @@ export default function DepressionTest() {
             описывает ваше состояние за последние две недели, включая сегодня.
           </p>
           <p className="text-cream/50 text-sm mt-2">
-            Тест анонимный. Данные не сохраняются и не передаются третьим лицам.
+            Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
           </p>
           </div>
         </div>
@@ -368,70 +374,76 @@ export default function DepressionTest() {
                     Результат теста
                   </h2>
 
+                  {hasSuicidalThoughts && <CrisisSupport urgent />}
                   <div className="text-center mb-8">
                     <div
                       className="inline-flex items-center justify-center w-24 h-24 rounded-full text-white text-3xl font-semibold mb-4"
-                      style={{ backgroundColor: result.color }}
+                      style={{ backgroundColor: hasSuicidalThoughts ? "var(--color-forest)" : result.color }}
                     >
                       {score}
                     </div>
                     <p className="text-lg text-muted-foreground">из {MAX_SCORE} баллов</p>
                     <p className="text-sm text-muted-foreground max-w-md mx-auto mt-3">
-                      Это снимок вашего состояния за последние две недели, а не
-                      диагноз. Состояния меняются, и с этим можно работать.
+                      {hasSuicidalThoughts
+                        ? "Сумма баллов отражает ваши ответы за последние две недели. Мысли о самоубийстве заслуживают отдельного внимания при любой сумме баллов."
+                        : "Это снимок вашего состояния за последние две недели. Обсудить результат и получить индивидуальную оценку можно со специалистом."}
                     </p>
                   </div>
 
-                  {showCrisis && <CrisisSupport />}
+                  {!hasSuicidalThoughts && score > 19 && <CrisisSupport />}
 
-                  <div
-                    className="rounded-xl p-6 mb-8"
-                    style={{ backgroundColor: result.color + "15" }}
-                  >
-                    <h3
-                      className="text-xl mb-3"
-                      style={{ color: result.color }}
-                    >
-                      {result.level}
-                    </h3>
-                    <p className="text-ink/70 leading-relaxed">
-                      {result.description}
-                    </p>
-                  </div>
-
-                  <div className="bg-cream rounded-xl p-6 mb-8">
-                    <h4 className="text-lg text-forest mb-3">
-                      Шкала интерпретации
-                    </h4>
-                    <div className="space-y-2 text-sm">
-                      {RESULT_LEVELS.map((lvl, i) => (
-                        <div
-                          key={lvl.level}
-                          className={`flex justify-between items-center py-2 ${
-                            i !== RESULT_LEVELS.length - 1
-                              ? "border-b border-forest/5"
-                              : ""
-                          }`}
+                  {!hasSuicidalThoughts && (
+                    <>
+                      <div
+                        className="rounded-xl p-6 mb-8"
+                        style={{ backgroundColor: result.color + "15" }}
+                      >
+                        <h3
+                          className="text-xl mb-3"
+                          style={{ color: result.color }}
                         >
-                          <span className="text-ink/70">
-                            {rangeLabel(i)} баллов
-                          </span>
-                          <span
-                            className="font-medium"
-                            style={{ color: lvl.color }}
-                          >
-                            {lvl.level}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                          {result.level}
+                        </h3>
+                        <p className="text-ink/70 leading-relaxed">
+                          {result.description}
+                        </p>
+                      </div>
 
-                  <p className="text-ink/50 text-xs text-center mb-8">
-                    Результаты теста носят информационный характер и не являются
-                    клиническим диагнозом. Для постановки диагноза обратитесь к
-                    квалифицированному специалисту.
-                  </p>
+                      <div className="bg-cream rounded-xl p-6 mb-8">
+                        <h4 className="text-lg text-forest mb-3">
+                          Шкала интерпретации
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          {RESULT_LEVELS.map((lvl, i) => (
+                            <div
+                              key={lvl.level}
+                              className={`flex justify-between items-center py-2 ${
+                                i !== RESULT_LEVELS.length - 1
+                                  ? "border-b border-forest/5"
+                                  : ""
+                              }`}
+                            >
+                              <span className="text-ink/70">
+                                {rangeLabel(i)} баллов
+                              </span>
+                              <span
+                                className="font-medium"
+                                style={{ color: lvl.color }}
+                              >
+                                {lvl.level}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <p className="text-ink/50 text-xs text-center mb-8">
+                        Результаты теста носят информационный характер и не являются
+                        клиническим диагнозом. Для постановки диагноза обратитесь к
+                        квалифицированному специалисту.
+                      </p>
+                    </>
+                  )}
 
                   <div className="flex flex-wrap justify-center gap-4">
                     <Button
@@ -441,15 +453,17 @@ export default function DepressionTest() {
                     >
                       <RotateCcw size={16} className="mr-2" /> Пройти заново
                     </Button>
-                    <Link href="/contact">
-                      <Button className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white transition-transform duration-200 hover:-translate-y-0.5">
+                    {!hasSuicidalThoughts && (
+                      <Link href="/contact" className="inline-flex items-center rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-4 py-2 text-sm font-medium">
                         Записаться на консультацию
-                      </Button>
-                    </Link>
+                      </Link>
+                    )}
                   </div>
-                  <p className="text-center text-muted-foreground text-sm mt-4">
-                    Полноценная работа начинается с первой сессии.
-                  </p>
+                  {!hasSuicidalThoughts && (
+                    <p className="text-center text-muted-foreground text-sm mt-4">
+                      Полноценная работа начинается с первой сессии.
+                    </p>
+                  )}
                 </div>
               </motion.div>
             ) : (
@@ -508,6 +522,7 @@ export default function DepressionTest() {
                         return (
                           <button
                             key={optIdx}
+                            aria-pressed={selected}
                             onClick={() =>
                               handleAnswer(questions[currentQ].id, optIdx)
                             }
@@ -540,6 +555,12 @@ export default function DepressionTest() {
                   </motion.div>
                 </AnimatePresence>
 
+                {showImmediateSupport && (
+                  <div ref={supportRef} tabIndex={-1} aria-label="Поддержка прямо сейчас" role="region" className="mt-6 scroll-mt-24">
+                    <CrisisSupport urgent />
+                    <Link href="/" className="underline text-forest">Выйти из теста</Link>
+                  </div>
+                )}
                 {/* Navigation */}
                 <div className="flex justify-between mt-8">
                   <Button

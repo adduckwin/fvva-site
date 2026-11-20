@@ -1,13 +1,16 @@
-/**
- * Данные практики — единый источник правды.
- * Меняются здесь, подхватываются в FAQ и на странице «Контакты».
- * Александре: проверить значения перед публикацией.
- */
+export const CONTACT_LINKS = {
+  telegram: "https://t.me/ALEKSA_FVVA",
+  max: "https://max.ru/u/f9LHodD0cOKoOcVdY7nuS0tflUZbFozx6cdcx1vdjY4DPD1D1_7ad0ciLo0",
+  vk: "https://vk.com/fedorovaapsy",
+};
+
 export const PRACTICE = {
   format: "онлайн, по видеосвязи",
-  sessionLength: "60–90 минут",
+  sessionLength: "1,5 часа",
   frequency: "раз в неделю",
-  price: "по запросу в личных сообщениях",
+  price: "По запросу в личных сообщениях",
+  firstSession: "Оплачивается как обычная сессия",
+  reply: "Я отвечу в течение 24 часов.",
 };
 
 export interface PracticeFact {
@@ -18,10 +21,10 @@ export interface PracticeFact {
 
 /** Витрина «Форматы и условия» — короткие формулировки для карточек. */
 export const PRACTICE_FACTS: PracticeFact[] = [
-  { key: "format", label: "Формат", value: "Онлайн, по видеосвязи" },
-  { key: "duration", label: "Длительность", value: "60–90 минут" },
-  { key: "frequency", label: "Частота", value: "В начале — раз в неделю, дальше реже" },
-  { key: "price", label: "Стоимость", value: "По запросу в сообщении перед записью" },
-  { key: "first", label: "Первая встреча", value: "Оплачивается как обычная сессия" },
+  { key: "format", label: "Формат", value: PRACTICE.format },
+  { key: "duration", label: "Длительность", value: PRACTICE.sessionLength },
+  { key: "frequency", label: "Частота", value: `В начале — ${PRACTICE.frequency}, дальше реже` },
+  { key: "price", label: "Стоимость", value: PRACTICE.price },
+  { key: "first", label: "Первая встреча", value: PRACTICE.firstSession },
   { key: "privacy", label: "Конфиденциальность", value: "Остаётся между нами" },
 ];
