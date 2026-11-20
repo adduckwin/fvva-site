@@ -15,11 +15,11 @@ export default function NotFound() {
         <p className="text-ink/65 mb-8 max-w-md mx-auto">
           К сожалению, запрашиваемая страница не существует или была перемещена.
         </p>
-        <Link href="/">
-          <Button className="rounded-full bg-forest hover:bg-forest-deep text-cream">
+        <Button asChild className="rounded-full bg-forest hover:bg-forest-deep text-cream">
+          <Link href="/">
             <ArrowLeft size={16} className="mr-2" /> На главную
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </div>
   );

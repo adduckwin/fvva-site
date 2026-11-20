@@ -417,6 +417,25 @@
   }
 }
 
+@media (max-width: 639px) {
+  body {
+    overflow-wrap: anywhere;
+  }
+
+  [data-slot="button"] {
+    max-inline-size: 100%;
+    block-size: auto;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+:is(a[href], button, input):focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--forest-deep);
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;

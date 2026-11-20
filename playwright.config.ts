@@ -8,7 +8,7 @@ export default defineConfig({
     viewport: { width: 390, height: 844 },
   },
   webServer: {
-    command: "vite preview --host 127.0.0.1 --port 4189 --strictPort",
+    command: "HOST=127.0.0.1 PORT=4189 tsx server/index.ts",
     url: "http://127.0.0.1:4189",
   },
 });

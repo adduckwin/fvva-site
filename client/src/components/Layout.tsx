@@ -4,10 +4,10 @@
  * Glass material + tokens live in index.css (.glass-dark, palette mesh).
  */
 import { Link, useLocation } from "wouter";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CONTACT_LINKS } from "@/lib/practice";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import MaxButton from "./MaxButton";
 
 const navLinks = [
@@ -24,6 +24,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const mainRef = useRef<HTMLElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        menuButton.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [mobileOpen]);
 
   // Wouter keeps the document mounted across routes. Track positions by
   // history entry so repeated visits to the same URL restore independently.
@@ -101,14 +114,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <a
+        href="#main-content"
+        onClick={(event) => {
+          if (!mainRef.current) return;
+          event.preventDefault();
+          mainRef.current.focus({ preventScroll: true });
+          mainRef.current.scrollIntoView({ block: "start", behavior: "instant" });
+        }}
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-2 focus:z-[60] focus:rounded-lg focus:bg-forest focus:px-4 focus:py-3 focus:text-cream"
+      >
+        Перейти к содержанию
+      </a>
       {/* Floating glass header */}
-      <header className="sticky top-0 z-50 pt-2 lg:pt-3">
+      <header
+        className="sticky top-0 z-50 pt-2 lg:pt-3"
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setMobileOpen(false);
+        }}
+      >
         <div className="container">
           <div className="glass-dark rounded-2xl px-4 lg:px-6">
-            <div className="flex items-center justify-between h-14 lg:h-16">
+            <div className="flex items-center justify-between min-h-14 lg:min-h-16">
               <Link href="/" className="flex items-center gap-3 no-underline">
                 <span className="font-serif text-lg lg:text-xl font-medium tracking-wide text-cream">
-                  Александра&nbsp;
+                  Александра{" "}
                   <span className="text-terracotta-light">Федорова</span>
                 </span>
               </Link>
@@ -119,6 +149,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={link.href}
                     href={link.href}
+                    aria-current={location === link.href ? "page" : undefined}
                     className={`group relative text-xs font-medium tracking-[0.13em] uppercase transition-colors duration-300 no-underline pb-1 ${
                       location === link.href
                         ? "text-terracotta-light"
@@ -139,10 +170,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
               {/* Mobile menu button */}
               <button
-                className="lg:hidden p-2 text-cream"
+                ref={menuButton}
+                type="button"
+                className="lg:hidden min-h-11 min-w-11 inline-flex items-center justify-center text-cream"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Меню"
                 aria-expanded={mobileOpen}
+                aria-controls="mobile-navigation"
               >
                 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -150,39 +184,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Mobile nav */}
-          <AnimatePresence>
-            {mobileOpen && (
-              <motion.nav
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="lg:hidden overflow-hidden mt-2"
-              >
-                <div className="glass-dark rounded-2xl p-4 flex flex-col gap-3">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`text-sm font-medium tracking-wide uppercase py-2 no-underline ${
-                        location === link.href
-                          ? "text-terracotta-light"
-                          : "text-cream/80"
-                      }`}
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </motion.nav>
-            )}
-          </AnimatePresence>
+          <motion.nav
+            id="mobile-navigation"
+            aria-label="Основная навигация"
+            aria-hidden={!mobileOpen}
+            inert={!mobileOpen}
+            initial={false}
+            animate={mobileOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden overflow-hidden"
+          >
+            <div className="glass-dark mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl p-4 flex flex-col gap-3">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={location === link.href ? "page" : undefined}
+                  className={`text-sm font-medium tracking-wide uppercase py-2 no-underline ${
+                    location === link.href
+                      ? "text-terracotta-light"
+                      : "text-cream/80"
+                  }`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </motion.nav>
         </div>
       </header>
 
       {/* Main content */}
-      <main ref={mainRef} tabIndex={-1} className="flex-1 [&_[id]]:scroll-mt-24">{children}</main>
+      <main id="main-content" ref={mainRef} tabIndex={-1} className="flex-1 scroll-mt-24 [&_[id]]:scroll-mt-24">{children}</main>
 
       {/* Glass footer */}
       <footer className="pt-12 pb-8">

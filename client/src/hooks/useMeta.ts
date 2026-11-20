@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
+import { useLocation } from "wouter";
+import { SITE_ORIGIN } from "@shared/const";
 
 interface MetaOptions {
   title: string;
@@ -11,60 +13,74 @@ interface MetaOptions {
   robots?: string;
 }
 
-const BASE_TITLE = "Психолог Александра Федорова";
+const SITE_NAME = "Психолог Александра Федорова";
 
-/**
- * Sets document <title>, meta description, keywords, and Open Graph tags.
- * Cleans up on unmount by restoring the base title and removing injected tags.
- */
-export function useMeta(opts: MetaOptions) {
+function pageHead(options: MetaOptions, pathname: string) {
+  const canonical = options.robots?.includes("noindex")
+    ? undefined
+    : SITE_ORIGIN + (pathname.replace(/\/+$/, "") || "/");
+  const title = options.title.includes("Александра Федорова")
+    ? options.title
+    : `${options.title} | ${SITE_NAME}`;
+  const image = new URL(options.ogImage || "/images/alexandra.jpg", SITE_ORIGIN).href;
+  const property = {
+    "og:site_name": SITE_NAME,
+    "og:locale": "ru_RU",
+    "og:type": options.ogType || "website",
+    "og:title": options.ogTitle || options.title,
+    "og:description": options.ogDescription || options.description,
+    "og:url": canonical,
+    "og:image": image,
+  };
+  const name = {
+    description: options.description,
+    keywords: options.keywords,
+    robots: options.robots,
+    "twitter:card": "summary_large_image",
+    "twitter:title": property["og:title"],
+    "twitter:description": property["og:description"],
+    "twitter:image": image,
+  };
+  return { title, canonical, property, name };
+}
+
+export type PageHead = ReturnType<typeof pageHead>;
+export const PrerenderMeta = createContext<((head: PageHead) => void) | null>(null);
+
+export function useMeta(options: MetaOptions) {
+  const [pathname] = useLocation();
+  const collect = useContext(PrerenderMeta);
+  if (collect) collect(pageHead(options, pathname));
+  const { title, description, keywords, ogTitle, ogDescription, ogImage, ogType, robots } = options;
+
   useEffect(() => {
-    const prev = document.title;
-    document.title = `${opts.title} | ${BASE_TITLE}`;
-
-    const tags: HTMLMetaElement[] = [];
-
-    function setMeta(name: string, content: string, property = false) {
-      // Remove existing tag if present
-      const attr = property ? "property" : "name";
-      const existing = document.querySelector(`meta[${attr}="${name}"]`);
-      if (existing) existing.remove();
-
-      const el = document.createElement("meta");
-      if (property) {
-        el.setAttribute("property", name);
-      } else {
-        el.setAttribute("name", name);
+    const head = pageHead({ title, description, keywords, ogTitle, ogDescription, ogImage, ogType, robots }, pathname);
+    document.title = head.title;
+    for (const attr of ["name", "property"] as const) {
+      for (const [key, value] of Object.entries(head[attr])) {
+        let element = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
+        if (!value) {
+          element?.remove();
+          continue;
+        }
+        if (!element) {
+          element = document.createElement("meta");
+          element.setAttribute(attr, key);
+          document.head.appendChild(element);
+        }
+        element.content = value;
       }
-      el.content = content;
-      document.head.appendChild(el);
-      tags.push(el);
     }
-
-    if (opts.description) {
-      setMeta("description", opts.description);
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!head.canonical) {
+      canonical?.remove();
+    } else {
+      if (!canonical) {
+        canonical = document.createElement("link");
+        canonical.rel = "canonical";
+        document.head.appendChild(canonical);
+      }
+      canonical.href = head.canonical;
     }
-    if (opts.keywords) {
-      setMeta("keywords", opts.keywords);
-    }
-    if (opts.robots) {
-      setMeta("robots", opts.robots);
-    }
-
-    // Open Graph
-    setMeta("og:title", opts.ogTitle || opts.title, true);
-    setMeta("og:type", opts.ogType || "article", true);
-    if (opts.ogDescription || opts.description) {
-      setMeta("og:description", (opts.ogDescription || opts.description)!, true);
-    }
-    if (opts.ogImage) {
-      setMeta("og:image", opts.ogImage, true);
-    }
-    setMeta("og:site_name", BASE_TITLE, true);
-
-    return () => {
-      document.title = prev;
-      tags.forEach((t) => t.remove());
-    };
-  }, [opts.title, opts.description, opts.keywords, opts.ogTitle, opts.ogDescription, opts.ogImage, opts.ogType, opts.robots]);
+  }, [pathname, title, description, keywords, ogTitle, ogDescription, ogImage, ogType, robots]);
 }

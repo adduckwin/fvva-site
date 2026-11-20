@@ -1,7 +1,8 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
+import { staticDocumentsPlugin } from "./scripts/static-documents";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -17,10 +18,12 @@ async function getDevPlugins() {
   }
 }
 
-export default defineConfig(async () => ({
+export default defineConfig(async ({ isPreview }): Promise<UserConfig> => ({
+  appType: isPreview ? "mpa" : "spa",
   plugins: [
     react(),
     tailwindcss(),
+    staticDocumentsPlugin(import.meta.dirname),
     ...(await getDevPlugins()),
   ],
   resolve: {

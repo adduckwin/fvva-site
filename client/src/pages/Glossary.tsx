@@ -1,9 +1,20 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Search, ArrowRight } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
 import { GLOSSARY } from "@/lib/glossary";
+
+const GLOSSARY_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "Словарь терминов психологии",
+  hasDefinedTerm: GLOSSARY.map(term => ({
+    "@type": "DefinedTerm",
+    name: term.term,
+    description: term.definition,
+  })),
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -40,28 +51,9 @@ export default function Glossary() {
     );
   }, [q, sorted]);
 
-  // JSON-LD DefinedTermSet
-  useEffect(() => {
-    const el = document.createElement("script");
-    el.type = "application/ld+json";
-    el.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "DefinedTermSet",
-      name: "Словарь терминов психологии",
-      hasDefinedTerm: GLOSSARY.map((t) => ({
-        "@type": "DefinedTerm",
-        name: t.term,
-        description: t.definition,
-      })),
-    });
-    document.head.appendChild(el);
-    return () => {
-      document.head.removeChild(el);
-    };
-  }, []);
-
   return (
     <div className="container py-14 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(GLOSSARY_SCHEMA).replace(/</g, "\\u003c") }} />
       <motion.div
         initial="hidden"
         animate="visible"
@@ -96,7 +88,7 @@ export default function Glossary() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="Найти термин…"
             aria-label="Поиск по словарю"
-            className="bg-transparent outline-none flex-1 text-ink placeholder:text-muted-foreground text-sm"
+            className="bg-transparent outline-none flex-1 min-w-0 text-ink placeholder:text-muted-foreground text-sm"
           />
         </div>
       </div>

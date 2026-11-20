@@ -1,8 +1,6 @@
-import { trpc } from "@/lib/trpc";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
-import { createRoot } from "react-dom/client";
-import superjson from "superjson";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import { AnimatePresence } from "framer-motion";
+import { Router } from "wouter";
 import App from "./App";
 // Self-hosted fonts (no Google Fonts dependency for Russia)
 import "@fontsource/playfair-display/400.css";
@@ -17,56 +15,20 @@ import "@fontsource/source-sans-3/600.css";
 import "@fontsource/source-sans-3/700.css";
 import "./index.css";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      retryDelay: 1000,
-      // Don't refetch on window focus to reduce blocked requests
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      retry: 1,
-    },
-  },
-});
-
-queryClient.getQueryCache().subscribe((event) => {
-  if (event.type === "updated" && event.action.type === "error") {
-    console.error("[API Query Error]", event.query.state.error);
-  }
-});
-
-queryClient.getMutationCache().subscribe((event) => {
-  if (event.type === "updated" && event.action.type === "error") {
-    console.error("[API Mutation Error]", event.mutation.state.error);
-  }
-});
-
-const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: "/api/trpc",
-      transformer: superjson,
-      fetch(input, init) {
-        return globalThis.fetch(input, {
-          ...(init ?? {}),
-          credentials: "include",
-        });
-      },
-    }),
-  ],
-});
-
 // Ensure React mounts even if other scripts fail
 try {
-  createRoot(document.getElementById("root")!).render(
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </trpc.Provider>
-  );
+  const root = document.getElementById("root")!;
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  if (root.dataset.page === pathname) {
+    hydrateRoot(root,
+      <Router ssrPath={pathname}>
+        <AnimatePresence initial={false}><App /></AnimatePresence>
+      </Router>
+    );
+  } else {
+    // Development and unknown URLs served by the static 404 handler.
+    createRoot(root).render(<App />);
+  }
 } catch (e) {
   console.error("[App Mount Error]", e);
   const root = document.getElementById("root");

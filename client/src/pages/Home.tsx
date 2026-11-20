@@ -86,7 +86,11 @@ export default function Home() {
       {/* Hero — glass card over an atmospheric image */}
       <section className="relative -mt-[78px] min-h-[88vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO_BG} alt="" className="w-full h-full object-cover" />
+          <picture>
+            <source media="(max-width: 600px) and (orientation: portrait)" srcSet="/images/hero-portrait.webp" type="image/webp" />
+            <source srcSet="/images/hero-bg.webp" type="image/webp" />
+            <img src={HERO_BG} alt="" width={1600} height={893} fetchPriority="high" className="w-full h-full object-cover" />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-forest/70 via-forest/45 to-transparent" />
         </div>
         <div className="container relative z-10 py-24">
@@ -125,19 +129,20 @@ export default function Home() {
               variants={fadeUp}
               className="flex flex-wrap gap-4"
             >
-              <Link href="/contact">
-                <Button className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-6 text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
+              <Button asChild className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
+                <Link href="/contact">
                   Записаться на консультацию
-                </Button>
-              </Link>
-              <Link href="/test/depression">
-                <Button
-                  variant="outline"
-                  className="rounded-full bg-cream/15 backdrop-blur border-cream/30 text-cream hover:bg-cream/25 hover:text-cream px-8 py-6 text-base transition-transform duration-200 hover:-translate-y-0.5"
-                >
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full bg-cream/15 backdrop-blur border-cream/30 text-cream hover:bg-cream/25 hover:text-cream h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <Link href="/test/depression">
                   Пройти тест
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </motion.div>
             <motion.p
               custom={4}
@@ -195,6 +200,10 @@ export default function Home() {
               <div className="relative h-full min-h-[340px] rounded-[1.35rem] overflow-hidden">
                 <img
                   src={ALEXANDRA_IMG}
+                  width={820}
+                  height={1080}
+                  loading="lazy"
+                  decoding="async"
                   alt="Психолог Александра Федорова"
                   className="w-full h-full object-cover object-[50%_26%]"
                 />
@@ -424,14 +433,18 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="rounded-2xl overflow-hidden ring-1 ring-white/40 shadow-xl min-h-[320px]"
             >
               <img
                 src={CBT_IMG}
+                width={1200}
+                height={896}
+                loading="lazy"
+                decoding="async"
                 alt="Когнитивно-поведенческий подход"
                 className="w-full h-full object-cover"
               />
@@ -451,6 +464,10 @@ export default function Home() {
           >
             <img
               src={RGGU_IMG}
+              width={800}
+              height={400}
+              loading="lazy"
+              decoding="async"
               alt=""
               className="absolute inset-0 w-full h-full object-cover opacity-10"
             />
@@ -503,6 +520,10 @@ export default function Home() {
         <div className="absolute inset-0">
           <img
             src={TEST_BG}
+            width={1600}
+            height={893}
+            loading="lazy"
+            decoding="async"
             alt=""
             className="w-full h-full object-cover opacity-20"
           />
@@ -561,6 +582,10 @@ export default function Home() {
                   <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <img
                       src={t.img}
+                      width={800}
+                      height={536}
+                      loading="lazy"
+                      decoding="async"
                       alt={t.title}
                       className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
                     />
@@ -604,14 +629,15 @@ export default function Home() {
               </motion.h2>
             </div>
             <motion.div custom={2} variants={fadeUp} className="hidden md:block">
-              <Link href="/blog">
-                <Button
-                  variant="outline"
-                  className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
-                >
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
+              >
+                <Link href="/blog">
                   Все статьи <ArrowRight size={16} className="ml-2" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
 
@@ -666,14 +692,15 @@ export default function Home() {
           </motion.div>
 
           <div className="mt-8 text-center md:hidden">
-            <Link href="/blog">
-              <Button
-                variant="outline"
-                className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
-              >
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
+            >
+              <Link href="/blog">
                 Все статьи <ArrowRight size={16} className="ml-2" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -697,17 +724,17 @@ export default function Home() {
             <motion.p
               custom={1}
               variants={fadeUp}
-              className="text-white/85 text-lg mb-8 max-w-xl mx-auto font-light"
+              className="text-white text-lg mb-8 max-w-xl mx-auto font-light"
             >
               Запишитесь на первую консультацию. Вместе мы найдём путь к вашему
               благополучию.
             </motion.p>
             <motion.div custom={2} variants={fadeUp}>
-              <Link href="/contact">
-                <Button className="rounded-full bg-forest hover:bg-forest-deep text-white px-10 py-6 text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
+              <Button asChild className="rounded-full bg-forest hover:bg-forest-deep text-white px-10 py-6 text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
+                <Link href="/contact">
                   Связаться со мной
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
         </div>

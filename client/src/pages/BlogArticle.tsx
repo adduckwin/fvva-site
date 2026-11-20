@@ -6,36 +6,30 @@ import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { articles } from "@/lib/articles";
-import { Streamdown } from "streamdown";
+import { articles, type Article } from "@/lib/articles";
+import NotFound from "./NotFound";
+import { lazy, Suspense } from "react";
+import Markdown from "react-markdown";
 import { useMeta } from "@/hooks/useMeta";
+
+// Render the entire article in the static HTML, while loading the parser on demand in the browser.
+const ArticleMarkdown = import.meta.env.SSR ? Markdown : lazy(() => import("react-markdown"));
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
   const article = articles.find((a) => a.slug === slug);
 
+  return article ? <ArticleView article={article} /> : <NotFound />;
+}
+
+function ArticleView({ article }: { article: Article }) {
   useMeta({
-    title: article?.meta.title || article?.title || "Статья не найдена",
-    description: article?.meta.description || article?.excerpt,
-    keywords: article?.meta.keywords || undefined,
-    ogImage: article?.image || undefined,
+    title: article.meta.title || article.title,
+    description: article.meta.description || article.excerpt,
+    keywords: article.meta.keywords,
+    ogImage: article.image,
     ogType: "article",
   });
-
-  if (!article) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="glass-dark rounded-3xl p-10 text-center">
-          <h1 className="text-3xl text-forest mb-4">Статья не найдена</h1>
-          <Link href="/blog">
-            <Button className="rounded-full bg-forest hover:bg-forest-deep text-cream">
-              <ArrowLeft size={16} className="mr-2" /> Вернуться к блогу
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -92,16 +86,15 @@ export default function BlogArticle() {
             className="glass-dark rounded-3xl p-8 md:p-10"
           >
             <div
-              className="prose prose-lg max-w-none
-                prose-headings:font-serif prose-headings:text-forest
-                prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                prose-p:text-ink/80 prose-p:leading-relaxed
-                prose-li:text-ink/80
-                prose-strong:text-forest
-                prose-a:text-terracotta prose-a:no-underline hover:prose-a:underline"
+              className="prose prose-lg max-w-none space-y-4
+                [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:font-semibold [&_h2]:text-2xl
+                [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-semibold [&_h3]:text-xl
+                [&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal
+                [&_li]:py-1 [&_strong]:font-semibold [&_a]:underline [&_a]:underline-offset-2"
             >
-              <Streamdown>{article.content}</Streamdown>
+              <Suspense fallback={<p role="status">Загрузка статьи…</p>}>
+                <ArticleMarkdown>{article.content}</ArticleMarkdown>
+              </Suspense>
             </div>
           </motion.div>
 
@@ -120,11 +113,11 @@ export default function BlogArticle() {
               обращение к специалисту. Первый шаг — самый важный.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/contact">
-                <Button className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-5 transition-transform duration-200 hover:-translate-y-0.5">
+              <Button asChild className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-5 transition-transform duration-200 hover:-translate-y-0.5">
+                <Link href="/contact">
                   Записаться на консультацию
-                </Button>
-              </Link>
+                </Link>
+              </Button>
               {article.relatedTest && (
                 <Button
                   asChild

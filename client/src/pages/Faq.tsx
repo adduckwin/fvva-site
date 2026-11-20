@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ChevronDown, ArrowRight } from "lucide-react";
@@ -217,6 +216,18 @@ const SECTIONS: Section[] = [
   },
 ];
 
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: SECTIONS.flatMap(section =>
+    section.items.map(item => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.plain },
+    })),
+  ),
+};
+
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
   visible: (i: number = 0) => ({
@@ -226,41 +237,15 @@ const fadeUp = {
   }),
 };
 
-function Row({ item, id }: { item: Item; id: string }) {
-  const [open, setOpen] = useState(false);
+function Row({ item }: { item: Item }) {
   return (
-    <div className="glass-dark rounded-2xl overflow-hidden">
-      <h3 className="m-0">
-        <button
-          id={`${id}-btn`}
-          aria-expanded={open}
-          aria-controls={`${id}-panel`}
-          onClick={() => setOpen((o) => !o)}
-          className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 cursor-pointer"
-        >
-          <span className="font-serif text-lg text-forest">{item.q}</span>
-          <ChevronDown
-            size={20}
-            className={`shrink-0 text-terracotta transition-transform duration-300 ${
-              open ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-      </h3>
-      <div
-        id={`${id}-panel`}
-        role="region"
-        aria-labelledby={`${id}-btn`}
-        className="grid transition-[grid-template-rows] duration-300 ease-out"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <div className="px-6 pb-6 pt-0 text-ink/75 leading-relaxed">
-            {item.a}
-          </div>
-        </div>
-      </div>
-    </div>
+    <details className="group glass-dark rounded-2xl overflow-hidden">
+      <summary className="flex items-center justify-between gap-4 text-left px-6 py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <span className="font-serif text-lg text-forest">{item.q}</span>
+        <ChevronDown aria-hidden="true" size={20} className="shrink-0 text-terracotta transition-transform group-open:rotate-180" />
+      </summary>
+      <div className="px-6 pb-6 text-ink/75 leading-relaxed">{item.a}</div>
+    </details>
   );
 }
 
@@ -273,30 +258,9 @@ export default function Faq() {
       "вопросы психологу, как проходит консультирование, чем психолог отличается от психиатра, что такое КПТ, что такое ACT, конфиденциальность психолог",
   });
 
-  // JSON-LD FAQPage для поисковой выдачи
-  useEffect(() => {
-    const data = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: SECTIONS.flatMap((s) =>
-        s.items.map((it) => ({
-          "@type": "Question",
-          name: it.q,
-          acceptedAnswer: { "@type": "Answer", text: it.plain },
-        }))
-      ),
-    };
-    const el = document.createElement("script");
-    el.type = "application/ld+json";
-    el.text = JSON.stringify(data);
-    document.head.appendChild(el);
-    return () => {
-      document.head.removeChild(el);
-    };
-  }, []);
-
   return (
     <div className="container py-14 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c") }} />
       <motion.div
         initial="hidden"
         animate="visible"
@@ -323,7 +287,7 @@ export default function Faq() {
       </motion.div>
 
       <div className="max-w-2xl mx-auto space-y-12">
-        {SECTIONS.map((section, si) => (
+        {SECTIONS.map((section) => (
           <section key={section.title}>
             <motion.h2
               initial="hidden"
@@ -335,8 +299,8 @@ export default function Faq() {
               {section.title}
             </motion.h2>
             <div className="space-y-3">
-              {section.items.map((item, ii) => (
-                <Row key={item.q} item={item} id={`faq-${si}-${ii}`} />
+              {section.items.map((item) => (
+                <Row key={item.q} item={item} />
               ))}
             </div>
           </section>
@@ -354,11 +318,9 @@ export default function Faq() {
           Остались вопросы или хочется обсудить именно вашу ситуацию? Полноценная
           работа начинается с первой сессии.
         </p>
-        <Link href="/contact">
-          <button className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
-            Написать Александре
-            <ArrowRight size={18} />
-          </button>
+        <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
+          Написать Александре
+          <ArrowRight size={18} />
         </Link>
       </motion.div>
     </div>

@@ -301,6 +301,7 @@ export default function DepressionTest() {
   const hasSuicidalThoughts = (answers[9] ?? 0) > 0;
   const showImmediateSupport = !showResult && questions[currentQ].id === 9 && hasSuicidalThoughts;
   const supportRef = useRef<HTMLDivElement>(null);
+  const questionToFocus = useRef<number | null>(null);
 
   useEffect(() => {
     if (showImmediateSupport) {
@@ -309,10 +310,16 @@ export default function DepressionTest() {
     }
   }, [showImmediateSupport]);
 
+  function goToQuestion(index: number) {
+    if (index === currentQ) return;
+    questionToFocus.current = index;
+    setCurrentQ(index);
+  }
+
   const handleAnswer = (questionId: number, value: number) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }));
     if (currentQ < totalQuestions - 1 && !(questionId === 9 && value > 0)) {
-      setCurrentQ(currentQ + 1);
+      goToQuestion(currentQ + 1);
     }
   };
 
@@ -480,7 +487,12 @@ export default function DepressionTest() {
                     </span>
                     <span>{answeredCount} отвечено</span>
                   </div>
-                  <Progress value={progress} className="h-2 bg-forest/10" />
+                  <Progress
+                    aria-label="Прогресс теста"
+                    aria-valuetext={`Ответов: ${answeredCount} из ${totalQuestions}`}
+                    value={progress}
+                    className="h-2 bg-forest/10"
+                  />
                 </div>
 
                 {/* Question navigation dots */}
@@ -488,7 +500,9 @@ export default function DepressionTest() {
                   {questions.map((q, i) => (
                     <button
                       key={q.id}
-                      onClick={() => setCurrentQ(i)}
+                      onClick={() => goToQuestion(i)}
+                      aria-label={`Вопрос ${i + 1}${answers[q.id] !== undefined ? ", ответ дан" : ""}`}
+                      aria-current={i === currentQ ? "step" : undefined}
                       className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${
                         i === currentQ
                           ? "bg-forest text-cream"
@@ -506,13 +520,25 @@ export default function DepressionTest() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentQ}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     className="glass-dark rounded-2xl p-6 md:p-8"
                   >
-                    <h3 className="text-xl text-forest mb-6">
+                    <h3
+                      tabIndex={-1}
+                      ref={(heading) => {
+                        if (heading && questionToFocus.current === currentQ) {
+                          questionToFocus.current = null;
+                          if (!showImmediateSupport) {
+                            heading.focus({ preventScroll: true });
+                            heading.scrollIntoView({ block: "nearest", behavior: "instant" });
+                          }
+                        }
+                      }}
+                      className="scroll-mt-24 text-xl text-forest mb-6"
+                    >
                       {currentQ + 1}. {questions[currentQ].title}
                     </h3>
                     <div className="space-y-3">
@@ -562,10 +588,10 @@ export default function DepressionTest() {
                   </div>
                 )}
                 {/* Navigation */}
-                <div className="flex justify-between mt-8">
+                <div className="flex flex-wrap justify-between gap-2 mt-8">
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentQ(Math.max(0, currentQ - 1))}
+                    onClick={() => goToQuestion(currentQ - 1)}
                     disabled={currentQ === 0}
                     className="rounded-full border-forest/20 text-forest"
                   >
@@ -574,7 +600,7 @@ export default function DepressionTest() {
 
                   {currentQ < totalQuestions - 1 ? (
                     <Button
-                      onClick={() => setCurrentQ(currentQ + 1)}
+                      onClick={() => goToQuestion(currentQ + 1)}
                       className="rounded-full bg-forest hover:bg-forest-deep text-cream"
                     >
                       Далее <ArrowRight size={16} className="ml-2" />

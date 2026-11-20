@@ -262,11 +262,9 @@ export default function PanicAttack() {
               подход: можно научиться их предупреждать и меньше их бояться. Когда
               будете готовы, это можно обсудить — без обязательств.
             </p>
-            <Link href="/contact">
-              <button className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
-                Написать Александре
-                <ArrowRight size={18} />
-              </button>
+            <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
+              Написать Александре
+              <ArrowRight size={18} />
             </Link>
 
           </motion.div>

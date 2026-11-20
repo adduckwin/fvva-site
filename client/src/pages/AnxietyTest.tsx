@@ -251,11 +251,11 @@ export default function AnxietyTest() {
                     >
                       <RotateCcw size={16} className="mr-2" /> Пройти заново
                     </Button>
-                    <Link href="/contact">
-                      <Button className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white transition-transform duration-200 hover:-translate-y-0.5">
+                    <Button asChild className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white transition-transform duration-200 hover:-translate-y-0.5">
+                      <Link href="/contact">
                         Записаться на консультацию
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                   <p className="text-center text-muted-foreground text-sm mt-4">
                     Полноценная работа начинается с первой сессии.
@@ -279,12 +279,17 @@ export default function AnxietyTest() {
                 {/* Progress */}
                 <div className="mb-8">
                   <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                    <span>Прогресс</span>
+                    <span id="anxiety-progress-label">Прогресс</span>
                     <span>
                       {answeredCount} из {totalQuestions}
                     </span>
                   </div>
-                  <Progress value={progress} className="h-2 bg-forest/10" />
+                  <Progress
+                    aria-labelledby="anxiety-progress-label"
+                    aria-valuetext={`Ответов: ${answeredCount} из ${totalQuestions}`}
+                    value={progress}
+                    className="h-2 bg-forest/10"
+                  />
                 </div>
 
                 {/* All symptoms in a table-like layout */}
@@ -302,61 +307,32 @@ export default function AnxietyTest() {
                   {symptoms.map((symptom, idx) => (
                     <div
                       key={symptom.id}
+                      role="radiogroup"
+                      aria-labelledby={`symptom-${symptom.id}`}
                       className={`p-4 md:grid md:grid-cols-[1fr_repeat(4,120px)] md:items-center ${
                         idx % 2 === 0 ? "bg-white" : "bg-cream/50"
                       } ${idx !== symptoms.length - 1 ? "border-b border-forest/5" : ""}`}
                     >
-                      <span className="text-ink/80 text-sm font-medium mb-3 md:mb-0 block">
+                      <span id={`symptom-${symptom.id}`} className="text-ink/80 text-sm font-medium mb-3 md:mb-0 block">
                         {symptom.id}. {symptom.text}
                       </span>
 
-                      {/* Mobile: show labels */}
-                      <div className="md:hidden space-y-2 mt-2">
-                        {ratingLabels.map((label, value) => (
-                          <button
-                            key={value}
-                            onClick={() => handleAnswer(symptom.id, value)}
-                            className={`w-full text-left p-3 rounded-lg border text-sm transition-all ${
-                              answers[symptom.id] === value
-                                ? "border-forest bg-forest/5 text-forest"
-                                : "border-forest/10 text-muted-foreground"
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Desktop: full-cell clickable rating targets */}
-                      {ratingLabels.map((label, value) => {
-                        const selected = answers[symptom.id] === value;
-                        return (
-                          <button
-                            key={value}
-                            type="button"
-                            aria-label={label}
-                            aria-pressed={selected}
-                            onClick={() => handleAnswer(symptom.id, value)}
-                            className={`hidden md:flex items-center justify-center self-stretch min-h-[52px] rounded-xl border-2 transition-all ${
-                              selected
-                                ? "border-forest bg-forest/10"
-                                : "border-transparent hover:border-terracotta/40 hover:bg-cream"
-                            }`}
-                          >
-                            <span
-                              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                                selected
-                                  ? "border-forest bg-forest"
-                                  : "border-forest/30"
-                              }`}
-                            >
-                              {selected && (
-                                <span className="w-2.5 h-2.5 rounded-full bg-white" />
-                              )}
-                            </span>
-                          </button>
-                        );
-                      })}
+                      {ratingLabels.map((label, value) => (
+                        <label
+                          key={value}
+                          className="relative mt-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-forest/25 p-3 text-sm text-ink hover:bg-cream has-checked:border-forest has-checked:bg-forest/10 has-focus-visible:outline-2 has-focus-visible:outline-forest md:mt-0 md:min-h-[52px] md:justify-center md:self-stretch md:rounded-xl md:border-transparent"
+                        >
+                          <input
+                            type="radio"
+                            name={`anxiety-${symptom.id}`}
+                            value={value}
+                            checked={answers[symptom.id] === value}
+                            onChange={() => handleAnswer(symptom.id, value)}
+                            className="size-5 shrink-0 accent-forest"
+                          />
+                          <span className="md:sr-only">{label}</span>
+                        </label>
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -371,9 +347,8 @@ export default function AnxietyTest() {
                     Показать результат
                   </Button>
                   {answeredCount < totalQuestions && (
-                    <p className="text-ink/50 text-sm mt-3">
-                      Ответьте на все {totalQuestions} вопросов, чтобы увидеть
-                      результат
+                    <p className="text-muted-foreground text-sm mt-3">
+                      Чтобы увидеть результат, выберите ответ для каждого симптома.
                     </p>
                   )}
                 </div>
