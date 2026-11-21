@@ -1,21 +1,10 @@
-/**
- * Blog page — Liquid Glass over the warm editorial palette.
- * Lists all blog articles from static data (articles.ts).
- */
 import { Link } from "wouter";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 import { articles } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
+import "./reading.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: [0, 0, 0.2, 1] as const },
-  }),
-};
+const diary = articles.find((article) => article.slug === "dnevnik-mysley-kpt");
 
 export default function Blog() {
   useMeta({
@@ -28,80 +17,50 @@ export default function Blog() {
   });
 
   return (
-    <div>
-      {/* Header */}
-      <section className="pt-4 lg:pt-6 pb-8">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="glass-dark rounded-3xl p-8 md:p-12"
-          >
-            <span className="eyebrow text-terracotta-light">Блог</span>
-            <h1 className="text-4xl md:text-5xl text-cream mt-4">
-              Полезные статьи
-            </h1>
-            <p className="text-cream/75 mt-4 max-w-2xl text-lg">
-              Статьи о тревоге, сниженном настроении и повседневных ситуациях, связанных с
-              ментальным здоровьем. Практические советы и научно обоснованная
-              информация.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Articles Grid */}
-      <section className="py-12">
-        <div className="container">
-          {articles.length === 0 ? (
-            <p className="text-center text-muted-foreground py-20 text-lg">
-              Статьи скоро появятся.
-            </p>
-          ) : (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {articles.map((article, i) => (
-                <motion.div key={article.slug} custom={i} variants={fadeUp}>
-                  <Link
-                    href={`/blog/${article.slug}`}
-                    className="no-underline block group h-full"
-                  >
-                    <div className="glass-dark rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-1 h-full flex flex-col">
-                      {article.image && (
-                        <div className="h-48 overflow-hidden">
-                          <img
-                            src={article.image}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6 flex flex-col flex-1">
-                        <span className="text-terracotta text-xs font-medium tracking-wider uppercase mb-2">
-                          {article.category}
-                        </span>
-                        <h2 className="text-lg text-forest mb-3 group-hover:text-terracotta transition-colors">
-                          {article.title}
-                        </h2>
-                        <p className="text-ink/65 text-sm leading-relaxed flex-1">
-                          {article.excerpt}
-                        </p>
-                        <span className="inline-flex items-center gap-2 text-forest text-sm font-medium mt-4 group-hover:text-terracotta transition-colors">
-                          Читать далее <ArrowRight size={14} />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </div>
-      </section>
+    <div className="reading-room">
+      <div className="reading-library">
+        <header className="library-intro">
+          <h1>Полезные статьи</h1>
+          <p>
+            Статьи о тревоге, сниженном настроении и повседневных ситуациях, связанных с
+            ментальным здоровьем. Практические советы и научно обоснованная информация.
+          </p>
+        </header>
+        {diary && (
+          <article className="library-diary">
+            <div className="library-diary-copy">
+              <p className="reading-topic">{diary.category}</p>
+              <h2><Link href={`/blog/${diary.slug}`}>{diary.title}</Link></h2>
+              <p>{diary.excerpt}</p>
+              <Link href={`/blog/${diary.slug}`} className="reading-link">
+                Открыть пример <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
+            <a href="/dnevnik-mysley-kpt.pdf" className="diary-preview">
+              <img src="/images/dnevnik-blank.webp" alt="" width="690" height="439" className="diary-preview-sheet" />
+              <span><FileText size={17} aria-hidden="true" /> Бланк для печати · PDF</span>
+            </a>
+          </article>
+        )}
+        {articles.length === 0 ? (
+          <p className="library-empty">Статьи скоро появятся.</p>
+        ) : (
+          <div className="library-shelves">
+            {articles.filter((article) => article !== diary).map((article) => (
+              <article className="library-entry" key={article.slug}>
+                <Link href={`/blog/${article.slug}`}>
+                  <div className="library-entry-text">
+                    <p className="reading-topic">{article.category}</p>
+                    <h2>{article.title}</h2>
+                    <p className="library-excerpt">{article.excerpt}</p>
+                  </div>
+                  {article.image && <img src={article.image} alt="" loading="lazy" decoding="async" />}
+                </Link>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -4,11 +4,14 @@ export const CONTACT_LINKS = {
   vk: "https://vk.com/fedorovaapsy",
 };
 
+const priceSummary = "По запросу";
+
 export const PRACTICE = {
   format: "онлайн по видеосвязи",
   sessionLength: "1,5 часа",
   frequency: "раз в неделю",
-  price: "По запросу в личных сообщениях",
+  priceSummary,
+  price: `${priceSummary} в личных сообщениях`,
   firstSession: "Оплачивается как обычная сессия",
 };
 

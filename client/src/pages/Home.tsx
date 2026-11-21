@@ -1,29 +1,9 @@
-/**
- * Home page — Liquid Glass over the warm editorial palette.
- * Floating glass panels (.glass / .glass-dark) over the index.css palette mesh.
- * Sections, copy and scoring logic unchanged from the editorial pass.
- */
 import { Link } from "wouter";
-import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Brain,
-  Heart,
-  BookOpen,
-  GraduationCap,
-  Sprout,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowDown, ArrowRight, Clock3 } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
-import { BOOKING_TERMS } from "@/lib/practice";
-
-const HERO_BG = "/images/hero-bg.jpg";
-const CBT_IMG = "/images/cbt-illustration.jpg";
-const TEST_BG = "/images/test-section-bg.jpg";
-const DEPRESSION_IMG = "/images/blog-depression.jpg";
-const ANXIETY_IMG = "/images/blog-anxiety.jpg";
-const RGGU_IMG = "/images/rggu-building.jpg";
-const ALEXANDRA_IMG = "/images/alexandra.jpg";
+import { BOOKING_TERMS, PRACTICE } from "@/lib/practice";
+import { articles } from "@/lib/articles";
+import "./home.css";
 
 const EDUCATION = [
   {
@@ -58,693 +38,252 @@ const EDUCATION = [
   },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.6,
-      ease: [0, 0, 0.2, 1] as const,
-    },
-  }),
-};
+const steps = [
+  {
+    title: "Разговор",
+    text: "Вы рассказываете, что вас беспокоит, в удобном для вас темпе. Я слушаю и задаю уточняющие вопросы.",
+  },
+  {
+    title: "Разбор ситуации",
+    text: "Вместе разбираем, какие мысли возникли, что вы почувствовали и как поступили в тот момент.",
+  },
+  {
+    title: "План",
+    text: "Намечаем формат и первые шаги. Вы решаете, хотите ли продолжать.",
+  },
+];
+
+const methods = [
+  {
+    title: "Когнитивно-поведенческий подход (КПТ)",
+    text: "КПТ помогает выявить и изменить негативные паттерны мышления, которые поддерживают апатию и тревогу. Мы работаем с автоматическими мыслями, убеждениями и поведенческими стратегиями, формируя более адаптивные способы реагирования.",
+  },
+  {
+    title: "Практика принятия и ответственности (ACT)",
+    text: "ACT учит принимать сложные эмоции и мысли, не борясь с ними, а направляя энергию на действия, соответствующие вашим ценностям. Подход развивает психологическую гибкость и помогает жить более осмысленно.",
+  },
+  {
+    title: "Подход, сфокусированный на сострадании (CFT)",
+    text: "CFT помогает мягче относиться к себе: работать с самокритикой, чувством вины и стыда, формировать ощущение внутренней безопасности и эмоциональную устойчивость. Особенно полезна тем, кто слишком требователен к себе.",
+  },
+];
+
+const featuredSlugs = [
+  "chto-takoe-depressiya",
+  "trevoga-norma-ili-rasstrojstvo",
+  "kak-kpt-pomogaet",
+];
 
 export default function Home() {
   useMeta({
     title: "КПТ-психолог онлайн при тревоге и апатии — Александра Федорова",
-    description:
-      `Консультации Александры Федоровой при тревоге, панических атаках и апатии. ${BOOKING_TERMS}`,
+    description: `Консультации Александры Федоровой при тревоге, панических атаках и апатии. ${BOOKING_TERMS}`,
     keywords:
       "психолог, сниженное настроение, апатия, тревога, КПТ, ACT, CFT, ПТСР, психология эмиграции, Александра Федорова, когнитивно-поведенческий подход, тест Бека, психолог онлайн",
     ogType: "website",
-    ogImage: HERO_BG,
+    ogImage: "/images/alexandra.jpg",
   });
 
   return (
-    <div>
-      {/* Hero — glass card over an atmospheric image */}
-      <section className="relative -mt-[78px] min-h-[88vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <picture>
-            <source media="(max-width: 600px) and (orientation: portrait)" srcSet="/images/hero-portrait.webp" type="image/webp" />
-            <source srcSet="/images/hero-bg.webp" type="image/webp" />
-            <img src={HERO_BG} alt="" width={1600} height={893} fetchPriority="high" className="w-full h-full object-cover" />
-          </picture>
-          <div className="absolute inset-0 bg-gradient-to-br from-forest/70 via-forest/45 to-transparent" />
-        </div>
-        <div className="container relative z-10 py-24">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            className="glass-dark rounded-3xl p-8 md:p-12 max-w-2xl"
-          >
-            <motion.span
-              custom={0}
-              variants={fadeUp}
-              className="eyebrow text-terracotta-light mb-5"
-            >
-              Александра Федорова · психолог
-            </motion.span>
-            <motion.h1
-              custom={1}
-              variants={fadeUp}
-              className="text-cream leading-[1.08] mb-6 text-[clamp(2.4rem,5.5vw,4.25rem)]"
-            >
-              Бережная помощь
-              <br />
-              при <em className="italic text-terracotta-light">тревоге</em> и
-              апатии
-            </motion.h1>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-cream/85 text-lg md:text-xl leading-relaxed mb-9 max-w-xl font-light"
-            >
-              Работаю в когнитивно-поведенческом подходе (КПТ).
-              Помогаю разобраться, что поддерживает тревогу и апатию
-              и с чего можно начать изменения.
-            </motion.p>
-            <motion.div
-              custom={3}
-              variants={fadeUp}
-              className="flex flex-wrap gap-4"
-            >
-              <Button asChild className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
-                <Link href="/contact">
-                  Записаться на консультацию
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full bg-cream/15 backdrop-blur border-cream/30 text-cream hover:bg-cream/25 hover:text-cream h-auto min-h-12 max-w-full whitespace-normal px-6 py-3 text-center text-base transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                <Link href="/test/depression">
-                  Пройти тест
-                </Link>
-              </Button>
-            </motion.div>
-            <motion.p
-              custom={4}
-              variants={fadeUp}
-              className="text-cream/65 text-sm mt-4"
-            >
-              {BOOKING_TERMS}
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Normalization — you are not alone */}
-      <section className="pt-16 pb-2">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="glass-dark rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center"
-          >
-            <motion.h2
-              custom={0}
-              variants={fadeUp}
-              className="text-2xl md:text-3xl text-forest mb-4"
-            >
-              Когда стоит обратиться с тревогой
-            </motion.h2>
-            <motion.p
-              custom={1}
-              variants={fadeUp}
-              className="text-ink/90 text-lg leading-relaxed"
-            >
-              Например, если вы долго прокручиваете разговоры в голове,
-              избегаете встреч или откладываете важные дела из-за беспокойства.
-              На консультации можно начать с одной такой ситуации.{" "}
-              <Link href="/blog/trevoga-norma-ili-rasstrojstvo" className="text-terracotta-text underline underline-offset-4">
-                Подробнее о том, когда тревога начинает мешать
-              </Link>
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* About — portrait + glass panel */}
-      <section className="py-16">
-        <div className="container">
-          <div className="grid lg:grid-cols-[0.82fr_1.18fr] gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
-            {/* Portrait — glass "tray" (double-bezel) */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-              className="glass-dark rounded-3xl p-2 lg:p-2.5"
-            >
-              <div className="relative h-full min-h-[340px] rounded-[1.35rem] overflow-hidden">
-                <img
-                  src={ALEXANDRA_IMG}
-                  width={820}
-                  height={1080}
-                  loading="lazy"
-                  decoding="async"
-                  alt="Психолог Александра Федорова"
-                  className="w-full h-full object-cover object-[50%_26%]"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/35 to-transparent px-5 pb-5 pt-16">
-                  <p className="font-serif text-cream text-xl leading-tight">
-                    Александра Федорова
-                  </p>
-                  <p className="text-cream/80 text-sm mt-1">
-                    Психолог · КПТ · ACT · CFT
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Approach — glass panel */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="glass-dark rounded-3xl p-8 md:p-10"
-            >
-            <motion.div custom={0} variants={fadeUp}>
-              <span className="eyebrow">О подходе</span>
-              <h2 className="text-3xl md:text-4xl text-forest mt-4 mb-6">
-                Научно обоснованная помощь при апатии и тревоге
-              </h2>
-            </motion.div>
-            <motion.p
-              custom={1}
-              variants={fadeUp}
-              className="dropcap text-lg leading-relaxed text-ink/90 mb-6"
-            >
-              Когда то, что раньше радовало, давно не радует. Когда найти смыслы
-              в жизни не так просто как раньше. Когда затяжная апатия не отпускает,
-              а тревога мешает жить. Я работаю с доказательными методами —
-              КПТ, ACT, CFT — и помогаю разобраться, что поддерживает ваше
-              состояние, и вместе найти путь обратно к себе.
-            </motion.p>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-lg leading-relaxed text-ink/90"
-            >
-              Это не просто разговоры. Это бережная, структурированная работа,
-              которая помогает вернуть ясность и опору.
-            </motion.p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* What to expect — first session */}
-      <section id="pervaya-vstrecha" className="scroll-mt-24 py-16">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-10"
-          >
-            <motion.span
-              custom={0}
-              variants={fadeUp}
-              className="eyebrow eyebrow-center"
-            >
-              Чего ожидать
-            </motion.span>
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="text-3xl md:text-4xl text-forest mt-4"
-            >
-              Как проходит первая консультация
-            </motion.h2>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-ink/90 max-w-2xl mx-auto mt-4 text-lg"
-            >
-              Можно прийти без готового запроса. Для начала подойдёт пример
-              из вашей жизни. Скажем, вы хотите выйти из дома, но тревога
-              каждый раз заставляет менять планы.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-          >
-            {[
-              {
-                n: "01",
-                t: "Разговор",
-                d: "Вы рассказываете, что вас беспокоит, в удобном для вас темпе. Я слушаю и задаю уточняющие вопросы.",
-              },
-              {
-                n: "02",
-                t: "Разбор ситуации",
-                d: "Вместе разбираем, какие мысли возникли, что вы почувствовали и как поступили в тот момент.",
-              },
-              {
-                n: "03",
-                t: "План",
-                d: "Намечаем формат и первые шаги. Вы решаете, хотите ли продолжать.",
-              },
-            ].map((s, i) => (
-              <motion.div
-                key={s.n}
-                custom={i}
-                variants={fadeUp}
-                className="glass-dark rounded-2xl p-6"
-              >
-                <span className="font-serif text-2xl text-terracotta">
-                  {s.n}
-                </span>
-                <h3 className="text-lg text-forest mt-2 mb-2">{s.t}</h3>
-                <p className="text-ink/90 text-sm leading-relaxed">{s.d}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-          <p className="mt-6 text-center">
-            <Link href="/faq" className="text-terracotta-text underline underline-offset-4">
-              Вопросы перед первой встречей с психологом
+    <div className="practice-home">
+      <section className="home-width home-intro" aria-labelledby="home-title">
+        <div className="home-intro-copy">
+          <p className="home-specialty">Психолог · Онлайн-консультации</p>
+          <h1 id="home-title">
+            Бережная помощь <em>при тревоге</em> и апатии
+          </h1>
+          <p className="home-lead">
+            Работаю в когнитивно-поведенческом подходе (КПТ). Помогаю
+            разобраться, что поддерживает тревогу и апатию и с чего можно начать
+            изменения.
+          </p>
+          <div className="home-actions">
+            <Link className="home-button" href="/contact">
+              Записаться на консультацию{" "}
+              <ArrowRight aria-hidden="true" size={18} />
             </Link>
+            <a className="home-text-link" href="#pervaya-vstrecha">
+              Как проходит встреча <ArrowDown aria-hidden="true" size={16} />
+            </a>
+          </div>
+          <p className="home-terms">
+            <Clock3 size={16} aria-hidden="true" />
+            <span>
+              {PRACTICE.sessionLength} <span aria-hidden="true">·</span>{" "}
+              Стоимость — {PRACTICE.priceSummary.toLowerCase()}
+            </span>
           </p>
         </div>
-      </section>
-
-      {/* Methods — glass cards + framed image */}
-      <section className="py-16">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12"
-          >
-            <motion.span
-              custom={0}
-              variants={fadeUp}
-              className="eyebrow eyebrow-center"
-            >
-              Методы работы
-            </motion.span>
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="text-3xl md:text-4xl text-forest mt-4"
-            >
-              Три доказательных подхода
-            </motion.h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <motion.div
-                custom={0}
-                variants={fadeUp}
-                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-forest to-forest-deep shadow-inner">
-                    <Brain className="text-cream" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl text-forest mb-2">
-                      Когнитивно-поведенческий подход (КПТ)
-                    </h3>
-                    <p className="text-ink/90 leading-relaxed">
-                      КПТ помогает выявить и изменить негативные паттерны
-                      мышления, которые поддерживают апатию и тревогу. Мы
-                      работаем с автоматическими мыслями, убеждениями и
-                      поведенческими стратегиями, формируя более адаптивные
-                      способы реагирования.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                custom={1}
-                variants={fadeUp}
-                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-terracotta to-terracotta-light shadow-inner">
-                    <Heart className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl text-forest mb-2">
-                      Практика принятия и ответственности (ACT)
-                    </h3>
-                    <p className="text-ink/90 leading-relaxed">
-                      ACT учит принимать сложные эмоции и мысли, не борясь с
-                      ними, а направляя энергию на действия, соответствующие
-                      вашим ценностям. Подход развивает психологическую гибкость
-                      и помогает жить более осмысленно.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                custom={2}
-                variants={fadeUp}
-                className="glass-dark rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-[#6b9b76] to-[#4c785a] shadow-inner">
-                    <Sprout className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl text-forest mb-2">
-                      Подход, сфокусированный на сострадании (CFT)
-                    </h3>
-                    <p className="text-ink/90 leading-relaxed">
-                      CFT помогает мягче относиться к себе: работать с
-                      самокритикой, чувством вины и стыда, формировать ощущение
-                      внутренней безопасности и эмоциональную устойчивость.
-                      Особенно полезна тем, кто слишком требователен к себе.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="rounded-2xl overflow-hidden ring-1 ring-white/40 shadow-xl min-h-[320px]"
-            >
-              <img
-                src={CBT_IMG}
-                width={1200}
-                height={896}
-                loading="lazy"
-                decoding="async"
-                alt="Когнитивно-поведенческий подход"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Education — dark glass panel */}
-      <section className="py-16">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="glass-dark rounded-3xl p-8 md:p-12 max-w-3xl mx-auto text-center overflow-hidden"
-          >
-            <img
-              src={RGGU_IMG}
-              width={800}
-              height={400}
-              loading="lazy"
-              decoding="async"
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover opacity-10"
-            />
-            <div className="relative">
-              <motion.div custom={0} variants={fadeUp}>
-                <GraduationCap
-                  className="mx-auto mb-4 text-terracotta-text"
-                  size={40}
-                />
-                <span className="eyebrow eyebrow-center text-terracotta-text">
-                  Образование
-                </span>
-              </motion.div>
-              <motion.h2
-                custom={1}
-                variants={fadeUp}
-                className="text-3xl md:text-4xl mt-4 mb-7 text-forest"
-              >
-                Образование и квалификация
-              </motion.h2>
-              <motion.div
-                custom={2}
-                variants={fadeUp}
-                className="text-left space-y-5 max-w-xl mx-auto"
-              >
-                {EDUCATION.map((e, i) => (
-                  <div
-                    key={i}
-                    className="border-l-2 border-terracotta-light/40 pl-4"
-                  >
-                    <p className="text-ink font-medium leading-snug">
-                      {e.school}
-                    </p>
-                    <p className="text-ink/80 text-sm leading-relaxed mt-0.5">
-                      {e.program}
-                    </p>
-                    <p className="text-terracotta-text text-sm font-serif italic mt-1">
-                      {e.year}
-                    </p>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Tests CTA — image tiles */}
-      <section className="py-16 relative overflow-hidden">
-        <div className="absolute inset-0">
+        <figure className="home-portrait">
           <img
-            src={TEST_BG}
-            width={1600}
-            height={893}
-            loading="lazy"
-            decoding="async"
-            alt=""
-            className="w-full h-full object-cover opacity-20"
+            src="/images/alexandra.jpg"
+            width="820"
+            height="1080"
+            fetchPriority="high"
+            alt="Психолог Александра Федорова"
           />
-        </div>
-        <div className="container relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-12"
-          >
-            <motion.span
-              custom={0}
-              variants={fadeUp}
-              className="eyebrow eyebrow-center"
-            >
-              Самодиагностика
-            </motion.span>
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="text-3xl md:text-4xl text-forest mt-4 mb-4"
-            >
-              Пройдите тесты Бека онлайн
-            </motion.h2>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-ink/90 max-w-2xl mx-auto text-lg"
-            >
-              Шкалы депрессии и тревоги Бека — признанные инструменты
-              самодиагностики. Ответы остаются в вашей вкладке.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
-          >
-            {[
-              {
-                href: "/test/depression",
-                img: DEPRESSION_IMG,
-                title: "Шкала депрессии Бека",
-              },
-              {
-                href: "/test/anxiety",
-                img: ANXIETY_IMG,
-                title: "Шкала тревоги Бека",
-              },
-            ].map((t, i) => (
-              <motion.div key={t.href} custom={i} variants={fadeUp}>
-                <Link href={t.href} className="no-underline block group">
-                  <div className="relative rounded-2xl overflow-hidden ring-1 ring-white/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img
-                      src={t.img}
-                      width={800}
-                      height={536}
-                      loading="lazy"
-                      decoding="async"
-                      alt={t.title}
-                      className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-forest/90 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-xl text-cream mb-2">{t.title}</h3>
-                      <p className="text-cream/80 text-sm mb-3">
-                        21 вопрос &middot; 10 минут
-                      </p>
-                      <span className="inline-flex items-center gap-2 text-terracotta-light text-sm font-medium">
-                        Пройти тест <ArrowRight size={16} />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+          <figcaption>
+            <span>Александра Федорова</span>
+            <a href="#podhod">
+              О подходе <ArrowDown size={14} aria-hidden="true" />
+            </a>
+          </figcaption>
+        </figure>
       </section>
 
-      {/* Blog preview — glass icon cards */}
-      <section className="py-16">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="flex items-end justify-between mb-12"
-          >
-            <div>
-              <motion.span custom={0} variants={fadeUp} className="eyebrow">
-                Блог
-              </motion.span>
-              <motion.h2
-                custom={1}
-                variants={fadeUp}
-                className="text-3xl md:text-4xl text-forest mt-4"
-              >
-                Полезные статьи
-              </motion.h2>
-            </div>
-            <motion.div custom={2} variants={fadeUp} className="hidden md:block">
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
-              >
-                <Link href="/blog">
-                  Все статьи <ArrowRight size={16} className="ml-2" />
-                </Link>
-              </Button>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {[
-              {
-                slug: "chto-takoe-depressiya",
-                title: "Сниженное настроение — когда стоит обратиться за помощью",
-                excerpt:
-                  "Что меняется в повседневной жизни, когда настроение долго остаётся сниженным, и с кем это можно обсудить.",
-                icon: <BookOpen size={20} />,
-              },
-              {
-                slug: "trevoga-norma-ili-rasstrojstvo",
-                title: "Тревога: где граница между нормой и расстройством",
-                excerpt:
-                  "Тревога — естественная реакция организма. Но когда она становится хронической, это сигнал обратить на себя внимание.",
-                icon: <Heart size={20} />,
-              },
-              {
-                slug: "kak-kpt-pomogaet",
-                title: "Как КПТ помогает при апатии и тревоге",
-                excerpt:
-                  "Когнитивно-поведенческий подход — один из самых изученных методов. Разбираемся, как он работает и чего ожидать от подхода.",
-                icon: <Brain size={20} />,
-              },
-            ].map((article, i) => (
-              <motion.div key={article.slug} custom={i} variants={fadeUp}>
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="no-underline block group h-full"
-                >
-                  <div className="glass-dark rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1 h-full">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 text-cream bg-gradient-to-br from-forest to-forest-deep group-hover:from-terracotta group-hover:to-terracotta-light transition-colors">
-                      {article.icon}
-                    </div>
-                    <h3 className="text-lg text-forest mb-3 group-hover:text-terracotta transition-colors">
-                      {article.title}
-                    </h3>
-                    <p className="text-ink/90 text-sm leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="mt-8 text-center md:hidden">
-            <Button
-              asChild
-              variant="outline"
-              className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
+      <section className="home-orientation">
+        <div className="home-width home-split">
+          <h2>Когда стоит обратиться с тревогой</h2>
+          <div>
+            <p>
+              Например, если вы долго прокручиваете разговоры в голове,
+              избегаете встреч или откладываете важные дела из-за беспокойства.
+              На консультации можно начать с одной такой ситуации.
+            </p>
+            <Link
+              href="/blog/trevoga-norma-ili-rasstrojstvo"
+              className="home-text-link"
             >
-              <Link href="/blog">
-                Все статьи <ArrowRight size={16} className="ml-2" />
-              </Link>
-            </Button>
+              Когда тревога начинает мешать{" "}
+              <ArrowRight aria-hidden="true" size={16} />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA — solid terracotta anchor panel */}
-      <section className="py-12">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="bg-terracotta rounded-3xl p-10 md:p-14 text-center shadow-lg"
-          >
-            <motion.h2
-              custom={0}
-              variants={fadeUp}
-              className="text-3xl md:text-4xl text-white mb-4"
-            >
-              Готовы сделать первый шаг?
-            </motion.h2>
-            <motion.p
-              custom={1}
-              variants={fadeUp}
-              className="text-white text-lg mb-8 max-w-xl mx-auto font-light"
-            >
-              Напишите мне, чтобы узнать стоимость и выбрать время для разговора.
-            </motion.p>
-            <motion.div custom={2} variants={fadeUp}>
-              <Button asChild className="rounded-full bg-forest hover:bg-forest-deep text-white px-10 py-6 text-base font-medium transition-transform duration-200 hover:-translate-y-0.5">
-                <Link href="/contact">
-                  Связаться со мной
+      <section id="pervaya-vstrecha" className="home-width home-chapter">
+        <div className="home-split">
+          <h2>Как проходит первая консультация</h2>
+          <p>
+            Можно прийти без готового запроса. Для начала подойдёт пример из
+            вашей жизни. Скажем, вы хотите выйти из дома, но тревога каждый раз
+            заставляет менять планы.
+          </p>
+        </div>
+        <ol className="home-steps">
+          {steps.map((step, index) => (
+            <li key={step.title}>
+              <span aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+        <Link href="/faq" className="home-text-link">
+          Вопросы перед первой встречей с психологом{" "}
+          <ArrowRight aria-hidden="true" size={16} />
+        </Link>
+      </section>
+
+      <section id="podhod" className="home-methods">
+        <div className="home-width home-methods-layout">
+          <div>
+            <h2>Научно обоснованная помощь при апатии и тревоге</h2>
+            <p>
+              Когда то, что раньше радовало, давно не радует. Когда найти смыслы
+              в жизни не так просто как раньше. Когда затяжная апатия не
+              отпускает, а тревога мешает жить. Я работаю с доказательными
+              методами — КПТ, ACT, CFT — и помогаю разобраться, что поддерживает
+              ваше состояние, и вместе найти путь обратно к себе.
+            </p>
+            <p>
+              Это не просто разговоры. Это бережная, структурированная работа,
+              которая помогает вернуть ясность и опору.
+            </p>
+            <img
+              src="/images/hero-bg.webp"
+              width="1600"
+              height="893"
+              loading="lazy"
+              alt=""
+            />
+          </div>
+          <div className="home-method-list">
+            {methods.map(method => (
+              <div key={method.title}>
+                <h3>{method.title}</h3>
+                <p>{method.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="home-width home-chapter home-split home-education">
+        <h2>Образование и квалификация</h2>
+        <ol>
+          {EDUCATION.map(item => (
+            <li key={item.program}>
+              <span>{item.year}</span>
+              <div>
+                <h3>{item.school}</h3>
+                <p>{item.program}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="home-tests">
+        <div className="home-width home-split">
+          <div>
+            <h2>Тесты Бека онлайн</h2>
+            <p>
+              Ответы остаются в вашей вкладке. Результат помогает описать своё
+              состояние перед разговором со специалистом.
+            </p>
+          </div>
+          <div className="home-test-list">
+            {[
+              { href: "/test/depression", title: "Шкала депрессии Бека" },
+              { href: "/test/anxiety", title: "Шкала тревоги Бека" },
+            ].map(test => (
+              <div key={test.href}>
+                <h3>{test.title}</h3>
+                <p>21 вопрос · 10 минут</p>
+                <Link href={test.href} className="home-text-link">
+                  Пройти тест <ArrowRight aria-hidden="true" size={16} />
                 </Link>
-              </Button>
-            </motion.div>
-          </motion.div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="home-width home-chapter">
+        <div className="home-section-heading">
+          <h2>Полезные статьи</h2>
+          <Link href="/blog" className="home-text-link">
+            Все статьи <ArrowRight aria-hidden="true" size={16} />
+          </Link>
+        </div>
+        <div className="home-reading">
+          {articles
+            .filter(article => featuredSlugs.includes(article.slug))
+            .map(article => (
+              <Link href={"/blog/" + article.slug} key={article.slug}>
+                <span>{article.category}</span>
+                <h3>{article.title}</h3>
+                <p>{article.excerpt}</p>
+              </Link>
+            ))}
+        </div>
+      </section>
+
+      <section className="home-contact">
+        <div className="home-width home-split">
+          <h2>Запись на консультацию</h2>
+          <div>
+            <p>
+              Напишите мне, чтобы узнать стоимость и выбрать время для
+              разговора.
+            </p>
+            <Link className="home-button" href="/contact">
+              Связаться со мной <ArrowRight aria-hidden="true" size={18} />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

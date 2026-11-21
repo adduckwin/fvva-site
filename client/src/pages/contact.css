@@ -1,0 +1,224 @@
+.booking-page {
+  --booking-ink: #213b34;
+  --booking-spruce: #214b41;
+  --booking-accent: #814537;
+  --booking-line: #ccd5c9;
+  --booking-muted: #51655e;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding: 1.25rem clamp(1.25rem, 5vw, 4rem) clamp(3.5rem, 8vw, 7rem);
+  color: var(--booking-ink);
+}
+
+.booking-back,
+.booking-message button,
+.booking-community a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.booking-back {
+  color: var(--booking-muted);
+  font-size: .95rem;
+}
+
+.booking-back:hover,
+.booking-message button:hover,
+.booking-community a:hover {
+  text-decoration: underline;
+  text-underline-offset: .25em;
+}
+
+.booking-intro,
+.booking-details {
+  display: grid;
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+.booking-intro {
+  margin-top: clamp(1rem, 3vw, 2.8rem);
+  align-items: start;
+}
+
+.booking-invite h1 {
+  max-width: 15ch;
+  font-size: clamp(2.35rem, 5.2vw, 4.7rem);
+  line-height: 1.06;
+  letter-spacing: -.043em;
+}
+
+.booking-terms {
+  max-width: 32rem;
+  margin-top: 1.3rem;
+  color: var(--booking-muted);
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.booking-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-top: 1.5rem;
+}
+
+.booking-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .85rem;
+  min-height: 3rem;
+  padding: .65rem 1.25rem;
+  border: 1px solid var(--booking-spruce);
+  border-radius: .6rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--booking-spruce);
+}
+
+.booking-actions a:first-child {
+  background: var(--booking-spruce);
+  color: white;
+}
+
+.booking-actions a:hover {
+  background: #e4eae2;
+}
+
+.booking-actions a:first-child:hover {
+  background: #16392f;
+}
+
+.booking-message {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--booking-accent);
+}
+
+.booking-message h2,
+.booking-specialty {
+  font-family: var(--font-sans);
+  font-size: .94rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--booking-accent);
+}
+
+.booking-message p {
+  margin-top: .35rem;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.5;
+  user-select: all;
+}
+
+.booking-message button {
+  color: var(--booking-spruce);
+  font-size: .95rem;
+}
+
+.booking-profile {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(4rem, 6rem) 1fr;
+  gap: 1rem;
+}
+
+.booking-profile img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 32%;
+  border-radius: .3rem;
+}
+
+.booking-profile h2 {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.18;
+}
+
+.booking-specialty {
+  margin-top: .4rem;
+}
+
+.booking-bio,
+.booking-community p {
+  margin-top: .65rem;
+  max-width: 39ch;
+  color: var(--booking-muted);
+  line-height: 1.55;
+}
+
+.booking-details {
+  align-items: start;
+  margin-top: clamp(2.75rem, 5.5vw, 5rem);
+  border-top: 1px solid var(--booking-line);
+  padding-top: clamp(1.6rem, 3.5vw, 3rem);
+}
+
+.booking-details h2 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  letter-spacing: -.025em;
+}
+
+.booking-facts > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, .95fr) minmax(0, 1.6fr);
+  gap: .7rem;
+  padding-block: .8rem;
+  border-bottom: 1px solid var(--booking-line);
+  line-height: 1.4;
+}
+
+.booking-facts dt {
+  color: var(--booking-muted);
+  overflow-wrap: anywhere;
+}
+
+.booking-facts dd {
+  font-weight: 600;
+}
+
+.booking-community a {
+  color: var(--booking-spruce);
+  font-size: 1.15rem;
+}
+
+.booking-community p {
+  margin-top: .15rem;
+}
+
+@media (min-width: 54rem) {
+  .booking-intro,
+  .booking-details {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  }
+
+  .booking-profile {
+    display: block;
+    border-left: 1px solid var(--booking-line);
+    padding-left: clamp(2rem, 4vw, 4rem);
+  }
+
+  .booking-profile img {
+    width: clamp(10rem, 16vw, 13.5rem);
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 28rem) {
+  .booking-actions {
+    display: grid;
+  }
+}
+
+@media (max-width: 24rem) {
+  .booking-facts > div {
+    grid-template-columns: 1fr;
+    gap: .25rem;
+  }
+}

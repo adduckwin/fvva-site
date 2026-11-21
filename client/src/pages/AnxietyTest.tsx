@@ -138,10 +138,10 @@ export default function AnxietyTest() {
       {/* Header */}
       <section className="pt-4 lg:pt-6 pb-8">
         <div className="container max-w-3xl mx-auto">
-          <div className="glass-dark rounded-3xl p-8 md:p-10">
+          <div className="surface-inverse rounded-3xl p-8 md:p-10">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-cream/60 hover:text-cream text-sm mb-5 no-underline transition-colors"
+            className="inline-flex items-center gap-2 text-cream/85 hover:text-cream text-sm mb-5 no-underline transition-colors"
           >
             <ArrowLeft size={14} /> На главную
           </Link>
@@ -155,7 +155,7 @@ export default function AnxietyTest() {
             Оцените, насколько каждый из перечисленных симптомов беспокоил вас в
             течение последней недели, включая сегодня.
           </p>
-          <p className="text-cream/50 text-sm mt-2">
+          <p className="text-cream/80 text-sm mt-2">
             Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
           </p>
           </div>
@@ -172,7 +172,7 @@ export default function AnxietyTest() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <div className="glass-dark rounded-2xl p-8 md:p-12">
+                <div className="surface rounded-2xl p-8 md:p-12">
                   <h2 className="text-2xl text-forest mb-6 text-center">
                     Результат теста
                   </h2>
@@ -293,7 +293,7 @@ export default function AnxietyTest() {
                 </div>
 
                 {/* All symptoms in a table-like layout */}
-                <div className="glass-dark rounded-2xl overflow-hidden">
+                <div className="surface rounded-2xl overflow-hidden">
                   {/* Header row - visible on md+ */}
                   <div className="hidden md:grid md:grid-cols-[1fr_repeat(4,120px)] bg-forest text-cream p-4 text-xs font-medium">
                     <span>Симптом</span>

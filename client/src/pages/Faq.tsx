@@ -231,7 +231,7 @@ const fadeUp = {
 
 function Row({ item }: { item: Item }) {
   return (
-    <details className="group glass-dark rounded-2xl overflow-hidden">
+    <details className="group surface rounded-2xl overflow-hidden">
       <summary className="flex items-center justify-between gap-4 text-left px-6 py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
         <span className="font-serif text-lg text-forest">{item.q}</span>
         <ChevronDown aria-hidden="true" size={20} className="shrink-0 text-terracotta transition-transform group-open:rotate-180" />
