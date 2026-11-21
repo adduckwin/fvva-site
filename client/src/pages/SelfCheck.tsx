@@ -1,200 +1,245 @@
-import "./secondary-pages.css";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { Check, ArrowRight, RotateCcw } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
+import { createCheckResultMemory } from "@/lib/check-result-memory";
+import "./self-check.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.06, duration: 0.5 },
-  }),
-};
-
-interface Tier {
+interface Topic {
+  id: string;
+  label: string;
   title: string;
-  text: string;
-}
-
-interface MiniCheckProps {
-  title: string;
+  subject: string;
   statements: string[];
-  testHref: string;
-  testLabel: string;
-  tiers: [Tier, Tier, Tier];
+  scale: { href: string; label: string };
+  reading: { href: string; label: string };
+  followup: string;
 }
 
-function MiniCheck({ title, statements, testHref, testLabel, tiers }: MiniCheckProps) {
-  const [sel, setSel] = useState<Set<number>>(new Set());
-  const [shown, setShown] = useState(false);
-  const [noneSelected, setNoneSelected] = useState(false);
+const topics: Topic[] = [
+  {
+    id: "trevoga",
+    label: "Тревога",
+    title: "Беспокоит ли вас тревога?",
+    subject: "о тревоге",
+    scale: { href: "/test/anxiety", label: "Пройти шкалу тревоги Бека" },
+    reading: {
+      href: "/blog/trevoga-norma-ili-rasstrojstvo",
+      label: "Почитать о тревоге",
+    },
+    followup:
+      "Если захотите подробнее отметить, какие ощущения вас беспокоили, для этого есть шкала тревоги Бека.",
+    statements: [
+      "Часто ловлю себя на тревожных мыслях, которые трудно остановить.",
+      "Тело будто на взводе: напряжение, учащённое сердцебиение, трудно расслабиться.",
+      "Много беспокоюсь о том, что может случиться.",
+      "Тревога мешает сосредоточиться, спать или отдыхать.",
+      "Стараюсь избегать ситуаций, которые вызывают тревогу.",
+      "Из-за тревоги бывает трудно заниматься обычными делами.",
+    ],
+  },
+  {
+    id: "nastroenie",
+    label: "Настроение",
+    title: "Как меняется настроение?",
+    subject: "о настроении",
+    scale: { href: "/test/depression", label: "Пройти шкалу депрессии Бека" },
+    reading: {
+      href: "/blog/chto-takoe-depressiya",
+      label: "Почитать о сниженном настроении",
+    },
+    followup:
+      "Если захотите подробнее описать изменения в настроении и повседневной жизни, для этого есть шкала депрессии Бека.",
+    statements: [
+      "Большую часть времени настроение подавленное или пустое.",
+      "Почти всё, что раньше радовало, сейчас не радует.",
+      "Мало сил и энергии, многое даётся через силу.",
+      "Сон или аппетит заметно изменились.",
+      "Часто думаю о себе плохо или виню себя.",
+      "Трудно поверить, что впереди будет что-то хорошее.",
+    ],
+  },
+];
 
-  const toggle = (i: number) => {
-    setNoneSelected(false);
-    setShown(false);
-    setSel((prev) => {
-      const n = new Set(prev);
-      n.has(i) ? n.delete(i) : n.add(i);
-      return n;
-    });
-  };
+const completed = createCheckResultMemory<{ selected: number[]; none: boolean }>();
 
-  const count = sel.size;
-  const tier = count <= 1 ? 0 : count <= 3 ? 1 : 2;
-  const result = tiers[tier];
+function MiniCheck({ topic }: { topic: Topic }) {
+  const [returned] = useState(() => completed.read(topic.id));
+  const [selected, setSelected] = useState<number[]>(returned?.selected ?? []);
+  const [none, setNone] = useState(returned?.none ?? false);
+  const [shown, setShown] = useState(Boolean(returned));
+  const focusNext = useRef(false);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const firstOption = useRef<HTMLInputElement>(null);
+  const noneOption = useRef<HTMLButtonElement>(null);
+
+  useLayoutEffect(() => {
+    if (!focusNext.current) return;
+    focusNext.current = false;
+    const target = shown
+      ? heading.current
+      : none
+        ? noneOption.current
+        : firstOption.current;
+    if (target) {
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "start", behavior: "instant" });
+    }
+  }, [shown, none]);
+
+  function toggle(index: number) {
+    setNone(false);
+    setSelected(current =>
+      current.includes(index)
+        ? current.filter(i => i !== index)
+        : [...current, index]
+    );
+  }
+
+  function showResult(value: boolean) {
+    if (value) completed.save(topic.id, { selected, none });
+    else completed.clear(topic.id);
+    focusNext.current = true;
+    setShown(value);
+  }
+
+  const count = selected.length;
+  const hasAnswer = count > 0 || none;
+  const resultTitle = none
+    ? "Ничего из списка вам не подошло"
+    : count === 1
+      ? "Вам знаком один пункт"
+      : count <= 3
+        ? "Несколько пунктов вам знакомы"
+        : "Многое из этого вам знакомо";
+  const explanation = none
+    ? "Если вас беспокоит что-то другое, об этом тоже можно поговорить. Можно начать с одной ситуации, которую вы хорошо помните."
+    : count === 1
+      ? "Можно присмотреться к конкретному эпизоду. Когда вы заметили это в последний раз и как это повлияло на ваш день?"
+      : count <= 3
+        ? topic.followup
+        : "Можно выбрать то, что больше всего мешает обычным делам, и обсудить это с психологом. Отмеченные пункты пригодятся как начало разговора.";
 
   return (
-    <div className="selfcheck-block">
-      <h2 className="font-sans text-2xl text-forest mt-3 mb-1">{title}</h2>
-      <p className="text-muted-foreground text-sm mb-5">
-        Отметьте то, что было про вас в последние пару недель.
-      </p>
-
-      <div className="space-y-2.5">
-        {statements.map((st, i) => {
-          const on = sel.has(i);
-          return (
-            <button
-              key={i}
-              onClick={() => toggle(i)}
-              aria-pressed={on}
-              className={`w-full flex items-center gap-3 text-left rounded-2xl px-4 py-3 transition-colors ${
-                on
-                  ? "bg-terracotta/10 border border-terracotta/40"
-                  : "bg-cream/40 border border-border hover:border-terracotta/30"
-              }`}
-            >
-              <span
-                className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                  on ? "bg-terracotta text-white" : "bg-cream border border-border"
-                }`}
-              >
-                {on && <Check size={15} />}
-              </span>
-              <span className="text-ink/85 text-sm leading-snug">{st}</span>
-            </button>
-          );
-        })}
-        <button
-          type="button"
-          aria-pressed={noneSelected}
-          onClick={() => {
-            setSel(new Set());
-            setNoneSelected(!noneSelected);
-            setShown(false);
-          }}
-          className="w-full rounded-2xl border px-4 py-3 text-left text-sm aria-pressed:border-forest aria-pressed:bg-forest/10"
-        >
-          Ничего из перечисленного
-        </button>
+    <section
+      id={topic.id}
+      className="check-topic"
+      aria-labelledby={topic.id + "-heading"}
+    >
+      <div className="check-topic-intro">
+        <h2 id={topic.id + "-heading"}>{topic.title}</h2>
+        {shown ? (
+          <p>Здесь собраны ваши наблюдения за последние две недели.</p>
+        ) : (
+          <>
+            <p>
+              Вспомните последние две недели. Можно отметить несколько пунктов.
+            </p>
+            <Link className="check-scale-link" href={topic.scale.href}>
+              {topic.scale.label}
+            </Link>
+          </>
+        )}
       </div>
-
-      {!shown ? (
-        <button
-          disabled={count === 0 && !noneSelected}
-          onClick={() => setShown(true)}
-          className="secondary-action mt-6"
-        >
-          Посмотреть результат
-          <ArrowRight size={16} />
-        </button>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 rounded-2xl bg-forest/5 border border-forest/15 p-5"
-        >
-          <p className="font-sans text-lg text-forest mb-1.5">{result.title}</p>
-          <p className="text-ink/75 text-sm leading-relaxed mb-4">{result.text}</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href={testHref}
-              className="secondary-action"
-            >
-              {testLabel}
-              <ArrowRight size={15} />
-            </Link>
-            <Link
-              href="/contact"
-              className="text-terracotta-text hover:text-terracotta-deep text-sm font-medium"
-            >
-              Написать Александре
-            </Link>
-            <button
-              onClick={() => {
-                setShown(false);
-                setNoneSelected(false);
-                setSel(new Set());
-              }}
-              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-forest text-sm transition-colors"
-            >
-              <RotateCcw size={14} /> Заново
-            </button>
+      {shown ? (
+        <div className="check-answer">
+          <p className="check-answer-context">
+            Вы отметили {count} из {topic.statements.length} пунктов{" "}
+            {topic.subject}
+          </p>
+          <h3 ref={heading} tabIndex={-1}>
+            {resultTitle}
+          </h3>
+          <p>{explanation}</p>
+          {!none && (
+            <details>
+              <summary>Что вы отметили</summary>
+              <ul>
+                {topic.statements.map(
+                  (line, i) =>
+                    selected.includes(i) && <li key={line}>{line}</li>
+                )}
+              </ul>
+            </details>
+          )}
+          <div className="check-destinations">
+            {count > 3 && <Link href="/contact">Написать Александре</Link>}
+            {count <= 1 && (
+              <Link href={topic.reading.href}>{topic.reading.label}</Link>
+            )}
+            <Link href={topic.scale.href}>{topic.scale.label}</Link>
+            {count <= 3 && <Link href="/contact">Написать Александре</Link>}
           </div>
-        </motion.div>
+          <button
+            type="button"
+            className="check-text-action"
+            onClick={() => showResult(false)}
+          >
+            Изменить ответы
+          </button>
+        </div>
+      ) : (
+        <div className="check-response">
+          <fieldset className="check-options">
+            <legend className="sr-only">{topic.title}</legend>
+            {topic.statements.map((statement, index) => (
+              <label key={statement}>
+                <input
+                  type="checkbox"
+                  ref={index === 0 ? firstOption : undefined}
+                  checked={selected.includes(index)}
+                  onChange={() => toggle(index)}
+                />
+                <span>{statement}</span>
+              </label>
+            ))}
+          </fieldset>
+          <div className="check-controls">
+            <button
+              type="button"
+              ref={noneOption}
+              className="check-none"
+              aria-pressed={none}
+              onClick={() => {
+                setSelected([]);
+                setNone(!none);
+              }}
+            >
+              Ничего из перечисленного
+            </button>
+            <div className="check-submit">
+              <button
+                type="button"
+                className="check-button"
+                disabled={!hasAnswer}
+                onClick={() => showResult(true)}
+              >
+                Посмотреть результат
+              </button>
+              {hasAnswer && (
+                <button
+                  type="button"
+                  className="check-text-action"
+                  onClick={() => {
+                    setSelected([]);
+                    setNone(false);
+                    firstOption.current?.focus();
+                  }}
+                >
+                  Снять отметки
+                </button>
+              )}
+            </div>
+          </div>
+          <noscript>
+            <p className="check-static-reading">
+              <a href={topic.reading.href}>{topic.reading.label}</a>
+            </p>
+          </noscript>
+        </div>
       )}
-    </div>
+    </section>
   );
 }
-
-const ANXIETY = {
-  title: "Похоже ли это на тревогу?",
-  testHref: "/test/anxiety",
-  testLabel: "Пройти тест на тревогу",
-  statements: [
-    "Часто ловлю себя на тревожных мыслях, которые трудно остановить.",
-    "Тело будто на взводе: напряжение, учащённое сердцебиение, трудно расслабиться.",
-    "Много беспокоюсь о том, что может случиться.",
-    "Тревога мешает сосредоточиться, спать или отдыхать.",
-    "Стараюсь избегать ситуаций, которые вызывают тревогу.",
-    "Из-за тревоги бывает трудно заниматься обычными делами.",
-  ],
-  tiers: [
-    {
-      title: "Похоже, сейчас в целом справляетесь",
-      text: "Ярких признаков немного. Если что-то всё же беспокоит — присмотреться к себе никогда не лишне, и вы всегда можете написать.",
-    },
-    {
-      title: "Несколько пунктов — про вас",
-      text: "Это не диагноз, но бережный повод присмотреться к своему состоянию. Полный тест на тревогу поможет понять точнее.",
-    },
-    {
-      title: "Многое из этого вам знакомо",
-      text: "Возможно, тревоге сейчас нужна поддержка — и это нормально. Полный тест поможет увидеть картину яснее, а поговорить с Александрой можно в любой момент.",
-    },
-  ] as [Tier, Tier, Tier],
-};
-
-const MOOD = {
-  title: "Похоже ли это на сниженное настроение?",
-  testHref: "/test/depression",
-  testLabel: "Пройти тест на депрессию",
-  statements: [
-    "Большую часть времени настроение подавленное или пустое.",
-    "Почти всё, что раньше радовало, сейчас не радует.",
-    "Мало сил и энергии, многое даётся через силу.",
-    "Сон или аппетит заметно изменились.",
-    "Часто думаю о себе плохо или виню себя.",
-    "Трудно поверить, что впереди будет что-то хорошее.",
-  ],
-  tiers: [
-    {
-      title: "Похоже, сейчас в целом справляетесь",
-      text: "Ярких признаков немного. Если настроение всё же тревожит — присмотреться к себе не лишне, и вы всегда можете написать.",
-    },
-    {
-      title: "Несколько пунктов — про вас",
-      text: "Это не диагноз, но бережный повод присмотреться к себе. Полный тест на депрессию поможет понять точнее.",
-    },
-    {
-      title: "Многое из этого вам знакомо",
-      text: "Возможно, состоянию сейчас нужна поддержка — и это нормально, так бывает у многих. Полный тест поможет увидеть яснее, а поговорить с Александрой можно в любой момент.",
-    },
-  ] as [Tier, Tier, Tier],
-};
 
 export default function SelfCheck() {
   useMeta({
@@ -206,43 +251,45 @@ export default function SelfCheck() {
   });
 
   return (
-    <div className="secondary-page container py-12 md:py-16">
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        className="secondary-intro max-w-2xl mx-auto mb-10"
-      >
-        <motion.h1
-          custom={1}
-          variants={fadeUp}
-          className="secondary-title mb-5"
-        >
-          Стоит ли присмотреться к своему состоянию?
-        </motion.h1>
-        <motion.p
-          custom={2}
-          variants={fadeUp}
-          className="text-lg text-ink/75 leading-relaxed"
-        >
-          Это не тест и не диагноз — пара минут, чтобы мягко понять, на что
-          похоже ваше состояние. Если захочется — рядом полный тест и
-          возможность написать.
-        </motion.p>
-      </motion.div>
-
-      <div className="max-w-2xl mx-auto space-y-6">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={fadeUp}>
-          <MiniCheck {...ANXIETY} />
-        </motion.div>
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={fadeUp}>
-          <MiniCheck {...MOOD} />
-        </motion.div>
-      </div>
-
-      <p className="max-w-2xl mx-auto text-center text-muted-foreground text-sm mt-8">
-        Самопроверка носит информационный характер и не заменяет консультацию
-        специалиста.
+    <div className="check-page">
+      <noscript>
+        <style>
+          {
+            ".check-page .check-controls, .check-page .check-options input {display:none}"
+          }
+        </style>
+      </noscript>
+      <header className="check-intro">
+        <img src="/images/check-observe.webp" width="900" height="600" alt="" />
+        <div>
+          <h1>Самопроверка</h1>
+          <p>
+            Что вы заметили за последние две недели? В каждом списке шесть
+            наблюдений. Выберите тему, которая сейчас ближе, или пройдите обе.
+          </p>
+          <nav aria-label="Темы самопроверки">
+            {topics.map(topic => (
+              <a key={topic.id} href={"#" + topic.id}>
+                {topic.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </header>
+      <p className="check-note">
+        Это способ описать своё самочувствие. Для диагноза нужна оценка
+        специалиста. Ответы остаются в этой вкладке и исчезают после
+        перезагрузки.
       </p>
+      <noscript>
+        <p className="check-offline">
+          Списки можно прочитать ниже. Чтобы отметить ответы и увидеть итог,
+          включите JavaScript.
+        </p>
+      </noscript>
+      {topics.map(topic => (
+        <MiniCheck key={topic.id} topic={topic} />
+      ))}
     </div>
   );
 }

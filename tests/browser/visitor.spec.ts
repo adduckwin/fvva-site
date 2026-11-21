@@ -29,20 +29,22 @@ test("помощь доступна сразу и имеет приоритет 
   await page.getByRole("link", { name: "Пройти тест", exact: true }).first().click();
   await expect(page).toHaveURL(/\/test\/depression$/);
   for (let number = 1; number <= 21; number++) {
-    const heading = page.getByRole("heading", { level: 3, name: new RegExp("^" + number + "\\.") });
-    const options = heading.locator("..").getByRole("button");
-    await options.nth(number === 9 ? 3 : 0).click();
+    const group = page.getByRole("radiogroup");
+    const heading = page.locator("#beck-question-title");
+    await expect(page.getByText(`Вопрос ${number} из 21`, { exact: true })).toBeVisible();
+    await group.getByRole("radio").nth(number === 9 ? 3 : 0).check();
     if (number === 9) {
       await expect(page.getByRole("region", { name: "Поддержка прямо сейчас" })).toBeFocused();
       await expect(heading).toBeVisible();
-      await page.getByRole("button", { name: "Далее", exact: true }).click();
     }
+    if (number < 21) await page.getByRole("button", { name: "Далее", exact: true }).click();
   }
   await page.getByRole("button", { name: "Показать результат" }).click();
   await expect(page.getByRole("heading", { name: "Результат теста" })).toBeVisible();
   await expect(page.getByRole("main")).toContainText(/3\s*из 63 баллов/);
   await expect(page.getByRole("heading", { name: "Поддержка прямо сейчас" })).toBeVisible();
-  await expect(page.getByText(/спокойный диапазон/)).toHaveCount(0);
+  await expect(page.getByText("Минимальный уровень", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Что дальше" })).toHaveCount(0);
   expect(unexpected).toEqual([]);
 });
 
@@ -52,7 +54,7 @@ test("самопроверка отличает пропуск от явного
   await expect(result).toBeDisabled();
   await page.getByRole("button", { name: "Ничего из перечисленного" }).first().click();
   await result.click();
-  await expect(page.getByText(/Похоже, сейчас в целом справляетесь/).first()).toBeVisible();
+  await expect(page.getByText("Ничего из списка вам не подошло", { exact: true }).first()).toBeVisible();
 });
 
 test("статья о тревоге ведёт к соответствующей шкале", async ({ page }) => {
@@ -140,4 +142,41 @@ test.describe("связанные материалы в статической �
     await expect(page.getByRole("link", { name: "Открыть две страницы дневника в PDF" }))
       .toHaveAttribute("href", "/dnevnik-mysley-kpt.pdf");
   });
+});
+
+test("шкала тревоги позволяет исправить ответ из результата и сразу пересчитывает баллы", async ({ page }) => {
+  await page.goto("/test/anxiety");
+  for (let number = 1; number <= 21; number++) {
+    const options = page.getByRole("radio");
+    await options.nth(0).check();
+    await page.getByRole("button", { name: number < 21 ? "Далее" : "Показать результат", exact: true }).click();
+  }
+  await expect(page.getByRole("heading", { name: "Результат теста" })).toBeFocused();
+  await expect(page.locator(".beck-score")).toHaveText("0 из 63 баллов");
+  await page.getByText("Проверить и изменить ответы", { exact: true }).click();
+  await page.locator(".beck-index button").first().click();
+  await expect(page.getByRole("radio").first()).toBeChecked();
+  await page.getByRole("radio").nth(2).check();
+  await page.getByRole("button", { name: "Вернуться к результату" }).click();
+  await expect(page.locator(".beck-score")).toHaveText("2 из 63 баллов");
+  await page.getByRole("link", { name: "Когда с тревогой стоит обратиться за помощью" }).click();
+  await page.goBack();
+  await expect(page.locator(".beck-score")).toHaveText("2 из 63 баллов");
+  await expect(page.getByRole("heading", { name: "Что дальше" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("Вопрос 1 из 21", { exact: true })).toBeVisible();
+  await expect(page.getByRole("radio").first()).not.toBeChecked();
+});
+
+test("из итога самопроверки можно вернуться к своим отметкам", async ({ page }) => {
+  await page.goto("/proverit-sebya");
+  const topic = page.locator("#nastroenie");
+  await topic.getByRole("checkbox").nth(1).check();
+  await topic.getByRole("button", { name: "Посмотреть результат" }).click();
+  await expect(topic.getByRole("link", { name: "Пройти шкалу депрессии Бека" })).toHaveAttribute("href", "/test/depression");
+  await topic.getByRole("link", { name: "Пройти шкалу депрессии Бека" }).click();
+  await page.goBack();
+  await topic.getByRole("button", { name: "Изменить ответы" }).click();
+  await expect(topic.getByRole("checkbox").nth(1)).toBeChecked();
+  await expect(page.locator("#trevoga").getByRole("checkbox").first()).not.toBeChecked();
 });

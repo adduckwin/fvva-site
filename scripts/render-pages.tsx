@@ -39,13 +39,10 @@ function renderPage(template: string, path: string) {
   if (path !== "/404" && metadata.canonical !== SITE_ORIGIN + path) {
     throw new Error(`Route does not have its own canonical URL: ${path}`);
   }
-  const notice = path.startsWith("/test/") || path === "/proverit-sebya"
-    ? '<noscript><p class="container py-4">Чтобы ответить на вопросы и получить результат, включите JavaScript в браузере.</p></noscript>'
-    : "";
   const head = renderToStaticMarkup(<Head {...metadata} />);
   return template
     .replace(/<title>.*?<\/title>/, () => head)
-    .replace('<div id="root"></div>', () => `${notice}<div id="root" data-page="${path}">${body}</div>`);
+    .replace('<div id="root"></div>', () => `<div id="root" data-page="${path}">${body}</div>`);
 }
 
 export function staticDocuments(template: string) {

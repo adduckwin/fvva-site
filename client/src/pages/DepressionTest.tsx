@@ -1,18 +1,7 @@
-import "./secondary-pages.css";
-/**
- * DepressionTest page — Beck Depression Inventory (BDI-II)
- * Full 21-question test with anonymous scoring.
- * Brand chrome uses design tokens (forest / cream / terracotta).
- * Severity colors are an intentional clinical scale — single source: RESULT_LEVELS.
- */
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Progress } from "@/components/ui/progress";
-import { useMeta } from "@/hooks/useMeta";
+import BeckQuestionnaire from "@/components/BeckQuestionnaire";
 import CrisisSupport from "@/components/CrisisSupport";
+import { useMeta } from "@/hooks/useMeta";
 
 interface Question {
   id: number;
@@ -233,52 +222,51 @@ const questions: Question[] = [
   },
 ];
 
-const MAX_SCORE = 63;
-
-/* Clinical severity scale — single source of truth.
-   Colors are a warm traffic-light ramp, intentionally distinct from brand chrome. */
 const RESULT_LEVELS = [
   {
     threshold: 13,
     level: "Минимальный уровень",
-    color: "#5C9A6F",
-    description:
-      "Сейчас признаков снижения настроения немного — это спокойный диапазон. Если что-то всё же беспокоит, прислушаться к себе всегда полезно.",
+    description: "По ответам за эти две недели признаков снижения настроения немного. Отдельная трудность всё равно может быть для вас важной.",
   },
   {
     threshold: 19,
     level: "Лёгкий уровень",
-    color: "#D9A441",
-    description:
-      "Похоже, вам сейчас непросто. Это лёгкий уровень — хороший момент поддержать себя; если состояние держится, его стоит обсудить со специалистом. С этим работают, и становится легче.",
+    description: "В ответах заметны изменения настроения. Обратите внимание, как давно вы их замечаете и каким делам они мешают.",
   },
   {
     threshold: 28,
     level: "Умеренный уровень",
-    color: "#C77D4A",
-    description:
-      "Вам сейчас тяжело, и это важно не оставлять без внимания. Такое состояние хорошо поддаётся помощи — с поддержкой специалиста становится заметно легче. Это не слабость и не приговор.",
+    description: "Ответы указывают на заметные трудности за эти две недели. При обсуждении со специалистом важно рассказать, как они сказываются на обычной жизни.",
   },
   {
     threshold: Infinity,
     level: "Выраженный уровень",
-    color: "#B4533B",
-    description:
-      "Сейчас вам очень тяжело — и вы заслуживаете поддержки. Это выраженное состояние, но даже из него есть выход: оно поддаётся помощи, и вы не обязаны справляться в одиночку. Будьте бережны к себе — первый шаг можно сделать прямо сейчас.",
+    description: "В ваших ответах отражены выраженные трудности за последние две недели.",
   },
 ];
 
 function getResult(score: number) {
-  return RESULT_LEVELS.find((l) => score <= l.threshold) ?? RESULT_LEVELS[0];
+  return RESULT_LEVELS.find(level => score <= level.threshold) ?? RESULT_LEVELS[0];
 }
 
-function rangeLabel(index: number) {
-  const start = index === 0 ? 0 : RESULT_LEVELS[index - 1].threshold + 1;
-  const end =
-    RESULT_LEVELS[index].threshold === Infinity
-      ? MAX_SCORE
-      : RESULT_LEVELS[index].threshold;
-  return `${start}–${end}`;
+function nextSteps(score: number) {
+  if (score > 19) {
+    return (
+      <>
+        <p>Перед разговором можно записать один пример: что в последнее время стало даваться труднее и когда вы впервые это заметили.</p>
+        <Link href="/blog/chto-skazat-na-pervoy-konsultatsii">С чего начать разговор со специалистом</Link>
+      </>
+    );
+  }
+  return (
+    <>
+      <p>{score <= 13
+        ? "Если что-то всё же беспокоит, к этому можно вернуться отдельно. Например, вспомнить один недавний день, когда вам было особенно трудно."
+        : "Если перемены держатся или мешают в повседневной жизни, их стоит обсудить с врачом или психологом. На встречу можно принести один пример из последних двух недель."}</p>
+      <Link href="/blog/chto-takoe-depressiya">Когда стоит обратиться за поддержкой</Link>
+      <Link href="/contact">Записаться на консультацию</Link>
+    </>
+  );
 }
 
 export default function DepressionTest() {
@@ -290,334 +278,25 @@ export default function DepressionTest() {
       "тест на депрессию, шкала Бека, тест Бека, BDI, депрессия тест онлайн, самодиагностика, опросник",
   });
 
-  const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [showResult, setShowResult] = useState(false);
-  const [currentQ, setCurrentQ] = useState(0);
-
-  const totalQuestions = questions.length;
-  const answeredCount = Object.keys(answers).length;
-  const progress = (answeredCount / totalQuestions) * 100;
-  const score = Object.values(answers).reduce((sum, v) => sum + v, 0);
-  const result = getResult(score);
-  const hasSuicidalThoughts = (answers[9] ?? 0) > 0;
-  const showImmediateSupport = !showResult && questions[currentQ].id === 9 && hasSuicidalThoughts;
-  const supportRef = useRef<HTMLDivElement>(null);
-  const questionToFocus = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (showImmediateSupport) {
-      supportRef.current?.focus({ preventScroll: true });
-      supportRef.current?.scrollIntoView({ block: "start" });
-    }
-  }, [showImmediateSupport]);
-
-  function goToQuestion(index: number) {
-    if (index === currentQ) return;
-    questionToFocus.current = index;
-    setCurrentQ(index);
-  }
-
-  const handleAnswer = (questionId: number, value: number) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
-    if (currentQ < totalQuestions - 1 && !(questionId === 9 && value > 0)) {
-      goToQuestion(currentQ + 1);
-    }
-  };
-
-  const handleSubmit = () => {
-    if (answeredCount === totalQuestions) {
-      setShowResult(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handleReset = () => {
-    setAnswers({});
-    setShowResult(false);
-    setCurrentQ(0);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <div className="secondary-page questionnaire">
-      {/* Header */}
-      <section className="questionnaire-intro">
-        <div className="questionnaire-width">
-          <div className="questionnaire-heading">
-          <Link
-            href="/"
-            className="secondary-back"
-          >
-            <ArrowLeft size={14} /> На главную
-          </Link>
-          <h1 className="secondary-title">
-            Шкала депрессии Бека (BDI-II)
-          </h1>
-          <p className="questionnaire-lead">
-            Выберите одно утверждение в каждой группе, которое лучше всего
-            описывает ваше состояние за последние две недели, включая сегодня.
-          </p>
-          <p className="questionnaire-note">
-            Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
-          </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="questionnaire-body">
-        <div className="questionnaire-width">
-          <AnimatePresence mode="wait">
-            {showResult ? (
-              <motion.div
-                key="result"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-              >
-                <div className="surface rounded-2xl p-8 md:p-12">
-                  <h2 className="text-2xl text-forest mb-6 text-center">
-                    Результат теста
-                  </h2>
-
-                  {hasSuicidalThoughts && <CrisisSupport urgent />}
-                  <div className="text-center mb-8">
-                    <div
-                      className="inline-flex items-center justify-center w-24 h-24 rounded-full text-white text-3xl font-semibold mb-4"
-                      style={{ backgroundColor: hasSuicidalThoughts ? "var(--color-forest)" : result.color }}
-                    >
-                      {score}
-                    </div>
-                    <p className="text-lg text-muted-foreground">из {MAX_SCORE} баллов</p>
-                    <p className="text-sm text-muted-foreground max-w-md mx-auto mt-3">
-                      {hasSuicidalThoughts
-                        ? "Сумма баллов отражает ваши ответы за последние две недели. Мысли о самоубийстве заслуживают отдельного внимания при любой сумме баллов."
-                        : "Это снимок вашего состояния за последние две недели. Обсудить результат и получить индивидуальную оценку можно со специалистом."}
-                    </p>
-                  </div>
-
-                  {!hasSuicidalThoughts && score > 19 && <CrisisSupport />}
-
-                  {!hasSuicidalThoughts && (
-                    <>
-                      <div
-                        className="rounded-xl p-6 mb-8"
-                        style={{ backgroundColor: result.color + "15" }}
-                      >
-                        <h3
-                          className="text-xl mb-3"
-                          style={{ color: result.color }}
-                        >
-                          {result.level}
-                        </h3>
-                        <p className="text-ink/70 leading-relaxed">
-                          {result.description}
-                        </p>
-                      </div>
-
-                      <div className="bg-cream rounded-xl p-6 mb-8">
-                        <h4 className="text-lg text-forest mb-3">
-                          Шкала интерпретации
-                        </h4>
-                        <div className="space-y-2 text-sm">
-                          {RESULT_LEVELS.map((lvl, i) => (
-                            <div
-                              key={lvl.level}
-                              className={`flex justify-between items-center py-2 ${
-                                i !== RESULT_LEVELS.length - 1
-                                  ? "border-b border-forest/5"
-                                  : ""
-                              }`}
-                            >
-                              <span className="text-ink/70">
-                                {rangeLabel(i)} баллов
-                              </span>
-                              <span
-                                className="font-medium"
-                                style={{ color: lvl.color }}
-                              >
-                                {lvl.level}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <p className="text-ink/50 text-xs text-center mb-8">
-                        Результаты теста носят информационный характер и не являются
-                        клиническим диагнозом. Для постановки диагноза обратитесь к
-                        квалифицированному специалисту.
-                      </p>
-                    </>
-                  )}
-
-                  <div className="flex flex-wrap justify-center gap-4">
-                    <Button
-                      onClick={handleReset}
-                      variant="outline"
-                      className="secondary-action"
-                    >
-                      <RotateCcw size={16} className="mr-2" /> Пройти заново
-                    </Button>
-                    {!hasSuicidalThoughts && (
-                      <Link href="/contact" className="secondary-action">
-                        Записаться на консультацию
-                      </Link>
-                    )}
-                  </div>
-                  {!hasSuicidalThoughts && (
-                    <p className="text-center text-muted-foreground text-sm mt-4">
-                      Полноценная работа начинается с первой сессии.
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="test"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {/* Progress */}
-                <div className="mb-8">
-                  <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                    <span>
-                      Вопрос {currentQ + 1} из {totalQuestions}
-                    </span>
-                    <span>{answeredCount} отвечено</span>
-                  </div>
-                  <Progress
-                    aria-label="Прогресс теста"
-                    aria-valuetext={`Ответов: ${answeredCount} из ${totalQuestions}`}
-                    value={progress}
-                    className="h-2 bg-forest/10"
-                  />
-                </div>
-
-                {/* Question navigation dots */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {questions.map((q, i) => (
-                    <button
-                      key={q.id}
-                      onClick={() => goToQuestion(i)}
-                      aria-label={`Вопрос ${i + 1}${answers[q.id] !== undefined ? ", ответ дан" : ""}`}
-                      aria-current={i === currentQ ? "step" : undefined}
-                      className={`questionnaire-step ${
-                        i === currentQ
-                          ? "is-current"
-                          : answers[q.id] !== undefined
-                            ? "is-answered"
-                            : ""
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Current question */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentQ}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="questionnaire-question"
-                  >
-                    <h3
-                      tabIndex={-1}
-                      ref={(heading) => {
-                        if (heading && questionToFocus.current === currentQ) {
-                          questionToFocus.current = null;
-                          if (!showImmediateSupport) {
-                            heading.focus({ preventScroll: true });
-                            heading.scrollIntoView({ block: "nearest", behavior: "instant" });
-                          }
-                        }
-                      }}
-                      className="scroll-mt-24 text-xl text-forest mb-6"
-                    >
-                      {currentQ + 1}. {questions[currentQ].title}
-                    </h3>
-                    <div className="space-y-3">
-                      {questions[currentQ].options.map((option, optIdx) => {
-                        const selected =
-                          answers[questions[currentQ].id] === optIdx;
-                        return (
-                          <button
-                            key={optIdx}
-                            aria-pressed={selected}
-                            onClick={() =>
-                              handleAnswer(questions[currentQ].id, optIdx)
-                            }
-                            className={`w-full text-left p-4 rounded-md border-2 transition-colors ${
-                              selected
-                                ? "border-forest bg-forest/5"
-                                : "border-forest/10 hover:border-terracotta/40 hover:bg-cream"
-                            }`}
-                          >
-                            <div className="flex items-start gap-3">
-                              <div
-                                className={`w-5 h-5 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-colors ${
-                                  selected
-                                    ? "border-forest bg-forest"
-                                    : "border-forest/30"
-                                }`}
-                              >
-                                {selected && (
-                                  <div className="w-2 h-2 rounded-full bg-white" />
-                                )}
-                              </div>
-                              <span className="text-ink/80 text-sm leading-relaxed">
-                                {option}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                {showImmediateSupport && (
-                  <div ref={supportRef} tabIndex={-1} aria-label="Поддержка прямо сейчас" role="region" className="mt-6 scroll-mt-24">
-                    <CrisisSupport urgent />
-                    <Link href="/" className="underline text-forest">Выйти из теста</Link>
-                  </div>
-                )}
-                {/* Navigation */}
-                <div className="flex flex-wrap justify-between gap-2 mt-8">
-                  <Button
-                    variant="outline"
-                    onClick={() => goToQuestion(currentQ - 1)}
-                    disabled={currentQ === 0}
-                    className="secondary-action"
-                  >
-                    <ArrowLeft size={16} className="mr-2" /> Назад
-                  </Button>
-
-                  {currentQ < totalQuestions - 1 ? (
-                    <Button
-                      onClick={() => goToQuestion(currentQ + 1)}
-                      className="secondary-action"
-                    >
-                      Далее <ArrowRight size={16} className="ml-2" />
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleSubmit}
-                      disabled={answeredCount < totalQuestions}
-                      className="secondary-action"
-                    >
-                      Показать результат
-                    </Button>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
-    </div>
+    <BeckQuestionnaire
+      title="Шкала депрессии Бека (BDI-II)"
+      image="/images/beck-mood.webp"
+      instructions="Выберите одно утверждение в каждой группе, которое лучше всего описывает ваше состояние за последние две недели, включая сегодня."
+      period="за последние две недели"
+      questions={questions}
+      levels={RESULT_LEVELS}
+      getResult={getResult}
+      renderNext={nextSteps}
+      immediateSupport={{
+        questionId: 9,
+        isNeeded: value => value > 0,
+        content: <CrisisSupport urgent />,
+        resultNote: "Мысли о самоубийстве заслуживают отдельного внимания при любой сумме баллов.",
+      }}
+      renderResultSupport={(answers, score) =>
+        score > 19 && !answers[9] ? <CrisisSupport /> : null
+      }
+    />
   );
 }

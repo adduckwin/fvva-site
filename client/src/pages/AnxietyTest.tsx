@@ -1,18 +1,6 @@
-import "./secondary-pages.css";
-/**
- * AnxietyTest page — Beck Anxiety Inventory (BAI)
- * Full 21-question test with anonymous scoring.
- * Brand chrome uses design tokens (forest / cream / terracotta).
- * Severity colors are an intentional clinical scale — single source: RESULT_LEVELS.
- */
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, RotateCcw, Wind } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Progress } from "@/components/ui/progress";
+import BeckQuestionnaire from "@/components/BeckQuestionnaire";
 import { useMeta } from "@/hooks/useMeta";
-import CrisisSupport from "@/components/CrisisSupport";
 
 interface Symptom {
   id: number;
@@ -50,52 +38,57 @@ const ratingLabels = [
   "Сильно, едва мог(ла) вынести",
 ];
 
-const MAX_SCORE = 63;
+const questions = symptoms.map(symptom => ({
+  id: symptom.id,
+  title: symptom.text,
+  options: ratingLabels,
+}));
 
-/* Clinical severity scale — single source of truth.
-   Colors are a warm traffic-light ramp, intentionally distinct from brand chrome. */
 const RESULT_LEVELS = [
   {
     threshold: 7,
     level: "Минимальный уровень",
-    color: "#5C9A6F",
-    description:
-      "Уровень тревоги сейчас минимальный — это спокойный диапазон.",
+    description: "Большинство перечисленных ощущений за эту неделю вас совсем не беспокоило. Отдельное ощущение могло быть неприятным даже при небольшой сумме баллов.",
   },
   {
     threshold: 15,
     level: "Лёгкий уровень",
-    color: "#D9A441",
-    description:
-      "Тревога есть, но в лёгкой форме. Хороший момент освоить пару техник саморегуляции; если она усиливается — стоит обсудить это со специалистом.",
+    description: "Сумма учитывает и число ощущений, и то, насколько неприятным было каждое. Ниже можно открыть свои ответы, чтобы вспомнить подробности.",
   },
   {
     threshold: 25,
     level: "Умеренный уровень",
-    color: "#C77D4A",
-    description:
-      "Тревога ощутимо мешает — и с этим точно можно работать. КПТ и ACT хорошо помогают вернуть опору. Вы не обязаны терпеть это в одиночку.",
+    description: "Посмотрите, какие ощущения за неделю беспокоили вас больше всего. Все ваши отметки доступны ниже.",
   },
   {
     threshold: Infinity,
     level: "Выраженный уровень",
-    color: "#B4533B",
-    description:
-      "Тревога сейчас очень сильная, и вам тяжело — это важно не оставлять без поддержки. Такое состояние поддаётся помощи, и облегчение возможно. Будьте бережны к себе.",
+    description: "Ощущения, которые вы отметили как наиболее неприятные, можно назвать при разговоре со специалистом. Список ваших ответов доступен ниже.",
   },
-];
+] as const;
 
 function getResult(score: number) {
-  return RESULT_LEVELS.find((l) => score <= l.threshold) ?? RESULT_LEVELS[0];
+  return RESULT_LEVELS.find(level => score <= level.threshold) ?? RESULT_LEVELS[RESULT_LEVELS.length - 1];
 }
 
-function rangeLabel(index: number) {
-  const start = index === 0 ? 0 : RESULT_LEVELS[index - 1].threshold + 1;
-  const end =
-    RESULT_LEVELS[index].threshold === Infinity
-      ? MAX_SCORE
-      : RESULT_LEVELS[index].threshold;
-  return `${start}–${end}`;
+function nextSteps(score: number) {
+  const discuss = score > 15;
+  return (
+    <>
+      <p>
+        {discuss
+          ? "Если эти ощущения мешают вам в обычной жизни, стоит обсудить их с врачом или психологом. Можно взять один недавний пример и рассказать, что вы чувствовали и чем тогда занимались."
+          : "Вспомните, что побудило вас пройти тест. Если об этом по-прежнему хочется поговорить, можно обратиться к врачу или психологу даже при небольшом балле."}
+      </p>
+      {discuss ? (
+        <Link href="/contact">Обсудить результат с психологом</Link>
+      ) : (
+        <Link href="/blog/trevoga-norma-ili-rasstrojstvo">Когда с тревогой стоит обратиться за помощью</Link>
+      )}
+      {!discuss && <Link href="/contact">Написать Александре</Link>}
+      <Link href="/panicheskaya-ataka">Что можно сделать, если тревожно прямо сейчас</Link>
+    </>
+  );
 }
 
 export default function AnxietyTest() {
@@ -107,254 +100,16 @@ export default function AnxietyTest() {
       "тест на тревогу, шкала тревоги Бека, BAI, тревожность тест, тревога онлайн тест, самодиагностика тревога, опросник тревоги",
   });
 
-  const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [showResult, setShowResult] = useState(false);
-
-  const totalQuestions = symptoms.length;
-  const answeredCount = Object.keys(answers).length;
-  const progress = (answeredCount / totalQuestions) * 100;
-  const score = Object.values(answers).reduce((sum, v) => sum + v, 0);
-  const result = getResult(score);
-  const showCrisis = score > 15;
-
-  const handleAnswer = (symptomId: number, value: number) => {
-    setAnswers((prev) => ({ ...prev, [symptomId]: value }));
-  };
-
-  const handleSubmit = () => {
-    if (answeredCount === totalQuestions) {
-      setShowResult(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handleReset = () => {
-    setAnswers({});
-    setShowResult(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <div className="secondary-page questionnaire">
-      {/* Header */}
-      <section className="questionnaire-intro">
-        <div className="questionnaire-width">
-          <div className="questionnaire-heading">
-          <Link
-            href="/"
-            className="secondary-back"
-          >
-            <ArrowLeft size={14} /> На главную
-          </Link>
-          <h1 className="secondary-title">
-            Шкала тревоги Бека (BAI)
-          </h1>
-          <p className="questionnaire-lead">
-            Оцените, насколько каждый из перечисленных симптомов беспокоил вас в
-            течение последней недели, включая сегодня.
-          </p>
-          <p className="questionnaire-note">
-            Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
-          </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="questionnaire-body">
-        <div className="questionnaire-width">
-          <AnimatePresence mode="wait">
-            {showResult ? (
-              <motion.div
-                key="result"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-              >
-                <div className="surface rounded-2xl p-8 md:p-12">
-                  <h2 className="text-2xl text-forest mb-6 text-center">
-                    Результат теста
-                  </h2>
-
-                  <div className="text-center mb-8">
-                    <div
-                      className="inline-flex items-center justify-center w-24 h-24 rounded-full text-white text-3xl font-semibold mb-4"
-                      style={{ backgroundColor: result.color }}
-                    >
-                      {score}
-                    </div>
-                    <p className="text-lg text-muted-foreground">из {MAX_SCORE} баллов</p>
-                    <p className="text-sm text-muted-foreground max-w-md mx-auto mt-3">
-                      Это снимок вашего состояния за последнюю неделю, а не
-                      диагноз. Тревога поддаётся работе, и ей можно научиться
-                      управлять.
-                    </p>
-                  </div>
-
-                  {showCrisis && <CrisisSupport />}
-
-                  <div
-                    className="rounded-xl p-6 mb-8"
-                    style={{ backgroundColor: result.color + "15" }}
-                  >
-                    <h3
-                      className="text-xl mb-3"
-                      style={{ color: result.color }}
-                    >
-                      {result.level}
-                    </h3>
-                    <p className="text-ink/70 leading-relaxed">
-                      {result.description}
-                    </p>
-                  </div>
-
-                  <div className="bg-cream rounded-xl p-6 mb-8">
-                    <h4 className="text-lg text-forest mb-3">
-                      Шкала интерпретации
-                    </h4>
-                    <div className="space-y-2 text-sm">
-                      {RESULT_LEVELS.map((lvl, i) => (
-                        <div
-                          key={lvl.level}
-                          className={`flex justify-between items-center py-2 ${
-                            i !== RESULT_LEVELS.length - 1
-                              ? "border-b border-forest/5"
-                              : ""
-                          }`}
-                        >
-                          <span className="text-ink/70">
-                            {rangeLabel(i)} баллов
-                          </span>
-                          <span
-                            className="font-medium"
-                            style={{ color: lvl.color }}
-                          >
-                            {lvl.level}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <p className="text-ink/50 text-xs text-center mb-8">
-                    Результаты теста носят информационный характер и не являются
-                    клиническим диагнозом. Для постановки диагноза обратитесь к
-                    квалифицированному специалисту.
-                  </p>
-
-                  <div className="flex flex-wrap justify-center gap-4">
-                    <Button
-                      onClick={handleReset}
-                      variant="outline"
-                      className="secondary-action"
-                    >
-                      <RotateCcw size={16} className="mr-2" /> Пройти заново
-                    </Button>
-                    <Button asChild className="secondary-action">
-                      <Link href="/contact">
-                        Записаться на консультацию
-                      </Link>
-                    </Button>
-                  </div>
-                  <p className="text-center text-muted-foreground text-sm mt-4">
-                    Полноценная работа начинается с первой сессии.
-                  </p>
-                  <div className="mt-5 text-center">
-                    <Link
-                      href="/panicheskaya-ataka"
-                      className="inline-flex items-center gap-1.5 text-terracotta-text hover:text-terracotta-deep text-sm font-medium"
-                    >
-                      <Wind size={15} /> Тревога накрывает прямо сейчас? Техники, которые помогают за минуты
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="test"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                {/* Progress */}
-                <div className="mb-8">
-                  <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                    <span id="anxiety-progress-label">Прогресс</span>
-                    <span>
-                      {answeredCount} из {totalQuestions}
-                    </span>
-                  </div>
-                  <Progress
-                    aria-labelledby="anxiety-progress-label"
-                    aria-valuetext={`Ответов: ${answeredCount} из ${totalQuestions}`}
-                    value={progress}
-                    className="h-2 bg-forest/10"
-                  />
-                </div>
-
-                {/* All symptoms in a table-like layout */}
-                <div className="questionnaire-answers">
-                  {/* Header row - visible on md+ */}
-                  <div className="hidden md:grid md:grid-cols-[1fr_repeat(4,120px)] bg-secondary text-ink p-4 text-sm font-medium">
-                    <span>Симптом</span>
-                    {ratingLabels.map((label, i) => (
-                      <span key={i} className="text-center">
-                        {label}
-                      </span>
-                    ))}
-                  </div>
-
-                  {symptoms.map((symptom, idx) => (
-                    <div
-                      key={symptom.id}
-                      role="radiogroup"
-                      aria-labelledby={`symptom-${symptom.id}`}
-                      className={`p-4 md:grid md:grid-cols-[1fr_repeat(4,120px)] md:items-center ${
-                        idx % 2 === 0 ? "bg-white" : "bg-cream/50"
-                      } ${idx !== symptoms.length - 1 ? "border-b border-forest/5" : ""}`}
-                    >
-                      <span id={`symptom-${symptom.id}`} className="text-ink/80 text-sm font-medium mb-3 md:mb-0 block">
-                        {symptom.id}. {symptom.text}
-                      </span>
-
-                      {ratingLabels.map((label, value) => (
-                        <label
-                          key={value}
-                          className="relative mt-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-forest/25 p-3 text-sm text-ink hover:bg-cream has-checked:border-forest has-checked:bg-forest/10 has-focus-visible:outline-2 has-focus-visible:outline-forest md:mt-0 md:min-h-[52px] md:justify-center md:self-stretch md:rounded-md md:border-transparent"
-                        >
-                          <input
-                            type="radio"
-                            name={`anxiety-${symptom.id}`}
-                            value={value}
-                            checked={answers[symptom.id] === value}
-                            onChange={() => handleAnswer(symptom.id, value)}
-                            className="size-5 shrink-0 accent-forest"
-                          />
-                          <span className="md:sr-only">{label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Submit */}
-                <div className="mt-8 text-center">
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={answeredCount < totalQuestions}
-                    className="secondary-action"
-                  >
-                    Показать результат
-                  </Button>
-                  {answeredCount < totalQuestions && (
-                    <p className="text-muted-foreground text-sm mt-3">
-                      Чтобы увидеть результат, выберите ответ для каждого симптома.
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
-    </div>
+    <BeckQuestionnaire
+      title="Шкала тревоги Бека (BAI)"
+      image="/images/beck-anxiety.webp"
+      instructions="Оцените, насколько каждый из перечисленных симптомов беспокоил вас в течение последней недели, включая сегодня."
+      questions={questions}
+      getResult={getResult}
+      levels={RESULT_LEVELS}
+      period="за последнюю неделю"
+      renderNext={nextSteps}
+    />
   );
 }

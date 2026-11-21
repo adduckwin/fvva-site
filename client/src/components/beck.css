@@ -1,0 +1,107 @@
+.beck-page {
+  --beck-line: #d9d6cf;
+  --beck-ink: #282832;
+  --beck-muted: #5d5c65;
+  --beck-link: #424b81;
+  width: min(calc(100% - 2.5rem), 62rem);
+  margin: 0 auto;
+  padding-block: clamp(1.1rem, 3.5vw, 3rem) clamp(3rem, 6vw, 6rem);
+  color: var(--beck-ink);
+  font-family: var(--font-sans);
+}
+.beck-page :is(h1,h2,h3) { font-family: inherit; font-weight: 460; letter-spacing: -.045em; line-height: 1.11; }
+.beck-page p { line-height: 1.52; }
+.beck-page :is(a, summary, button):focus-visible, .beck-choice:has(input:focus-visible) {
+  outline: 2px solid var(--beck-link);
+  outline-offset: 3px;
+}
+.beck-page :is(h2, .beck-safety) { scroll-margin-top: 5.2rem; }
+#beck-question-title { scroll-margin-top: 7.7rem; }
+.beck-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, .75fr);
+  align-items: center;
+  gap: clamp(2rem, 8vw, 6rem);
+  margin-bottom: clamp(1.25rem, 3vw, 2.7rem);
+}
+.beck-page a, .beck-restart button {
+  color: var(--beck-link);
+  text-decoration: underline;
+  text-underline-offset: .21em;
+  text-decoration-thickness: 1px;
+}
+.beck-backlink { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: .95rem; }
+.beck-intro h1 { font-size: clamp(2rem, 4.45vw, 3.65rem); margin: .3rem 0 .8rem; }
+.beck-intro p { max-width: 58ch; font-size: clamp(1rem, 1.45vw, 1.2rem); }
+.beck-page .beck-note { margin-top: .5rem; color: var(--beck-muted); font-size: .95rem; }
+.beck-intro img { width: 100%; height: auto; aspect-ratio: 1.5; object-fit: cover; }
+.beck-main, .beck-no-script { max-width: 46rem; margin-inline: auto; }
+.beck-no-script { padding-block: 1.5rem; border-top: 1px solid var(--beck-line); }
+.beck-no-script a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.beck-question, .beck-result { border-top: 1px solid var(--beck-line); padding-top: clamp(1rem, 2.6vw, 2rem); }
+.beck-progress { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1rem; color: var(--beck-muted); font-size: .95rem; }
+.beck-progress progress {
+  appearance: none; flex: 1; min-width: 0; height: 3px; border: none; background: #dedcd6; color: var(--beck-link);
+}
+.beck-progress progress::-webkit-progress-bar { background: #dedcd6; }
+.beck-progress progress::-webkit-progress-value { background: var(--beck-link); }
+.beck-progress progress::-moz-progress-bar { background: var(--beck-link); }
+.beck-question h2, .beck-result h2 { font-size: clamp(1.55rem, 3.2vw, 2.55rem); margin-bottom: 1.1rem; }
+.beck-options { border-top: 1px solid var(--beck-line); }
+.beck-choice {
+  display: flex; align-items: center; gap: .85rem; min-height: 3.15rem;
+  border-bottom: 1px solid var(--beck-line); padding: .75rem .8rem;
+  font-size: clamp(1rem, 1.45vw, 1.12rem); line-height: 1.42; cursor: pointer;
+}
+.beck-choice input { flex: none; width: 1.13rem; height: 1.13rem; margin: 0; accent-color: var(--beck-link); }
+.beck-choice:has(:checked) { background-color: #eaeaf0; box-shadow: inset 2px 0 var(--beck-link); }
+@media (hover: hover) { .beck-choice:hover { background-color: #f0efe9; } .beck-choice:has(:checked):hover { background-color: #eaeaf0; } }
+.beck-actions { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-block: 1rem; }
+.beck-actions button, .beck-restart button, .beck-page summary { min-height: 2.75rem; cursor: pointer; }
+.beck-actions button {
+  padding: .5rem .3rem; color: var(--beck-link); text-decoration: underline; text-underline-offset: .22em;
+}
+.beck-actions .beck-advance {
+  margin-left: auto; padding: .55rem 1.3rem; color: var(--beck-ink); border: 1px solid #828299; border-radius: 3px; text-decoration: none;
+}
+.beck-advance:hover:enabled { border-color: var(--beck-link); background: #efeff3; }
+.beck-actions .beck-advance:disabled { cursor: default; color: #6e6e74; border-color: #c7c5c3; }
+.beck-page summary { width: fit-content; align-content: center; padding: .55rem .2rem .55rem 0; color: var(--beck-link); }
+.beck-index, .beck-bands, .beck-restart { border-top: 1px solid var(--beck-line); }
+.beck-index ol { list-style: none; margin: 0 0 .5rem; padding: 0; }
+.beck-index li + li { border-top: 1px solid var(--beck-line); }
+.beck-index button {
+  width: 100%; padding: .55rem .3rem; min-height: 2.75rem; text-align: left; display: flex; gap: .7rem; line-height: 1.42; cursor: pointer;
+}
+.beck-index-number { flex: 0 0 1.65rem; color: var(--beck-link); font-variant-numeric: tabular-nums; }
+.beck-index small { display: block; color: var(--beck-muted); font-size: .875rem; }
+.beck-result p { max-width: 61ch; font-size: 1.06rem; }
+.beck-result .beck-result-scale { margin: -.45rem 0 .7rem; font-size: 1rem; color: var(--beck-muted); }
+.beck-score { color: var(--beck-muted); margin-block: .7rem .8rem; }
+.beck-score strong { color: var(--beck-ink); font: 400 clamp(3rem, 6vw, 4.35rem)/1 Georgia, serif; }
+.beck-result .beck-level { font-size: 1.35rem; font-weight: 520; margin-bottom: .45rem; }
+.beck-next { padding-block: 1.4rem .9rem; }
+.beck-next h3 { font-size: 1.45rem; margin-bottom: .5rem; }
+.beck-next a, .beck-safety > a {
+  display: block; width: fit-content; min-height: 2.75rem; padding-block: .58rem; line-height: 1.45;
+}
+.beck-bands dl { margin: .35rem 0 1rem; }
+.beck-bands dl div { display: flex; padding: .28rem 0; gap: 1rem; }
+.beck-bands dt { width: 4rem; flex: none; font-variant-numeric: tabular-nums; }
+.beck-restart button { display: inline-block; padding-block: .5rem; margin-bottom: .6rem; }
+.beck-result > .beck-backlink { margin-top: .8rem; }
+.beck-safety { margin-block: .85rem 1rem; }
+.beck-support-note { background: #f1eee6; border: 0; border-left: 3px solid #747387; padding: clamp(1rem, 2.4vw, 1.55rem); margin: 1rem 0; border-radius: 0; box-shadow: none; }
+.beck-support-note p + p { margin-top: .75rem; }
+.beck-support-note h3 { margin-bottom: .5rem; font-size: 1.32rem; }
+.beck-support-note a { display: inline-flex; min-height: 2.75rem; padding-inline: 0; color: var(--beck-link); background: none; }
+@media (max-width: 620px) {
+  .beck-page { padding-top: .35rem; }
+  .beck-intro { position: relative; display: block; margin-bottom: 1.15rem; }
+  .beck-intro h1 { max-width: 22ch; padding-right: 4.75rem; font-size: clamp(1.65rem, 6.7vw, 2.15rem); }
+  .beck-intro img { position: absolute; right: 0; top: 3.1rem; width: 4.25rem; }
+  .beck-question h2 { margin-bottom: .8rem; }
+  .beck-progress { margin-bottom: .65rem; }
+  .beck-choice { min-height: 2.95rem; padding: .62rem .55rem; }
+}
+@media (scripting: none) { .beck-main { display: none; } }
