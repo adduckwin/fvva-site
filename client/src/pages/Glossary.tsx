@@ -1,10 +1,9 @@
-import "./secondary-pages.css";
-import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import "./glossary.css";
+import { useRef, useState } from "react";
 import { Link } from "wouter";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
-import { GLOSSARY } from "@/lib/glossary";
+import { GLOSSARY, type GlossaryTerm } from "@/lib/glossary";
 
 const GLOSSARY_SCHEMA = {
   "@context": "https://schema.org",
@@ -17,14 +16,17 @@ const GLOSSARY_SCHEMA = {
   })),
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.04, duration: 0.45 },
-  }),
-};
+const TERM_GROUPS = new Map<string, GlossaryTerm[]>();
+for (const term of [...GLOSSARY].sort((a, b) => a.term.localeCompare(b.term, "ru"))) {
+  const letter = term.term[0].toLocaleUpperCase("ru");
+  const group = TERM_GROUPS.get(letter);
+  if (group) group.push(term);
+  else TERM_GROUPS.set(letter, [term]);
+}
+
+const TERM_FORMS: Record<string, string> = { one: "термин", few: "термина", many: "терминов", other: "термина" };
+const PLURALS = new Intl.PluralRules("ru");
+const normalize = (text: string) => text.toLocaleLowerCase("ru").replaceAll("ё", "е");
 
 export default function Glossary() {
   useMeta({
@@ -35,96 +37,96 @@ export default function Glossary() {
       "словарь терминов психология, что такое КПТ, что такое ACT, когнитивные искажения, руминация, паническая атака, психология термины",
   });
 
-  const [q, setQ] = useState("");
+  const [query, setQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
+  const search = normalize(query.trim());
+  const groups = Array.from(TERM_GROUPS, ([letter, terms]) => ({
+    letter,
+    terms: search
+      ? terms.filter(({ term, definition }) =>
+          normalize(term).includes(search) || normalize(definition).includes(search))
+      : terms,
+  })).filter(group => group.terms.length);
+  const count = groups.reduce((total, group) => total + group.terms.length, 0);
 
-  const sorted = useMemo(
-    () => [...GLOSSARY].sort((a, b) => a.term.localeCompare(b.term, "ru")),
-    [],
-  );
-
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return sorted;
-    return sorted.filter(
-      (t) =>
-        t.term.toLowerCase().includes(s) ||
-        t.definition.toLowerCase().includes(s),
-    );
-  }, [q, sorted]);
+  function clearSearch() {
+    setQuery("");
+    searchRef.current?.focus();
+  }
 
   return (
-    <div className="secondary-page container py-12 md:py-16">
+    <div className="lexicon">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(GLOSSARY_SCHEMA).replace(/</g, "\\u003c") }} />
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        className="secondary-intro max-w-2xl mx-auto mb-8"
-      >
-        <motion.h1
-          custom={1}
-          variants={fadeUp}
-          className="secondary-title mb-5"
-        >
-          Словарь психологических терминов
-        </motion.h1>
-        <motion.p
-          custom={2}
-          variants={fadeUp}
-          className="text-lg text-ink/75 leading-relaxed"
-        >
-          Короткие объяснения слов, которые встречаются на сайте и на встречах.
-        </motion.p>
-      </motion.div>
-
-      {/* Search */}
-      <div className="max-w-2xl mx-auto mb-8">
-        <div className="secondary-search flex items-center gap-3 px-5 py-3">
-          <Search size={18} className="text-muted-foreground shrink-0" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Найти термин…"
-            aria-label="Поиск по словарю"
-            className="bg-transparent outline-none flex-1 min-w-0 text-ink placeholder:text-muted-foreground text-sm"
-          />
+      <header className="lexicon-opening">
+        <h1><span>Словарь</span> психологических терминов</h1>
+        <p>Короткие объяснения слов, которые встречаются на сайте и на встречах.</p>
+        <div className="lexicon-plate" aria-hidden="true">
+          <img src="/images/press-lens.webp" alt="" width="720" height="480" />
         </div>
-      </div>
+      </header>
 
-      {/* Terms */}
-      <div className="max-w-2xl mx-auto space-y-3">
-        {filtered.map((t, i) => (
-          <motion.div
-            key={t.slug}
-            id={t.slug}
-            initial="hidden"
-            animate="visible"
-            custom={Math.min(i, 8)}
-            variants={fadeUp}
-            className="glossary-entry scroll-mt-24"
-          >
-            <h2 className="font-sans text-lg text-forest mb-1.5">{t.term}</h2>
-            <p className="text-ink/75 text-sm leading-relaxed">{t.definition}</p>
-            {t.link && (
-              <Link
-                href={t.link.href}
-                className="inline-flex items-center gap-1.5 text-terracotta-text hover:text-terracotta-deep text-sm font-medium mt-3"
-              >
-                {t.link.label}
-                <ArrowRight size={14} />
-              </Link>
-            )}
-          </motion.div>
-        ))}
+      <div className="lexicon-body">
+        <div className="lexicon-tools">
+          <div className="lexicon-search" role="search" aria-label="Поиск по словарю">
+            <label htmlFor="glossary-search">Поиск по словарю</label>
+            <div className="lexicon-field">
+              <Search size={17} aria-hidden="true" />
+              <input
+                type="search"
+                ref={searchRef}
+                id="glossary-search"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                placeholder="Найти термин…"
+                aria-controls="glossary-results"
+              />
+              {query && (
+                <button type="button" aria-label="Сбросить поиск" onClick={clearSearch}>
+                  <X size={18} aria-hidden="true" />
+                </button>
+              )}
+            </div>
+          </div>
 
-        {filtered.length === 0 && (
-          <p className="text-center text-muted-foreground py-10">
-            Ничего не нашлось по запросу «{q}». Попробуйте другое слово — или{" "}
-            <Link href="/contact" className="text-terracotta-text font-medium">
-              просто напишите
-            </Link>
-            .
+          {groups.length > 0 && (
+            <nav className="lexicon-index" aria-label="Алфавитный указатель">
+              <p>По алфавиту</p>
+              <ul>
+                {groups.map(({ letter }) => (
+                  <li key={letter}>
+                    <a href={`#letter-${letter}`} aria-label={`Термины на букву ${letter}`}>{letter}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+          <p className="lexicon-count" role="status" aria-atomic="true">
+            {count} {TERM_FORMS[PLURALS.select(count)]}
           </p>
-        )}
+        </div>
+
+        <div className="lexicon-results" id="glossary-results">
+          {groups.map(({ letter, terms }) => (
+            <section key={letter} className="lexicon-group" aria-labelledby={`letter-${letter}`}>
+              <h2 id={`letter-${letter}`} tabIndex={-1} className="lexicon-letter">{letter}</h2>
+              <div>
+                {terms.map(({ slug, term, definition, link }) => (
+                  <article key={slug} id={slug} className="lexicon-entry">
+                    <h3>{term}</h3>
+                    <p>{definition}</p>
+                    {link && <Link href={link.href}>{link.label}</Link>}
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+          {count === 0 && (
+            <p className="lexicon-empty">
+              Ничего не нашлось по запросу «{query}». Попробуйте другое слово — или{" "}
+              <Link href="/contact">просто напишите</Link>.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

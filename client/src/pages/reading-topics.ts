@@ -32,4 +32,34 @@ export const articleArt: Record<string, Illustration | undefined> = {
     src: "/images/studio-mood.webp",
     placeholder: ART_PLACEHOLDERS.mood,
   },
+  "dyhatelnye-tehniki-pri-trevoge": {
+    src: "/images/folio-breath.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAABQBACdASoYABAAPulgqU2pJaQiMAgBIB0JZwDE2CG5FCGyfPwTHquqBaOIAP7nY8/qUIKmVsKiCUV+0AuwtQNTEY65wu2TfZ0qKyGoAoAAAA==",
+  },
+  "son-i-psihicheskoe-zdorovie": {
+    src: "/images/folio-sleep.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQBACdASoYABAAPulgqU2pJaQiMAgBIB0JZQC06B6Vj5vyPTYuUuSgAADJIOwrGP9nhmSMpGlLzoX0V81KcDW38G5R06oXghBfQ2GdqMvYuFZ4ezTXwAAA",
+  },
+  "vygoranie-priznaki-i-chto-delat": {
+    src: "/images/folio-burnout.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABQBACdASoYABAAPulgqU2pJaQiMAgBIB0JZwDG9CP7tWX5uOsL3GdqcXYAAP62ogkNKVilANziK6OXeN0XUxL3n9gnFD+/McBr+KFTuTZWXTpm6AjhDC5pbui6iMMU5QAAAA==",
+  },
+  "kak-podderzhit-blizkogo-s-depressiej": {
+    src: "/images/folio-support.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAwCdASoYABAAPulgqE0pJaOiMAgBIB0JYwAAS+TTK3vS6fGzMolAAP6mnflDLYEIjIGiU859K09o1Vnpiwwsyf4Jpsgeh4BRWs4qm+nk2bg+4ls+oMXB66zbjI8q4UQZeAAA",
+  },
+  "prokrastinaciya-i-depressiya": {
+    src: "/images/folio-first-step.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAwCdASoYABAAPulkqU2pJaQiMAgBIB0JQBOgBDv4GaOAWRrpNyqAAP7nAvtC/OiBIg2PR16iHG/7gRbtMMDV5ntXna9lIdpiUcqAAAA=",
+  },
+  "kak-kpt-pomogaet": {
+    src: "/images/folio-cbt.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAwCdASoYABAAPulep00pJSOiMAgBIB0JZwAAUnUbZWCdTQnaCgAA/pdp7acnsuftWEyEpcxWC7Z7U7bLRS7ogIAAAA==",
+  },
 };

@@ -1,8 +1,10 @@
 import { Link } from "wouter";
-import { ART_PLACEHOLDERS } from "@/lib/art-placeholders";
+import { DESK_PREVIEWS } from "@/lib/desk-placeholders";
+import DiaryLeaves from "@/components/DiaryLeaves";
 import { useMeta } from "@/hooks/useMeta";
 import { BOOKING_TERMS, PRACTICE } from "@/lib/practice";
 import { articles } from "@/lib/articles";
+import { articleArt } from "./reading-topics";
 import "./home.css";
 
 const EDUCATION = [
@@ -98,11 +100,11 @@ export default function Home() {
         <figure className="studio-cover">
           <img
             className="studio-cover-paper"
-            src="/images/studio-light.webp"
-            width="1200"
-            height="800"
+            src="/images/desk-cover.webp"
+            width="1280"
+            height="880"
             alt=""
-            style={{ backgroundImage: "url(" + ART_PLACEHOLDERS.light + ")" }}
+            style={{ backgroundImage: "url(" + DESK_PREVIEWS.cover + ")" }}
           />
           <img
             className="studio-cover-portrait"
@@ -112,6 +114,7 @@ export default function Home() {
             alt="Александра Федорова"
             fetchPriority="high"
           />
+          <img className="studio-cover-tape" src="/images/desk-corner.webp" width="280" height="54" alt="" />
         </figure>
         <div className="studio-intro-body">
           <p>
@@ -178,30 +181,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <aside
-          className="studio-example"
-          aria-label="Пример из дневника мыслей"
-        >
-          <h3>Из дневника мыслей</h3>
-          <p className="studio-example-intro">
-            Вымышленная ситуация из упражнения
-          </p>
-          <dl>
-            <dt>Что произошло?</dt>
-            <dd>
-              Утром я отправил коллеге макет и попросил посмотреть до пятницы. К
-              вечеру четверга ответа не было.
-            </dd>
-            <dt>Какая мысль мелькнула?</dt>
-            <dd>
-              «Макет не понравился, а коллега подбирает слова, чтобы мне об этом
-              сказать».
-            </dd>
-          </dl>
-          <Link className="studio-link" href="/blog/dnevnik-mysley-kpt">
-            Прочитать запись целиком
-          </Link>
-        </aside>
+        <DiaryLeaves />
       </section>
 
       <section id="pervaya-vstrecha" className="studio-width studio-meeting">
@@ -214,6 +194,7 @@ export default function Home() {
           <Link className="studio-link" href="/faq">
             Вопросы перед первой встречей
           </Link>
+          <img className="studio-meeting-photo" src="/images/desk-conversation.webp" width="1008" height="672" loading="lazy" alt="" style={{ backgroundImage: "url(" + DESK_PREVIEWS.conversation + ")" }} />
         </div>
         <ol>
           {steps.map(step => (
@@ -227,7 +208,10 @@ export default function Home() {
 
       <section className="studio-width studio-education">
         <details>
-          <summary>Образование и квалификация</summary>
+          <summary>
+            <img src="/images/desk-studies.webp" width="900" height="600" loading="lazy" alt="" style={{ backgroundImage: "url(" + DESK_PREVIEWS.studies + ")" }} />
+            <span>Образование и квалификация</span>
+          </summary>
           <ol>
             {EDUCATION.map(item => (
               <li key={item.program}>
@@ -250,7 +234,10 @@ export default function Home() {
               .filter(article => featuredSlugs.includes(article.slug))
               .map(article => (
                 <li key={article.slug}>
-                  <Link href={"/blog/" + article.slug}>{article.title}</Link>
+                  <Link href={"/blog/" + article.slug}>
+                    {articleArt[article.slug] && <img src={articleArt[article.slug]?.src} width="120" height="86" loading="lazy" alt="" />}
+                    <span>{article.title}</span>
+                  </Link>
                 </li>
               ))}
           </ul>

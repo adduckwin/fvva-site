@@ -1,0 +1,41 @@
+.faq-intro, .faq-directory, .faq-invitation {
+  max-width: 65rem;
+  margin-inline: auto;
+}
+.faq-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, .8fr);
+  align-items: center;
+  gap: clamp(1rem, 5vw, 5rem);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+.faq-intro p {
+  max-width: 38em;
+  margin-top: 1rem;
+  line-height: 1.58;
+  font-size: clamp(1.06rem, 1.5vw, 1.23rem);
+}
+.faq-intro img { display: block; width: 100%; height: auto; }
+.faq-directory {
+  display: grid;
+  grid-template-columns: minmax(10rem, .5fr) minmax(0, 1.5fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+}
+.faq-directory nav {
+  display: grid;
+  position: sticky;
+  top: 5.5rem;
+  justify-items: start;
+  border-top: 1px solid #a5a4aa;
+  padding-top: .5rem;
+}
+.faq-directory nav a { padding-block: .65rem; color: #444b79; text-underline-offset: .22em; text-decoration: underline; }
+.faq-invitation { margin-top: 3.5rem; }
+@media (max-width: 660px) {
+  .faq-intro { position: relative; display: block; }
+  .faq-intro h1 { margin-right: 3.75rem; }
+  .faq-intro img { position: absolute; top: -.15rem; right: -.15rem; width: 3.9rem; }
+  .faq-directory { display: block; }
+  .faq-directory nav { position: static; display: flex; gap: 0 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+}

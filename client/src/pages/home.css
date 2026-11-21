@@ -424,3 +424,141 @@
     margin-inline: 0;
   }
 }
+
+.studio-cover-paper {
+  width: 92%;
+  object-position: 28% center;
+}
+.studio-cover-portrait {
+  transform: rotate(1.6deg);
+  border: clamp(4px, .54vw, 9px) solid #faf8ee;
+  border-bottom-width: clamp(8px, 1vw, 17px);
+  box-shadow: 1px 3px 8px #30291e2b;
+}
+.studio-cover .studio-cover-tape {
+  width: 24%;
+  height: auto;
+  left: 36.5%;
+  top: 7%;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.diary-stack {
+  isolation: isolate;
+  position: relative;
+  justify-self: center;
+  width: min(calc(100% - .6rem), 33rem);
+  margin-bottom: .6rem;
+}
+.diary-stack::before, .diary-stack::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: .3rem .45rem -.3rem .5rem;
+  background: #e4e5ec;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 1px 3px #27234828;
+}
+.diary-stack::after {
+  inset: .4rem .1rem -.25rem .5rem;
+  background: #eee9dc;
+  transform: rotate(.85deg);
+}
+.studio-example { max-width: none; }
+.diary-leaves {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0;
+  min-inline-size: 0;
+  margin: 1.05rem 0 0;
+  padding: 0;
+}
+.diary-leaves label {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  padding: .4rem clamp(.36rem, .95vw, .8rem);
+  color: #484756;
+  border-bottom: 1px solid #bbbac5;
+  cursor: pointer;
+  font-size: clamp(.8rem, 1.1vw, .97rem);
+}
+.diary-leaves input:checked + label {
+  color: #373e72;
+  border-bottom: 2px solid currentColor;
+  font-weight: 550;
+}
+.diary-leaves input:focus-visible + label {
+  outline: 2px solid #414a80;
+  outline-offset: -2px;
+}
+.diary-leaves dl {
+  width: 100%;
+  min-height: 14em;
+  order: 2;
+  display: none;
+  margin: .95rem 0 0;
+}
+.diary-leaves dl dd:last-child { margin-bottom: .9rem; }
+.diary-leaves input:checked + label + dl { display: block; }
+.studio-meeting { align-items: center; }
+.studio-meeting-photo {
+  display: block;
+  margin-top: .8rem;
+  width: min(100%, 29rem);
+  height: clamp(9rem, 17vw, 15rem);
+  object-fit: cover;
+  object-position: 50% 65%;
+  background-size: cover;
+}
+.studio-meeting ol {
+  list-style: none;
+  counter-reset: session-step;
+  margin: 0;
+  padding: 0;
+}
+.studio-meeting li {
+  counter-increment: session-step;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: .25rem .6rem;
+  margin: 0;
+  padding: 1.15rem 0;
+}
+.studio-meeting li + li { border-top: 1px solid #d8d6d1; }
+.studio-meeting li::before {
+  content: counter(session-step);
+  grid-row: span 2;
+  color: #535780;
+  font: italic 1.7rem/1 Georgia, serif;
+}
+.studio-meeting li h3, .studio-meeting li p { grid-column: 2; margin: 0; }
+.studio-education summary { align-items: center; justify-content: initial; }
+.studio-education summary img {
+  width: clamp(4.25rem, 10vw, 8.5rem);
+  height: clamp(3.2rem, 6vw, 4.65rem);
+  object-fit: cover;
+  object-position: 30% 50%;
+  background-size: cover;
+}
+.studio-education summary::after { margin-left: auto; }
+.studio-reading li {
+  max-width: none;
+  padding-bottom: .55rem;
+  margin-bottom: .55rem;
+  border-bottom: 1px solid #d8d6d1;
+}
+.studio-reading li a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  line-height: 1.4;
+}
+.studio-reading li img { width: 5rem; height: 3.5rem; object-fit: cover; flex: none; }
+@media (max-width: 640px) {
+  .studio-cover .studio-cover-tape { left: 44%; top: 3.5%; width: 23%; }
+  .studio-cover-paper { width: 91%; }
+  .studio-example { padding: 1.9rem 1.65rem 2.35rem 1.25rem; }
+  .diary-leaves dl { min-height: 0; }
+  .studio-reading li img { width: 4.65rem; height: 3.4rem; }
+}

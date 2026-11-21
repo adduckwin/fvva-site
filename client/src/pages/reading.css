@@ -83,33 +83,54 @@
   position: relative;
   isolation: isolate;
   width: 100%;
-  aspect-ratio: 1.35;
+  aspect-ratio: 1.5;
+  background: #53646b;
 }
-.diary-spread img {
+.diary-table {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.diary-filled,
+.diary-blank {
   position: absolute;
   height: auto;
   border: 1px solid #e0deda;
   box-shadow:
-    2px 6px 15px #37334513,
-    1px 2px 3px #2821320d;
+    2px 6px 12px #1c212954,
+    1px 2px 3px #28213233;
 }
 .diary-filled {
-  width: 46%;
-  left: 7%;
-  top: 7%;
-  transform: rotate(-7deg);
+  width: 36.5%;
+  left: 14%;
+  top: 10%;
+  transform: rotate(-6deg);
 }
 .diary-blank {
-  width: 46%;
-  left: 46%;
-  top: 11%;
-  transform: rotate(5deg);
+  width: 36.5%;
+  left: 48%;
+  top: 14%;
+  transform: rotate(4deg);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .diary-filled,
+  .diary-blank {
+    transition: transform 240ms ease-out;
+  }
+  .diary-spread:is(:hover, :focus-visible) .diary-filled {
+    transform: translateX(-2%) rotate(-7deg);
+  }
+  .diary-spread:is(:hover, :focus-visible) .diary-blank {
+    transform: translateX(2%) rotate(5deg);
+  }
 }
 
 .library-index {
   display: grid;
-  grid-template-columns: minmax(10rem, 0.38fr) minmax(0, 1fr);
-  column-gap: clamp(2.3rem, 6vw, 6rem);
+  grid-template-columns: minmax(10rem, 0.24fr) minmax(0, 1fr);
+  column-gap: clamp(2.3rem, 5vw, 5rem);
   align-items: start;
 }
 .library-contents {
@@ -132,7 +153,7 @@
   scroll-margin-top: 6rem;
 }
 .library-topic + .library-topic {
-  margin-top: clamp(3rem, 6vw, 5.5rem);
+  margin-top: clamp(3.8rem, 7vw, 7rem);
 }
 .library-topic > h2 {
   margin-bottom: clamp(1rem, 2.5vw, 1.9rem);
@@ -144,7 +165,8 @@
   list-style: none;
 }
 .library-topic li + li {
-  margin-top: 1.6rem;
+  padding-block: clamp(1.05rem, 2vw, 1.7rem);
+  border-top: 1px solid var(--reading-line);
 }
 .catalog-entry {
   display: block;
@@ -172,13 +194,34 @@
 }
 .catalog-entry.illustrated {
   display: grid;
-  grid-template-columns: 0.78fr 1fr;
+  grid-template-columns: minmax(0, 1fr) clamp(7.5rem, 15vw, 11.5rem);
+  grid-template-areas: "copy image";
   gap: clamp(1.3rem, 2.6vw, 2.6rem);
   align-items: center;
-  margin-bottom: 2.1rem;
+}
+.catalog-entry.illustrated img {
+  grid-area: image;
+}
+.catalog-entry-copy {
+  grid-area: copy;
+}
+.catalog-entry.catalog-feature {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  grid-template-areas: "image copy";
+  margin-bottom: clamp(1.8rem, 3.5vw, 3.3rem);
+}
+.library-topic:nth-child(even) .catalog-feature {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  grid-template-areas: "copy image";
+}
+.catalog-feature h3 {
+  font-size: clamp(1.65rem, 2.45vw, 2.3rem);
+  letter-spacing: -0.04em;
+  line-height: 1.16;
+  text-wrap: pretty;
 }
 .catalog-entry img,
-.article-opening img {
+.article-opening > img {
   display: block;
   width: 100%;
   aspect-ratio: 1.5;
@@ -206,11 +249,18 @@
 }
 .article-opening.with-image {
   display: grid;
-  grid-template-columns: 1.2fr 0.9fr;
+  grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.22fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
   max-width: none;
   margin-bottom: clamp(2.5rem, 4.3vw, 4.2rem);
+}
+.article-opening.with-diary {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+}
+.with-diary .diary-spread {
+  max-width: 27rem;
+  justify-self: end;
 }
 .reading-prose,
 .reading-after {
@@ -233,6 +283,7 @@
 }
 .reading-prose h2 {
   font-size: clamp(1.48rem, 2.5vw, 2.05rem);
+  scroll-margin-top: 6rem;
 }
 .reading-prose h3 {
   font-size: clamp(1.23rem, 2vw, 1.48rem);
@@ -272,6 +323,71 @@
   border-top: 1px solid var(--reading-line);
   padding-top: 1rem;
 }
+.reading-body.with-contents {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.35fr) minmax(0, 43rem);
+  justify-content: space-between;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+.article-contents {
+  align-self: start;
+  position: sticky;
+  top: 6rem;
+  color: var(--reading-secondary);
+  font-size: 0.96rem;
+  line-height: 1.38;
+}
+.article-contents p,
+.article-contents summary {
+  color: #292830;
+  font-size: 1.06rem;
+  font-weight: 550;
+}
+.article-contents ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.7rem 0 0;
+}
+.article-contents a {
+  display: block;
+  width: fit-content;
+  padding-block: 0.4rem;
+  color: var(--reading-secondary);
+  text-decoration: none;
+}
+.article-contents a:hover,
+.article-contents a:focus-visible {
+  color: var(--reading-link);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.contents-narrow {
+  display: none;
+}
+@media (max-width: 900px) {
+  .reading-body.with-contents {
+    display: block;
+  }
+  .article-contents {
+    position: static;
+    max-width: 43rem;
+    margin: 0 auto 1.65rem;
+    border-block: 1px solid var(--reading-line);
+  }
+  .contents-wide {
+    display: none;
+  }
+  .contents-narrow {
+    display: block;
+  }
+  .contents-narrow summary {
+    padding-block: 0.85rem;
+    cursor: pointer;
+  }
+  .contents-narrow ul {
+    margin: 0 0 0.75rem;
+  }
+}
 @media (max-width: 760px) {
   .library-lead {
     grid-template-columns: minmax(0, 1fr);
@@ -306,17 +422,41 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 1.45rem;
   }
-  .article-opening img {
-    aspect-ratio: 2.5;
-    object-fit: cover;
+  .with-diary .diary-spread {
+    justify-self: start;
+    max-width: 19.5rem;
   }
 }
-@media (max-width: 450px) {
+@media (max-width: 570px) {
   .catalog-entry.illustrated {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.85rem;
+    grid-template-columns: minmax(0, 1fr) clamp(5rem, 21vw, 7.5rem);
+    gap: 1rem;
+    align-items: start;
   }
-  .catalog-entry img {
-    aspect-ratio: 2;
+  .catalog-entry.illustrated:not(.catalog-feature) img {
+    margin-top: 0.2rem;
+    aspect-ratio: 1.2;
+  }
+  .catalog-entry.illustrated:not(.catalog-feature) {
+    grid-template-areas: "title image" "teaser teaser";
+    row-gap: 0.45rem;
+  }
+  .catalog-entry.illustrated:not(.catalog-feature) .catalog-entry-copy {
+    display: contents;
+  }
+  .catalog-entry.illustrated:not(.catalog-feature) h3 {
+    grid-area: title;
+  }
+  .catalog-entry.illustrated:not(.catalog-feature) p {
+    grid-area: teaser;
+    margin: 0;
+  }
+  .catalog-entry.catalog-feature,
+  .library-topic:nth-child(even) .catalog-feature {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "image" "copy";
+  }
+  .catalog-feature h3 {
+    max-width: 24ch;
   }
 }

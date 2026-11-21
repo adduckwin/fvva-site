@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import DiarySpread from "@/components/DiarySpread";
 import { articles } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
 import { articleArt, readingTopics, topicFor } from "./reading-topics";
@@ -44,28 +45,7 @@ export default function Blog() {
                 <a href="/dnevnik-mysley-kpt.pdf">Скачать бланк в PDF</a>
               </div>
             </div>
-            <a
-              className="diary-spread"
-              href="/dnevnik-mysley-kpt.pdf"
-              aria-label="Открыть две страницы дневника в PDF"
-            >
-              <img
-                className="diary-filled"
-                src="/images/dnevnik-primer.webp"
-                alt=""
-                width="610"
-                height="862"
-                decoding="async"
-              />
-              <img
-                className="diary-blank"
-                src="/images/dnevnik-list.webp"
-                alt=""
-                width="610"
-                height="862"
-                decoding="async"
-              />
-            </a>
+            <DiarySpread />
           </section>
         )}
         {groups.length > 0 && (
@@ -83,36 +63,35 @@ export default function Blog() {
                 <section id={group.id} key={group.id} className="library-topic">
                   <h2>{group.title}</h2>
                   <ul>
-                    {group.entries.map(article => (
-                      <li key={article.slug}>
-                        <Link
-                          className={
-                            articleArt[article.slug]
-                              ? "catalog-entry illustrated"
-                              : "catalog-entry"
-                          }
-                          href={`/blog/${article.slug}`}
-                        >
-                          {articleArt[article.slug] && (
-                            <img
-                              src={articleArt[article.slug]?.src}
-                              alt=""
-                              width="960"
-                              height="640"
-                              loading="lazy"
-                              decoding="async"
-                              style={{
-                                backgroundImage: `url(${articleArt[article.slug]?.placeholder})`,
-                              }}
-                            />
-                          )}
-                          <div>
-                            <h3>{article.title}</h3>
-                            <p>{article.excerpt}</p>
-                          </div>
-                        </Link>
-                      </li>
-                    ))}
+                    {group.entries.map((article, index) => {
+                      const art = articleArt[article.slug];
+                      return (
+                        <li key={article.slug}>
+                          <Link
+                            className={`catalog-entry${art ? " illustrated" : ""}${index === 0 && art ? " catalog-feature" : ""}`}
+                            href={`/blog/${article.slug}`}
+                          >
+                            {art && (
+                              <img
+                                src={art.src}
+                                alt=""
+                                width="960"
+                                height="640"
+                                loading="lazy"
+                                decoding="async"
+                                style={{
+                                  backgroundImage: `url(${art.placeholder})`,
+                                }}
+                              />
+                            )}
+                            <div className="catalog-entry-copy">
+                              <h3>{article.title}</h3>
+                              <p>{article.excerpt}</p>
+                            </div>
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </section>
               ))}

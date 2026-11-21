@@ -141,6 +141,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         <div className="container site-header__bar">
           <Link href="/" className="site-wordmark" onClick={() => setMobileOpen(false)}>
+            <img className="site-imprint" src="/images/press-imprint.webp" width="144" height="92" alt="" />
             <span className="site-wordmark__name">Александра Федорова</span>
           </Link>
           <nav className="site-navigation" aria-label="Основная навигация">

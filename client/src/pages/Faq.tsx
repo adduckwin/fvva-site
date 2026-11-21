@@ -1,15 +1,16 @@
 import "./secondary-pages.css";
-import { motion } from "framer-motion";
+import "./faq.css";
 import { Link } from "wouter";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
 import { PRACTICE } from "@/lib/practice";
 
 type Item = { q: string; a?: React.ReactNode; plain: string };
-type Section = { title: string; items: Item[] };
+type Section = { id: string; title: string; items: Item[] };
 
 const SECTIONS: Section[] = [
   {
+    id: "o-podhode",
     title: "О подходе",
     items: [
       {
@@ -91,6 +92,7 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    id: "kak-my-rabotaem",
     title: "Как мы работаем",
     items: [
       {
@@ -156,6 +158,7 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    id: "prakticheskie-voprosy",
     title: "Практические вопросы",
     items: [
       {
@@ -221,15 +224,6 @@ const FAQ_SCHEMA = {
   ),
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.06, duration: 0.5 },
-  }),
-};
-
 function Row({ item }: { item: Item }) {
   return (
     <details className="group faq-row">
@@ -254,57 +248,31 @@ export default function Faq() {
   return (
     <div className="secondary-page container py-12 md:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c") }} />
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        className="secondary-intro max-w-2xl mx-auto mb-12"
-      >
-        <motion.h1
-          custom={1}
-          variants={fadeUp}
-          className="secondary-title mb-5"
-        >
-          Первая консультация с психологом онлайн
-        </motion.h1>
-        <motion.p
-          custom={2}
-          variants={fadeUp}
-          className="text-lg text-ink/75 leading-relaxed"
-        >
-          На первой встрече вы рассказываете, что вас беспокоит. Я задаю вопросы,
-          мы разбираем вашу ситуацию и вместе намечаем первые шаги. Встреча длится{" "}
-          {PRACTICE.sessionLength}.
-        </motion.p>
-      </motion.div>
-
-      <div className="max-w-2xl mx-auto space-y-12">
-        {SECTIONS.map((section) => (
-          <section key={section.title}>
-            <motion.h2
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              variants={fadeUp}
-              className="text-xl md:text-2xl text-forest mb-4"
-            >
-              {section.title}
-            </motion.h2>
-            <div>
-              {section.items.map((item) => (
-                <Row key={item.q} item={item} />
-              ))}
-            </div>
-          </section>
-        ))}
+      <header className="faq-intro">
+        <div>
+          <h1 className="secondary-title">Первая консультация с психологом онлайн</h1>
+          <p>
+            На первой встрече вы рассказываете, что вас беспокоит. Я задаю вопросы,
+            мы разбираем вашу ситуацию и вместе намечаем первые шаги. Встреча длится{" "}
+            {PRACTICE.sessionLength}.
+          </p>
+        </div>
+        <img src="/images/press-folds.webp" width="600" height="400" alt="" />
+      </header>
+      <div className="faq-directory">
+        <nav aria-label="Разделы вопросов">
+          {SECTIONS.map(section => <a href={"#" + section.id} key={section.id}>{section.title}</a>)}
+        </nav>
+        <div className="space-y-12">
+          {SECTIONS.map(section => (
+            <section id={section.id} key={section.id} className="scroll-mt-24">
+              <h2 className="text-xl md:text-2xl text-forest mb-4">{section.title}</h2>
+              {section.items.map(item => <Row key={item.q} item={item} />)}
+            </section>
+          ))}
+        </div>
       </div>
-
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={fadeUp}
-        className="max-w-2xl mx-auto mt-16"
-      >
+      <div className="faq-invitation">
         <p className="text-ink/75 leading-relaxed mb-5">
           Если хотите уточнить стоимость или выбрать время, напишите мне в Telegram или MAX.
         </p>
@@ -312,7 +280,7 @@ export default function Faq() {
           Написать Александре
           <ArrowRight size={18} />
         </Link>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -157,3 +157,6 @@
   .site-footer__identity { grid-column: auto; }
   .site-footer__notes { grid-template-columns: 1fr auto; gap: 2rem; }
 }
+
+.site-wordmark { gap: clamp(.46rem, 1vw, .75rem); }
+.site-imprint { width: clamp(1.8rem, 2.8vw, 2.4rem); height: auto; flex: none; }
