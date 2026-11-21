@@ -1,0 +1,131 @@
+.panic-help {
+  --panic-ink: #292830;
+  --panic-secondary: #565660;
+  --panic-link: #414b7e;
+  --panic-rule: #cecdc6;
+  width: min(calc(100% - clamp(2.5rem, 9vw, 8rem)), 66rem);
+  margin-inline: auto;
+  padding-block: clamp(1rem, 3.8vw, 3.5rem) clamp(3rem, 6vw, 6rem);
+  color: var(--panic-ink);
+  font: 400 1rem/1.5 var(--font-sans);
+}
+.panic-help h1, .panic-help h2 {
+  color: var(--panic-ink);
+  font: 450 1rem/1.08 var(--font-sans);
+  letter-spacing: -0.045em;
+}
+.panic-opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr);
+  column-gap: clamp(1.5rem, 5.5vw, 5rem);
+  align-items: start;
+}
+.panic-opening > :not(.panic-print) { grid-column: 1; }
+.panic-opening h1 {
+  font-size: clamp(2.1rem, 5.1vw, 4.3rem);
+  margin-bottom: clamp(1rem, 2.8vw, 2rem);
+}
+.panic-print {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: center;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: url("/images/issue-panic.webp") center / contain no-repeat;
+}
+.panic-urgent {
+  padding: 0.1rem 0 0.15rem clamp(0.75rem, 1.4vw, 1.2rem);
+  border-inline-start: 3px solid #aa705e;
+}
+.panic-urgent p:first-child { max-width: 40ch; line-height: 1.4; }
+.panic-urgent strong { font-weight: 550; }
+.panic-help :is(a, button, summary):focus-visible {
+  outline: 2px solid var(--panic-link);
+  outline-offset: 3px;
+}
+.panic-help a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 44px;
+  color: var(--panic-link);
+  text-decoration: underline;
+  text-decoration-color: #959bb6;
+  text-underline-offset: 0.22em;
+}
+.panic-help a:hover { text-decoration-color: currentColor; }
+.panic-help a svg { flex: 0 0 auto; }
+.panic-first-time {
+  max-width: 51ch;
+  margin-top: 0.5rem;
+  color: var(--panic-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+.panic-first-step { margin-top: clamp(1.3rem, 3vw, 2.5rem); }
+.panic-first-step h2 { font-size: clamp(1.45rem, 2.8vw, 2.3rem); }
+.panic-first-step > p {
+  margin-top: 0.55rem;
+  max-width: 38ch;
+  font-size: clamp(1.1rem, 1.5vw, 1.32rem);
+  line-height: 1.38;
+}
+.panic-first-step nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.3rem;
+  margin-top: 0.45rem;
+}
+.panic-first-step nav a:first-child { font-weight: 500; }
+.panic-exercise, .panic-after {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+  column-gap: clamp(2rem, 6.5vw, 6rem);
+  margin-top: clamp(2.2rem, 5.2vw, 4.8rem);
+  border-top: 1px solid var(--panic-rule);
+  padding-top: clamp(1.4rem, 3.4vw, 3rem);
+  scroll-margin-top: 5.5rem;
+}
+.panic-exercise:focus { outline: none; }
+.panic-exercise:focus-visible > h2 {
+  outline: 2px solid var(--panic-link);
+  outline-offset: 4px;
+}
+.panic-exercise > h2, .panic-after h2 {
+  font-size: clamp(1.8rem, 3.7vw, 3rem);
+}
+.panic-after p { max-width: 40ch; margin: 0.85rem 0 0.3rem; color: var(--panic-secondary); }
+.panic-reading { display: grid; }
+.panic-reading > a { justify-content: space-between; border-bottom: 1px solid var(--panic-rule); padding-block: 0.75rem; }
+@media (max-width: 700px) {
+  .panic-opening, .panic-exercise, .panic-after { display: block; }
+  .panic-print { display: none; }
+  .panic-exercise > h2, .panic-after > div + div { margin-bottom: 1rem; }
+  .panic-reading { margin-top: 1rem; }
+  .panic-reading a:first-child::before {
+    content: "";
+    flex: 0 0 3.75rem;
+    align-self: stretch;
+    min-height: 3.6rem;
+    margin-right: 0.45rem;
+    background: url("/images/issue-panic.webp") center / cover;
+  }
+}
+@media (max-width: 365px) {
+  .panic-help { width: calc(100% - 2rem); }
+  .panic-opening h1 { font-size: 1.85rem; margin-bottom: 0.8rem; }
+  .panic-first-step { margin-top: 1rem; }
+  .panic-first-step nav { margin-top: 0.2rem; }
+}
+@media (orientation: landscape) and (min-width: 580px) and (max-width: 950px) and (max-height: 500px) {
+  .panic-help { padding-top: 0.8rem; }
+  .panic-opening {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+  .panic-opening h1 { grid-column: 1 / -1; margin-bottom: 0.85rem; font-size: 2rem; }
+  .panic-opening .panic-first-step { grid-column: 2; grid-row: 2; margin-top: 0; }
+  .panic-print { display: none; }
+}

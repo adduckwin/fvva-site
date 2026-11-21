@@ -1,92 +1,9 @@
-import "./secondary-pages.css";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { ArrowDown, ArrowDownToLine, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
-import { Eye, Ear, Hand, Flower2, Coffee, ArrowRight, RotateCcw, FileText, Download } from "lucide-react";
+import BreathingGuide from "@/components/BreathingGuide";
+import GroundingGuide from "@/components/GroundingGuide";
 import { useMeta } from "@/hooks/useMeta";
-import BoxBreathing from "@/components/BoxBreathing";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.5 },
-  }),
-};
-
-const GROUNDING = [
-  { n: 5, label: "которые вы видите", icon: Eye, hint: "Оглядитесь и назовите их про себя — не спеша." },
-  { n: 4, label: "которые вы слышите", icon: Ear, hint: "Прислушайтесь: близкие и далёкие звуки." },
-  { n: 3, label: "которых вы касаетесь", icon: Hand, hint: "Почувствуйте ткань, поверхность, опору под собой." },
-  { n: 2, label: "которые чувствуете на запах", icon: Flower2, hint: "Или просто вспомните два любимых запаха." },
-  { n: 1, label: "который ощущаете на вкус", icon: Coffee, hint: "Или отметьте вкус во рту прямо сейчас." },
-];
-
-function Grounding() {
-  const [step, setStep] = useState(0);
-  const done = step >= GROUNDING.length;
-  const item = GROUNDING[Math.min(step, GROUNDING.length - 1)];
-  const Icon = item.icon;
-
-  return (
-    <div className="surface rounded-3xl p-8 md:p-10 max-w-xl mx-auto">
-      {!done ? (
-        <div className="text-center">
-          <div className="flex items-center justify-center mx-auto mb-4">
-            <Icon className="text-terracotta" size={26} />
-          </div>
-          <div className="flex items-baseline justify-center gap-2 mb-2">
-            <span className="font-sans text-5xl text-forest leading-none">
-              {item.n}
-            </span>
-            <span className="text-lg text-ink/80">
-              {item.n === 1 ? "вещь," : item.n < 5 ? "вещи," : "вещей,"}
-            </span>
-          </div>
-          <p className="text-xl text-forest mb-3">{item.label}</p>
-          <p className="text-muted-foreground text-sm mb-7 max-w-sm mx-auto">
-            {item.hint}
-          </p>
-          <button
-            onClick={() => setStep((s) => s + 1)}
-            className="secondary-action"
-          >
-            {step === GROUNDING.length - 1 ? "Завершить" : "Дальше"}
-            <ArrowRight size={18} />
-          </button>
-          <div className="flex items-center justify-center gap-2 mt-6">
-            {GROUNDING.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 rounded-full transition-all ${
-                  i <= step ? "w-6 bg-terracotta" : "w-1.5 bg-border"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="text-center">
-          <p className="font-sans text-2xl text-forest mb-3">
-            Вы здесь и сейчас
-          </p>
-          <p className="text-ink/75 mb-7 max-w-sm mx-auto">
-            Вы вернулись в момент. Если волна ещё не схлынула — это нормально,
-            можно пройти круг ещё раз или вернуться к дыханию.
-          </p>
-          <button
-            onClick={() => setStep(0)}
-            className="secondary-action"
-          >
-            <RotateCcw size={18} />
-            Пройти заново
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
+import "./panic-help.css";
 
 export default function PanicAttack() {
   useMeta({
@@ -98,179 +15,46 @@ export default function PanicAttack() {
   });
 
   return (
-    <div className="secondary-page">
-      <div className="container py-14 md:py-20">
-        {/* Hero + breathing */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          className="secondary-intro max-w-2xl mx-auto mb-10"
-        >
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            className="secondary-title mb-5"
-          >
-            Что делать в момент панической атаки
-          </motion.h1>
-          <motion.p
-            custom={2}
-            variants={fadeUp}
-            className="text-lg text-ink/75 leading-relaxed"
-          >
-            Если у вас сильная боль в груди или вам очень трудно дышать,
-            вызовите местную экстренную службу сейчас. Если приступ возник
-            впервые или ощущения отличаются от привычных, обратитесь за
-            медицинской помощью, чтобы выяснить причину.
-          </motion.p>
-          <p className="text-ink/75 leading-relaxed mt-4">
-            Если вы узнаёте знакомый приступ паники, устройтесь удобно.
-            Выберите то, что вам подходит: несколько спокойных вдохов и выдохов
-            или упражнение на заземление ниже. Дышите в своём темпе.
+    <div className="panic-help">
+      <div className="panic-opening">
+        <h1>Помощь при панике</h1>
+        <div className="panic-urgent">
+          <p><strong>Сильно болит в груди или очень трудно дышать?</strong> Вызовите скорую.</p>
+          <p className="panic-first-time">
+            Если такое впервые или ощущения непривычны, обратитесь за медицинской помощью.
           </p>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="max-w-md mx-auto"
-        >
-          <BoxBreathing />
-        </motion.div>
-
-        {/* Grounding */}
-        <section className="mt-20 md:mt-28">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-8"
-          >
-            <motion.h2
-              custom={1}
-              variants={fadeUp}
-              className="text-2xl md:text-3xl text-forest mt-4"
-            >
-              Заземление 5-4-3-2-1
-            </motion.h2>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-ink/70 max-w-xl mx-auto mt-3"
-            >
-              Если мысли разгоняются, мягко переключите внимание на органы чувств.
-              Это возвращает из тревожных мыслей в «здесь и сейчас».
-            </motion.p>
-          </motion.div>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-          >
-            <Grounding />
-          </motion.div>
+        </div>
+        <section className="panic-first-step" aria-labelledby="familiar-panic">
+          <h2 id="familiar-panic">При знакомом приступе</h2>
+          <p>Почувствуйте опору под ногами или спиной. Назовите про себя один предмет рядом.</p>
+          <nav aria-label="Упражнения при знакомом приступе">
+            <a href="#zazemlenie">Пройти по шагам <ArrowDown aria-hidden="true" size={16} /></a>
+            <a href="#dyhanie">Подышать</a>
+          </nav>
         </section>
-
-        {/* Lead magnet — downloadable cheat sheet */}
-        <section className="mt-16 md:mt-20 max-w-2xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={fadeUp}
-            className="surface rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
-          >
-            <div className="flex items-center justify-center shrink-0">
-              <FileText className="text-terracotta" size={26} />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-sans text-xl text-forest mb-1">
-                Памятка «7 техник при тревоге»
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Короткая шпаргалка на одну страницу — сохраните на телефон, чтобы
-                была под рукой в трудную минуту.
-              </p>
-            </div>
-            <a
-              href="/7-tehnik-pri-trevoge.pdf"
-              download
-              className="secondary-action"
-            >
-              <Download size={18} /> Скачать PDF
-            </a>
-          </motion.div>
-        </section>
-
-        {/* What's happening in the body */}
-        <section className="mt-20 md:mt-28 max-w-2xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="surface rounded-3xl p-8 md:p-10"
-          >
-            <motion.h2
-              custom={0}
-              variants={fadeUp}
-              className="text-2xl text-forest mb-4"
-            >
-              Что сейчас происходит с телом
-            </motion.h2>
-            <motion.p
-              custom={1}
-              variants={fadeUp}
-              className="text-ink/75 leading-relaxed mb-4"
-            >
-              Во время панической атаки включается реакция организма на
-              опасность. Из-за этого сердце может биться чаще, дыхание —
-              участиться, а руки — дрожать.
-            </motion.p>
-            <motion.p
-              custom={2}
-              variants={fadeUp}
-              className="text-ink/75 leading-relaxed"
-            >
-              При знакомом приступе можно почувствовать опору под ногами,
-              посмотреть вокруг и назвать несколько предметов рядом.
-              Если упражнение вызывает дискомфорт, его можно остановить.
-            </motion.p>
-            <p className="text-ink/75 leading-relaxed mt-4">
-              Когда приступ пройдёт, можно прочитать,{" "}
-              <Link href="/blog/panicheskie-ataki" className="underline underline-offset-2">
-                что происходит во время панической атаки
-              </Link>
-              , или выбрать{" "}
-              <Link href="/blog/dyhatelnye-tehniki-pri-trevoge" className="underline underline-offset-2">
-                дыхательное упражнение для практики в спокойное время
-              </Link>
-              .
-            </p>
-          </motion.div>
-        </section>
-
-        {/* Gentle CTA */}
-        <section className="mt-16 md:mt-20 max-w-2xl mx-auto text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-          >
-            <p className="text-ink/75 leading-relaxed mb-5">
-              Если страх нового приступа мешает вам выходить из дома или
-              заниматься привычными делами, об этом можно поговорить на консультации.
-            </p>
-            <Link href="/contact" className="secondary-action">
-              Написать Александре
-              <ArrowRight size={18} />
-            </Link>
-
-          </motion.div>
-        </section>
+        <div className="panic-print" aria-hidden="true" />
       </div>
+
+      <section className="panic-exercise" id="zazemlenie" tabIndex={-1} aria-labelledby="grounding-title">
+        <h2 id="grounding-title">Оглянитесь вокруг</h2>
+        <GroundingGuide />
+      </section>
+      <section className="panic-exercise" id="dyhanie" tabIndex={-1} aria-labelledby="breathing-title">
+        <h2 id="breathing-title">Спокойное дыхание</h2>
+        <BreathingGuide />
+      </section>
+      <section className="panic-after" aria-labelledby="after-panic-title">
+        <div>
+          <h2 id="after-panic-title">После приступа</h2>
+          <p>Если страх нового приступа меняет ваши планы, это можно обсудить на консультации.</p>
+          <Link href="/contact">Написать Александре <ArrowRight aria-hidden="true" size={16} /></Link>
+        </div>
+        <div className="panic-reading">
+          <Link href="/blog/panicheskie-ataki">Что происходит с телом при панике <ArrowRight aria-hidden="true" size={16} /></Link>
+          <Link href="/blog/dyhatelnye-tehniki-pri-trevoge">Дыхательные упражнения для спокойного времени <ArrowRight aria-hidden="true" size={16} /></Link>
+          <a href="/7-tehnik-pri-trevoge.pdf" download>Скачать памятку «7 техник при тревоге» (PDF) <ArrowDownToLine aria-hidden="true" size={16} /></a>
+        </div>
+      </section>
     </div>
   );
 }

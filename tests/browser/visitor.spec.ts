@@ -102,7 +102,8 @@ test.describe("сайт без JavaScript", () => {
 test("в статье работают ссылки на упражнение и PDF-памятку", async ({ page }) => {
   await page.goto("/blog/dyhatelnye-tehniki-pri-trevoge");
   const content = page.locator("main .prose");
-  await expect(content.getByRole("link", { name: /Паническая атака/ })).toHaveAttribute("href", "/panicheskaya-ataka");
+  await expect(content.getByRole("link", { name: /подсказку для спокойного вдоха/ })).toHaveAttribute("href", "/panicheskaya-ataka#dyhanie");
+  await expect(content.getByRole("link", { name: /Пройти упражнение с подсказками/ })).toHaveAttribute("href", "/panicheskaya-ataka#zazemlenie");
   const download = content.getByRole("link", { name: /скачайте памятку/ });
   await expect(download).toHaveAttribute("href", "/7-tehnik-pri-trevoge.pdf");
   const response = await page.request.get("/7-tehnik-pri-trevoge.pdf");

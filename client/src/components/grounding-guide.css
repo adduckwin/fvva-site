@@ -1,0 +1,75 @@
+.grounding-guide {
+  color: var(--ink);
+  border-top: 1px solid var(--border);
+  padding-block: 1rem .25rem;
+}
+.grounding-guide h3 {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 475;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+  scroll-margin-top: 7rem;
+}
+.grounding-guide .grounding-progress {
+  margin: 0 0 .45rem;
+  color: var(--warm-gray);
+  font-size: .95rem;
+  line-height: 1.45;
+}
+.grounding-guide .grounding-hint {
+  max-width: 48ch;
+  margin: .65rem 0 0;
+  font-size: 1.06rem;
+  line-height: 1.5;
+}
+.grounding-guide .grounding-note {
+  margin: .55rem 0 0;
+  color: var(--warm-gray);
+  font-size: .98rem;
+  line-height: 1.45;
+}
+.grounding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .15rem .9rem;
+  margin-top: .85rem;
+}
+.grounding-actions button {
+  min-height: 2.8rem;
+  padding: .45rem .15rem;
+  color: var(--forest);
+  font: inherit;
+  line-height: 1.35;
+}
+.grounding-actions .grounding-advance {
+  border: 1px solid #828299;
+  border-radius: 3px;
+  padding-inline: 1rem;
+  color: var(--ink);
+}
+.grounding-actions .grounding-text {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.grounding-guide :is(button,h3):focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 3px;
+}
+.grounding-list {
+  margin: .7rem 0 0;
+  padding-left: 1.6rem;
+  list-style: decimal;
+}
+.grounding-list li {
+  padding-block: .45rem;
+  line-height: 1.5;
+}
+.grounding-list strong { font-weight: 520; }
+@media (hover: hover) {
+  .grounding-advance:hover { border-color: var(--forest); background: #efeff3; }
+  .grounding-text:hover { color: var(--ink); }
+}

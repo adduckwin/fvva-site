@@ -1,0 +1,80 @@
+.breathing-guide {
+  max-width: 37rem;
+  color: #302e34;
+}
+
+.breathing-guide .breathing-guide-instruction {
+  margin: 0;
+  line-height: 1.55;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+}
+
+.breathing-guide-controls {
+  margin-top: .75rem;
+}
+
+.breathing-guide-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.875rem;
+  padding: .5rem 1.05rem;
+  border: 1px solid #a3a1ac;
+  border-radius: .35rem;
+  background: transparent;
+  color: #424b81;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+.breathing-guide-toggle:hover {
+  border-color: currentColor;
+}
+
+.breathing-guide-toggle:focus-visible {
+  outline: 2px solid #424b81;
+  outline-offset: 3px;
+}
+
+.breathing-guide .breathing-guide-cue {
+  margin: .9rem 0 0;
+  color: #424b81;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.breathing-guide .breathing-guide-cue:empty {
+  margin: 0;
+}
+
+.breathing-guide-track {
+  display: block;
+  width: min(12rem, 85%);
+  height: 2px;
+  background: #dcd9df;
+  margin: .5rem 0 .25rem;
+}
+
+.breathing-guide-stroke {
+  display: block;
+  height: 100%;
+  background: #656b86;
+  transform-origin: left center;
+  animation: breathing-guide-length var(--phase-time) ease-in-out both;
+}
+
+.breathing-guide-stroke[data-phase="out"] {
+  animation-direction: reverse;
+}
+
+@keyframes breathing-guide-length {
+  from { transform: scaleX(.15); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breathing-guide-track { display: none; }
+  .breathing-guide-stroke { animation: none; }
+}
