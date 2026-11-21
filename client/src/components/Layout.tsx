@@ -63,6 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
 
     let currentKey = history.state?.fvvaScrollKey || tagEntry();
+    let currentUrl = new URL(window.location.href);
 
     function showPage(y?: number) {
       cancelAnimationFrame(frame);
@@ -93,16 +94,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     function onPush() {
       saved.set(currentKey, window.scrollY);
       currentKey = tagEntry();
+      currentUrl = new URL(window.location.href);
       showPage();
     }
     function onReplace() {
       if (tagging) return;
+      const nextUrl = new URL(window.location.href);
+      const searchOnly = currentUrl.pathname === nextUrl.pathname &&
+        currentUrl.hash === nextUrl.hash && currentUrl.search !== nextUrl.search;
+      currentUrl = nextUrl;
       currentKey = history.state?.fvvaScrollKey || tagEntry();
-      showPage();
+      if (searchOnly) cancelAnimationFrame(frame);
+      else showPage();
     }
     function onPop() {
       saved.set(currentKey, window.scrollY);
       currentKey = history.state?.fvvaScrollKey || tagEntry();
+      currentUrl = new URL(window.location.href);
       showPage(saved.get(currentKey));
     }
 

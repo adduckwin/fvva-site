@@ -1,0 +1,68 @@
+.library-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem 2rem;
+  margin-bottom: 1.1rem;
+}
+.library-search {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  width: min(20rem, 100%);
+  min-height: 2.8rem;
+  border-bottom: 1px solid #98989a;
+  color: var(--reading-secondary);
+}
+.library-search:focus-within { border-color: var(--reading-link); box-shadow: 0 1px var(--reading-link); }
+.library-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 2.75rem;
+  margin: 0;
+  font-size: 1rem;
+  color: #292830;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+.reading-library .library-search input:focus-visible { outline: 0; box-shadow: none; }
+.library-search input::placeholder { color: var(--reading-secondary); opacity: 1; }
+.library-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.library-search button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--reading-link);
+  cursor: pointer;
+}
+.library-result-count, .library-matches {
+  max-width: 53rem;
+  margin-inline: auto;
+}
+.library-result-count {
+  margin-top: clamp(1.8rem, 5vw, 4.5rem);
+  font-size: clamp(1.65rem, 3vw, 2.8rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.library-matches { margin-top: 1rem; }
+.library-matches ul { padding: 0; margin: 0; list-style: none; }
+.library-matches li { border-bottom: 1px solid var(--reading-line); padding-block: 1.35rem; }
+.library-matches .catalog-diary-page { object-fit: contain; padding: .28rem; background: #e4e3df; }
+.library-empty p { color: var(--reading-secondary); margin-top: 1.1rem; }
+.library-empty button {
+  margin-top: .6rem;
+  min-height: 2.75rem;
+  color: var(--reading-link);
+  text-decoration: underline;
+  text-underline-offset: .23em;
+  cursor: pointer;
+}
+@media (max-width: 570px) {
+  .library-masthead { align-items: stretch; flex-direction: column; margin-bottom: 1.5rem; }
+  .library-search { width: 100%; }
+  .library-matches li { padding-block: 1rem; }
+}
+@media (scripting: none) { .library-search { display: none; } }

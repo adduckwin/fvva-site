@@ -39,3 +39,11 @@
   .faq-directory { display: block; }
   .faq-directory nav { position: static; display: flex; gap: 0 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 }
+
+.faq-reading-link {
+  display: inline-block;
+  padding-block: .65rem .3rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  color: #424b81;
+}

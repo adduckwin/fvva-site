@@ -562,3 +562,52 @@
   .diary-leaves dl { min-height: 0; }
   .studio-reading li img { width: 4.65rem; height: 3.4rem; }
 }
+
+.studio-inline {
+  color: var(--paper-link);
+  text-decoration: underline;
+  text-decoration-color: #acaec4;
+  text-underline-offset: .2em;
+}
+.studio-bookshelf { padding-block: clamp(2.6rem, 6vw, 5.3rem); }
+.shelf-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .4rem 1.5rem;
+  margin-bottom: clamp(1rem, 2.5vw, 2rem);
+}
+.shelf-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .82fr);
+  align-items: start;
+  gap: clamp(1.4rem, 6vw, 5.5rem);
+}
+.shelf-feature { display: block; color: inherit; }
+.shelf-feature img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.15;
+  object-fit: cover;
+}
+.shelf-feature h3 {
+  max-width: 28ch;
+  margin-top: .85rem;
+  font-size: clamp(1.6rem, 2.65vw, 2.6rem);
+}
+.shelf-feature p { margin-top: .55rem; max-width: 48ch; color: var(--paper-muted); }
+.shelf-feature:hover h3, .shelf-feature:focus-visible h3 {
+  color: var(--paper-link);
+  text-decoration: underline;
+  text-underline-offset: .13em;
+}
+.shelf-body .studio-reading ul { margin: 0; }
+.shelf-body .studio-reading li { padding-bottom: .85rem; margin-bottom: .85rem; }
+.shelf-body .studio-reading img { width: clamp(4.8rem, 8vw, 7.5rem); height: auto; aspect-ratio: 1.45; }
+.studio-last { border-top: 1px solid #d8d6d1; align-items: start; }
+.studio-last .studio-contact { margin: 0; padding: 0; text-align: left; }
+.studio-last .studio-contact p { margin-inline: 0; }
+@media (max-width: 680px) {
+  .shelf-body { grid-template-columns: 1fr; }
+}

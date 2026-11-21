@@ -69,6 +69,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: "Руминация (мысленная жвачка)",
     definition:
       "Навязчивое прокручивание одних и тех же тревожных или мрачных мыслей по кругу, без решения. Поддерживает тревогу и подавленность.",
+    link: { href: "/blog/posle-razgovora-prokruchivayu-v-golove", label: "Почему я прокручиваю разговор в голове" },
   },
   {
     slug: "izbeganie",

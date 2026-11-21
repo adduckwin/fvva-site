@@ -107,3 +107,37 @@ test("в статье работают ссылки на упражнение и
   expect(response.ok()).toBe(true);
   expect(response.headers()["content-type"]).toContain("application/pdf");
 });
+
+test("поиск сохраняет фокус и восстанавливает результаты после чтения статьи", async ({ page }) => {
+  await page.goto("/blog");
+  const input = page.getByRole("searchbox", { name: "Найти статью" });
+  await input.fill("после разговора");
+  await expect(page.getByRole("region", { name: "Результаты поиска" })
+    .getByRole("link", { name: /Почему я снова прокручиваю разговор/ })).toBeVisible();
+  await input.fill("");
+  await input.pressSequentially("подобрать слова");
+  await expect(input).toBeFocused();
+  const results = page.getByRole("region", { name: "Результаты поиска" });
+  await results.getByRole("link", { name: /Как попросить о поддержке/ }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Как попросить о поддержке");
+  await page.goBack();
+  await expect(input).toHaveValue("подобрать слова");
+  await expect(results.getByRole("link", { name: /Как попросить о поддержке/ })).toBeVisible();
+  await input.press("Escape");
+  await expect(input).toHaveValue("");
+  await expect(page.getByRole("navigation", { name: "Темы блога" })).toBeVisible();
+});
+
+test.describe("связанные материалы в статической версии", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("со страницы разговора открывается дневник и его бланк", async ({ page }) => {
+    await page.goto("/blog/posle-razgovora-prokruchivayu-v-golove");
+    await expect(page.locator("meta[property='og:image']")).toHaveAttribute("content", "https://fvva.ru/images/issue-replay.webp");
+    const next = page.getByRole("navigation", { name: "Что почитать дальше" });
+    await expect(next.getByRole("link")).toHaveCount(2);
+    await next.getByRole("link", { name: /Дневник мыслей/ }).click();
+    await expect(page.getByRole("link", { name: "Открыть две страницы дневника в PDF" }))
+      .toHaveAttribute("href", "/dnevnik-mysley-kpt.pdf");
+  });
+});

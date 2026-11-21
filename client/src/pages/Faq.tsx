@@ -5,7 +5,7 @@ import { ChevronDown, ArrowRight } from "lucide-react";
 import { useMeta } from "@/hooks/useMeta";
 import { PRACTICE } from "@/lib/practice";
 
-type Item = { q: string; a?: React.ReactNode; plain: string };
+type Item = { q: string; a?: React.ReactNode; link?: { href: string; label: string }; plain: string };
 type Section = { id: string; title: string; items: Item[] };
 
 const SECTIONS: Section[] = [
@@ -97,6 +97,7 @@ const SECTIONS: Section[] = [
     items: [
       {
         q: "Что говорить психологу на первой встрече?",
+        link: { href: "/blog/chto-skazat-na-pervoy-konsultatsii", label: "Пример начала разговора и короткая заметка перед встречей" },
         plain:
           "Достаточно рассказать об одном эпизоде, который вас беспокоит. Можно начать так — «Перед каждой встречей я волнуюсь и иногда отменяю её в последний момент». Если трудно подобрать слова, можно так и сказать. Я задам уточняющие вопросы, и мы вместе решим, с чего начать.",
       },
@@ -231,7 +232,10 @@ function Row({ item }: { item: Item }) {
         <span className="font-sans text-lg text-forest">{item.q}</span>
         <ChevronDown aria-hidden="true" size={20} className="shrink-0 text-terracotta transition-transform group-open:rotate-180" />
       </summary>
-      <div className="pb-6 text-ink/75 leading-relaxed">{item.a ?? <p>{item.plain}</p>}</div>
+      <div className="pb-6 text-ink/75 leading-relaxed">
+        {item.a ?? <p>{item.plain}</p>}
+        {item.link && <Link className="faq-reading-link" href={item.link.href}>{item.link.label}</Link>}
+      </div>
     </details>
   );
 }

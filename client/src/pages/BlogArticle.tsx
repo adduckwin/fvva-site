@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { useParams, Link } from "wouter";
 import Markdown from "react-markdown";
+import ContinueReading from "@/components/ContinueReading";
 import DiarySpread from "@/components/DiarySpread";
 import { articles, type Article } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
@@ -48,7 +49,7 @@ function ArticleView({ article }: { article: Article }) {
     title: article.meta.title || article.title,
     description: article.meta.description || article.excerpt,
     keywords: article.meta.keywords,
-    ogImage: article.image,
+    ogImage: isDiary ? "/images/dnevnik-primer.webp" : illustration?.src || article.image,
     ogType: "article",
   });
 
@@ -131,6 +132,7 @@ function ArticleView({ article }: { article: Article }) {
             </nav>
           </div>
         </div>
+        <ContinueReading slug={article.slug} />
       </article>
     </div>
   );

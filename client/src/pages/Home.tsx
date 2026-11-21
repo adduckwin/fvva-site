@@ -76,6 +76,8 @@ const featuredSlugs = [
   "kak-kpt-pomogaet",
 ];
 
+const readingLead = articles.find(article => article.slug === "kak-poprosit-o-podderzhke");
+
 export default function Home() {
   useMeta({
     title: "КПТ-психолог онлайн при тревоге и апатии — Александра Федорова",
@@ -146,7 +148,8 @@ export default function Home() {
         </div>
         <div>
           <p>
-            Разговор давно закончился, а вы всё ещё прокручиваете его в голове.
+            Разговор давно закончился, а вы всё ещё{" "}
+            <Link className="studio-inline" href="/blog/posle-razgovora-prokruchivayu-v-golove">прокручиваете его в голове</Link>.
             Вспоминаете, что сказали и как на вас посмотрели. Можно начать прямо
             с этого.
           </p>
@@ -226,13 +229,24 @@ export default function Home() {
         </details>
       </section>
 
-      <section className="studio-width studio-resources">
-        <div className="studio-reading">
-          <h2>Что почитать</h2>
-          <ul>
-            {articles
-              .filter(article => featuredSlugs.includes(article.slug))
-              .map(article => (
+      <section id="chtenie" className="studio-width studio-bookshelf" aria-labelledby="shelf-title">
+        <div className="shelf-heading">
+          <h2 id="shelf-title">Что почитать</h2>
+          <Link href="/blog" className="studio-link">Все статьи</Link>
+        </div>
+        <div className="shelf-body">
+          {readingLead && (
+            <Link href={"/blog/" + readingLead.slug} className="shelf-feature">
+              <img src={articleArt[readingLead.slug]?.src} alt="" width="960" height="640" loading="lazy" />
+              <div>
+                <h3>{readingLead.title}</h3>
+                <p>{readingLead.excerpt}</p>
+              </div>
+            </Link>
+          )}
+          <div className="studio-reading">
+            <ul>
+              {articles.filter(article => featuredSlugs.includes(article.slug)).map(article => (
                 <li key={article.slug}>
                   <Link href={"/blog/" + article.slug}>
                     {articleArt[article.slug] && <img src={articleArt[article.slug]?.src} width="120" height="86" loading="lazy" alt="" />}
@@ -240,11 +254,11 @@ export default function Home() {
                   </Link>
                 </li>
               ))}
-          </ul>
-          <Link href="/blog" className="studio-link">
-            Все статьи
-          </Link>
+            </ul>
+          </div>
         </div>
+      </section>
+      <div className="studio-width studio-resources studio-last">
         <div className="studio-tests">
           <h2>Тесты Бека</h2>
           <p>В каждом тесте 21 вопрос. Ответы остаются в вашей вкладке.</p>
@@ -260,18 +274,17 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
-
-      <section className="studio-width studio-contact">
-        <h2>Написать Александре</h2>
-        <p>
-          Если вы хотите узнать стоимость или выбрать время для разговора,
-          напишите мне в Telegram или MAX.
-        </p>
-        <Link className="studio-invitation" href="/contact">
-          Связаться со мной
-        </Link>
-      </section>
+        <section className="studio-contact">
+          <h2>Написать Александре</h2>
+          <p>
+            Если вы хотите узнать стоимость или выбрать время для разговора,
+            напишите мне в Telegram или MAX.
+          </p>
+          <Link className="studio-invitation" href="/contact">
+            Связаться со мной
+          </Link>
+        </section>
+      </div>
     </div>
   );
 }

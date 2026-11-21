@@ -4,11 +4,14 @@ import { ART_PLACEHOLDERS } from "@/lib/art-placeholders";
 export const readingTopics = [
   { id: "trevoga", title: "Тревога и стресс" },
   { id: "nastroenie", title: "Апатия и настроение" },
+  { id: "blizkie", title: "Отношения и поддержка" },
   { id: "terapiya", title: "Работа с психологом" },
   { id: "drugie-materialy", title: "Другие материалы" },
 ] as const;
 
 export function topicFor(article: Article) {
+  if (["kak-poprosit-o-podderzhke", "kak-podderzhit-blizkogo-s-depressiej"].includes(article.slug))
+    return "blizkie";
   if (
     ["Тревога", "Стресс"].includes(article.category) ||
     article.slug === "kak-uspokoitsya-pri-stresse"
@@ -24,6 +27,14 @@ export function topicFor(article: Article) {
 type Illustration = { src: string; placeholder: string };
 
 export const articleArt: Record<string, Illustration | undefined> = {
+  "kak-uspokoitsya-pri-stresse": {
+    src: "/images/issue-stress.webp",
+    placeholder: "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAAAQBACdASoYABAAPuleqE0pJSOiMAgBIB0JZgCsAB6W39t8ImFQkVYougD+wPi07PRw53IsURJrivukQgkWscUXR7r5h8JrXgRxoNXwsj36v7A+7JpMvRbaXoLbNi2R/1q4NL2+j7ru+E9WzC81+d6BUeDXMz8Ic6PQ4gAA",
+  },
+  "panicheskie-ataki": {
+    src: "/images/issue-panic.webp",
+    placeholder: "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACQAwCdASoYABAAPuleqE0pJSQiMAgBIB0JZQAAPoV9CjvackagANnFpXKUS8+YR6er/Sug848j5EHC3f7L8QYGF4AfZJb0ZeddNx+gX8QP7vMoXS2UUZTDe+Gb+i7jQoDejlCCj5XUsN9hIQhWtlAA",
+  },
   "trevoga-norma-ili-rasstrojstvo": {
     src: "/images/studio-anxiety.webp",
     placeholder: ART_PLACEHOLDERS.anxiety,
@@ -61,5 +72,30 @@ export const articleArt: Record<string, Illustration | undefined> = {
     src: "/images/folio-cbt.webp",
     placeholder:
       "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAwCdASoYABAAPulep00pJSOiMAgBIB0JZwAAUnUbZWCdTQnaCgAA/pdp7acnsuftWEyEpcxWC7Z7U7bLRS7ogIAAAA==",
+  },
+  "posle-razgovora-prokruchivayu-v-golove": {
+    src: "/images/issue-replay.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABQBACdASoYABAAPt1apkyopSOiMAgBEBuJYwCzgCLJR6c6v4+7Wt1ffDgAAP5kvg1yDV2OoJTYkX+YftYY3nKGdjkEBP8ew3VejK3XQr9HOwRkstjfiSG8Do0T2EAA",
+  },
+  "kak-poprosit-o-podderzhke": {
+    src: "/images/issue-ask.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADQAwCdASoYABAAPt1apkyopSOiMAgBEBuJbACdABrQ/iq7On3z2AAA/m+vBtcihfJHlNEszBJOgtdXl9fQLnjFfI7frTHHNdo5m/i+UUy4Y/GhwgUPbs9BYKchf4sAAAA=",
+  },
+  "chto-skazat-na-pervoy-konsultatsii": {
+    src: "/images/issue-first-talk.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAwCdASoYABAAPt1eqU2opSQiMAgBEBuJQBYdgzyOiMvdYRBqmeAA+J/t4OLICtVhkfLFOaNQiSV2Bqz4NxUC5mluIEknqoSKOUfLTRfZ45d1e+BEXq/8AAA=",
+  },
+  "terapiya-prinyatiya-act": {
+    src: "/images/issue-values.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQBACdASoYABAAPt1apkyopSOiMAgBEBuJYwC06CPajmm/m1IZ3QU2HAD+RHg0/H2xNvyKBp87gOgu68CY9Gmdk70t4WOSXPl04duetdrWgAAA",
+  },
+  "kak-vybrat-psihologa": {
+    src: "/images/issue-choice.webp",
+    placeholder:
+      "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAADwAwCdASoYABAAPt1cpkyopSOiMAgBEBuJZQC06CPSMIHlHPhe5UiyAP7JQy2o1BW0xvRWlTnkSQfLZXJTNG+5uq+y/JcNHukVkyZ72uV9Rqc56Vf6qBwJ0oWXC6H/lNWkiwvSNdiTZ+yot2+g+NDrUxW+jSDarhhXmUGkIAA=",
   },
 };
