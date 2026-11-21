@@ -9,9 +9,6 @@ const CY = 132;
 const RMIN = 36;
 const RMAX = 72;
 
-const GRAIN =
-  'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'2\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")';
-
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -70,7 +67,7 @@ export default function BoxBreathing() {
           cx: q.x.toFixed(1),
           cy: q.y.toFixed(1),
           r: "2.4",
-          fill: "#c98a5f",
+          fill: "#817da9",
           "fill-opacity": "0.5",
         })
       );
@@ -95,7 +92,7 @@ export default function BoxBreathing() {
         const sz = 0.6 + Math.random() * 1.5;
         const el = mk("circle", {
           r: sz.toFixed(2),
-          fill: "#e9b486",
+          fill: "#a9afd4",
         }) as SVGCircleElement;
         pl.appendChild(el);
         parts.push({
@@ -111,7 +108,7 @@ export default function BoxBreathing() {
       const tg = trailRef.current!;
       tg.replaceChildren();
       for (let k = 0; k < 6; k++) {
-        const d = mk("circle", { r: "0", fill: "#f0a368" }) as SVGCircleElement;
+        const d = mk("circle", { r: "0", fill: "#a6acd2" }) as SVGCircleElement;
         tg.appendChild(d);
         trail.push(d);
       }
@@ -249,62 +246,8 @@ export default function BoxBreathing() {
   }, [reduced]);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        borderRadius: "30px",
-        padding: "22px 22px 20px",
-        background:
-          "radial-gradient(125% 95% at 50% 16%,#fdfaf5 0%,#f3ebdd 68%,#ece0cf 100%)",
-        border: "1px solid rgba(255,255,255,.6)",
-        boxShadow:
-          "0 1px 0 rgba(255,255,255,.7) inset,0 30px 70px -34px rgba(120,70,40,.4)",
-      }}
-    >
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          backgroundImage: GRAIN,
-          backgroundSize: "140px",
-          opacity: 0.05,
-          mixBlendMode: "overlay",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          background:
-            "radial-gradient(120% 100% at 50% 40%,transparent 50%,rgba(74,40,18,.13) 100%)",
-        }}
-      />
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "11px",
-            letterSpacing: ".24em",
-            textTransform: "uppercase",
-            color: "#ab9277",
-            marginBottom: "4px",
-          }}
-        >
-          дыхание по квадрату
-        </div>
-
+    <div className="px-3 py-5 text-center">
+      <div className="flex flex-col items-center">
         <svg
           viewBox="0 0 340 250"
           width="340"
@@ -314,36 +257,36 @@ export default function BoxBreathing() {
         >
           <defs>
             <radialGradient id="w4amb" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#cf6e42" stopOpacity="0.5" />
-              <stop offset="55%" stopColor="#cf6e42" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="#cf6e42" stopOpacity="0" />
+              <stop offset="0%" stopColor="#7775a8" stopOpacity="0.5" />
+              <stop offset="55%" stopColor="#7775a8" stopOpacity="0.12" />
+              <stop offset="100%" stopColor="#7775a8" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="w4glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#f6a76e" stopOpacity="0.55" />
-              <stop offset="60%" stopColor="#e58a52" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#e58a52" stopOpacity="0" />
+              <stop offset="0%" stopColor="#b2b6d4" stopOpacity="0.55" />
+              <stop offset="60%" stopColor="#8a90b9" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#8a90b9" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="w4warm" cx="40%" cy="34%" r="68%">
-              <stop offset="0%" stopColor="#ffdcb8" />
-              <stop offset="34%" stopColor="#ef9a5f" />
-              <stop offset="72%" stopColor="#cd6a35" />
-              <stop offset="100%" stopColor="#b14e22" />
+              <stop offset="0%" stopColor="#d4d6ed" />
+              <stop offset="34%" stopColor="#979cc4" />
+              <stop offset="72%" stopColor="#747aa7" />
+              <stop offset="100%" stopColor="#545d88" />
             </radialGradient>
             <radialGradient id="w4cool" cx="40%" cy="34%" r="68%">
-              <stop offset="0%" stopColor="#d7ecda" />
-              <stop offset="36%" stopColor="#94bd9c" />
-              <stop offset="74%" stopColor="#5f8c6b" />
-              <stop offset="100%" stopColor="#4c785a" />
+              <stop offset="0%" stopColor="#d4e2ea" />
+              <stop offset="36%" stopColor="#95b1c1" />
+              <stop offset="74%" stopColor="#648298" />
+              <stop offset="100%" stopColor="#536c81" />
             </radialGradient>
             <radialGradient id="w4shade" cx="66%" cy="72%" r="76%">
-              <stop offset="0%" stopColor="#5a2810" stopOpacity="0" />
-              <stop offset="58%" stopColor="#5a2810" stopOpacity="0" />
-              <stop offset="100%" stopColor="#4a1f0c" stopOpacity="0.5" />
+              <stop offset="0%" stopColor="#312f4c" stopOpacity="0" />
+              <stop offset="58%" stopColor="#312f4c" stopOpacity="0" />
+              <stop offset="100%" stopColor="#292b43" stopOpacity="0.5" />
             </radialGradient>
             <radialGradient id="w4dot" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ffe9d3" stopOpacity="0.95" />
-              <stop offset="45%" stopColor="#f4a868" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#f4a868" stopOpacity="0" />
+              <stop offset="0%" stopColor="#e6e8f5" stopOpacity="0.95" />
+              <stop offset="45%" stopColor="#9fa8cd" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#9fa8cd" stopOpacity="0" />
             </radialGradient>
           </defs>
 
@@ -360,7 +303,7 @@ export default function BoxBreathing() {
             cy="132"
             r="112"
             fill="none"
-            stroke="#c0a98e"
+            stroke="#a5a4b4"
             strokeWidth="1.2"
             strokeOpacity="0.1"
             strokeDasharray="1 7"
@@ -370,7 +313,7 @@ export default function BoxBreathing() {
             ref={trackRef}
             d="M124 58 L216 58 A28 28 0 0 1 244 86 L244 178 A28 28 0 0 1 216 206 L124 206 A28 28 0 0 1 96 178 L96 86 A28 28 0 0 1 124 58 Z"
             fill="none"
-            stroke="#d6c4ad"
+            stroke="#b6b6c1"
             strokeWidth="1.6"
             strokeOpacity="0.55"
           />
@@ -391,7 +334,7 @@ export default function BoxBreathing() {
             cy="132"
             r="84"
             fill="none"
-            stroke="#cf6e42"
+            stroke="#7775a8"
             strokeWidth="1.4"
             strokeOpacity="0.12"
           />
@@ -410,7 +353,7 @@ export default function BoxBreathing() {
           {!reduced && (
             <>
               <circle ref={hglowRef} cx="124" cy="58" r="16" fill="url(#w4dot)" />
-              <circle ref={headRef} cx="124" cy="58" r="5" fill="#fff3e6" />
+              <circle ref={headRef} cx="124" cy="58" r="5" fill="#f7f7ff" />
             </>
           )}
           <text
@@ -419,16 +362,16 @@ export default function BoxBreathing() {
             y="132"
             textAnchor="middle"
             dominantBaseline="central"
-            style={{ fontFamily: "var(--font-serif)", fill: "#fff6ee" }}
+            style={{ fontFamily: "var(--font-sans)", fill: "#fff" }}
           />
         </svg>
 
         <div
           ref={phaseRef}
           style={{
-            fontFamily: "var(--font-serif)",
+            fontFamily: "var(--font-sans)",
             fontSize: "19px",
-            color: "#244a31",
+            color: "#292830",
             opacity: 0.55,
             transition: "opacity .4s ease",
             minHeight: "24px",
@@ -440,55 +383,30 @@ export default function BoxBreathing() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "14px", marginTop: "14px" }}>
           <button
+            type="button"
             onClick={() => toggleRef.current()}
-            className="active:scale-[0.98]"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "11px",
-              background: "#b45d35",
-              color: "#fff",
-              border: "none",
-              borderRadius: "999px",
-              padding: "7px 22px 7px 7px",
-              cursor: "pointer",
-              fontSize: "15px",
-              boxShadow: "0 8px 22px -10px rgba(180,93,53,.7)",
-              transition: "background .2s,transform .1s",
-            }}
+            className="inline-flex min-h-11 items-center gap-2 text-base text-primary underline underline-offset-4"
           >
-            <span
-              style={{
-                width: "34px",
-                height: "34px",
-                borderRadius: "50%",
-                background: "rgba(255,255,255,.18)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {running ? <Pause size={18} /> : <Play size={18} />}
-            </span>
+            {running ? <Pause size={18} aria-hidden="true" /> : <Play size={18} aria-hidden="true" />}
             {running ? "Пауза" : "Начать дышать"}
           </button>
-          <span style={{ fontSize: "13px", color: "#8a7d6e" }}>
+          <span style={{ fontSize: "13px", color: "#5e6069" }}>
             Цикл{" "}
-            <b style={{ fontWeight: 500, color: "#5e574f" }}>{cycles}</b>
+            <b style={{ fontWeight: 500, color: "#41404b" }}>{cycles}</b>
           </span>
         </div>
 
         <p
           style={{
             fontSize: "12.5px",
-            color: "#8a7d6e",
+            color: "#5e6069",
             textAlign: "center",
             margin: "10px 0 0",
             maxWidth: "300px",
             lineHeight: 1.6,
           }}
         >
-          Дышите вместе со сферой: вдох · задержка · выдох · задержка — по 4
+          Следуйте за сферой. Вдох, пауза, выдох и снова пауза. На каждый этап по 4
           секунды
         </p>
       </div>

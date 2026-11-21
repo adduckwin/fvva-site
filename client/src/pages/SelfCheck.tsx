@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -19,7 +20,6 @@ interface Tier {
 }
 
 interface MiniCheckProps {
-  eyebrow: string;
   title: string;
   statements: string[];
   testHref: string;
@@ -27,7 +27,7 @@ interface MiniCheckProps {
   tiers: [Tier, Tier, Tier];
 }
 
-function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: MiniCheckProps) {
+function MiniCheck({ title, statements, testHref, testLabel, tiers }: MiniCheckProps) {
   const [sel, setSel] = useState<Set<number>>(new Set());
   const [shown, setShown] = useState(false);
   const [noneSelected, setNoneSelected] = useState(false);
@@ -47,9 +47,8 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
   const result = tiers[tier];
 
   return (
-    <div className="surface rounded-3xl p-6 md:p-8">
-      <span className="eyebrow">{eyebrow}</span>
-      <h2 className="font-serif text-2xl text-forest mt-3 mb-1">{title}</h2>
+    <div className="selfcheck-block">
+      <h2 className="font-sans text-2xl text-forest mt-3 mb-1">{title}</h2>
       <p className="text-muted-foreground text-sm mb-5">
         Отметьте то, что было про вас в последние пару недель.
       </p>
@@ -97,7 +96,7 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
         <button
           disabled={count === 0 && !noneSelected}
           onClick={() => setShown(true)}
-          className="disabled:opacity-50 mt-6 inline-flex items-center gap-2 rounded-full bg-forest hover:bg-forest-deep text-cream px-6 py-3 text-sm font-medium transition-colors active:scale-[0.98]"
+          className="secondary-action mt-6"
         >
           Посмотреть результат
           <ArrowRight size={16} />
@@ -108,12 +107,12 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
           animate={{ opacity: 1, y: 0 }}
           className="mt-6 rounded-2xl bg-forest/5 border border-forest/15 p-5"
         >
-          <p className="font-serif text-lg text-forest mb-1.5">{result.title}</p>
+          <p className="font-sans text-lg text-forest mb-1.5">{result.title}</p>
           <p className="text-ink/75 text-sm leading-relaxed mb-4">{result.text}</p>
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href={testHref}
-              className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-5 py-2.5 text-sm font-medium transition-colors no-underline"
+              className="secondary-action"
             >
               {testLabel}
               <ArrowRight size={15} />
@@ -142,7 +141,6 @@ function MiniCheck({ eyebrow, title, statements, testHref, testLabel, tiers }: M
 }
 
 const ANXIETY = {
-  eyebrow: "Тревога",
   title: "Похоже ли это на тревогу?",
   testHref: "/test/anxiety",
   testLabel: "Пройти тест на тревогу",
@@ -171,7 +169,6 @@ const ANXIETY = {
 };
 
 const MOOD = {
-  eyebrow: "Настроение",
   title: "Похоже ли это на сниженное настроение?",
   testHref: "/test/depression",
   testLabel: "Пройти тест на депрессию",
@@ -209,19 +206,16 @@ export default function SelfCheck() {
   });
 
   return (
-    <div className="container py-14 md:py-20">
+    <div className="secondary-page container py-12 md:py-16">
       <motion.div
         initial="hidden"
         animate="visible"
-        className="max-w-2xl mx-auto text-center mb-10"
+        className="secondary-intro max-w-2xl mx-auto mb-10"
       >
-        <motion.span custom={0} variants={fadeUp} className="eyebrow eyebrow-center">
-          Быстрая самопроверка
-        </motion.span>
         <motion.h1
           custom={1}
           variants={fadeUp}
-          className="text-3xl md:text-5xl text-forest mt-4 mb-5"
+          className="secondary-title mb-5"
         >
           Стоит ли присмотреться к своему состоянию?
         </motion.h1>

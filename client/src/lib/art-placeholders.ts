@@ -1,0 +1,9 @@
+// Tiny WebP previews of the matching full-size illustrations.
+export const ART_PLACEHOLDERS = {
+  light:
+    "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAAAwBQCdASowACAAPrVGnEonI6KhsAqo4BaJZQDGRAgDXmWS2CKd2UZjnkHsMCmIvP94AAD+30408JlKcuAUOGV92ENNzpjgn46IQI7gpLqpS4Z0KQdj6IhO4vv97ImusAaZQcOLMksotpZasprwiiNfNsX9coMc+3yPOrx0q4jxuqYQwroYBSodT5ZuYEaIAq43p7BwrOzMA/Eih3mvmpv7qG/Vla9ffI3EbyGfqKqiOOq53h7M4quwAAA=",
+  anxiety:
+    "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAADwBQCdASowACAAPqVGm0omJCKhtVv8AMAUiWcAyJgeFb2qRYGHeH88tpgTp/D9JN3US+0JleV4AAD+jOi21WJ0oyNgu3fV8gbvy5P1aYSepyHAOx7gwxjdfwjQt96ioWkb7kebhrIj8+5W9quO+vD2giivxX+ZrDTxcQ9+Ul82ZBbo0Tvrv78Hg6Q5BEa1TOM/NShV9qrkE7HrgXTvMZCc5cu+r5HhYDxtovaX/35a6/W4CRSVqwx8Z8wTdVNAAAA=",
+  mood:
+    "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAACwBQCdASowACAAPrlUoEsnJSMhsBVYAOAXCWUAspAta4sLzL8QJ9WZLtfxbJo0y/n0QJ7ydAAA/ujxc7v+24kciGKwDKHDy0hRfY/tXkC91dVovd1Yxfox0lfmvtdWJIDksn8bkldh8y0RLuyviBNC58ejkW1vfqrfZLwAvoLrREgvql3xoO/KTVskng6tkItgxjPpFzrKgJYIIAA=",
+} as const;

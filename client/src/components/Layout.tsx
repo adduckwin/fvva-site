@@ -1,23 +1,25 @@
 import { Link, useLocation } from "wouter";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CONTACT_LINKS } from "@/lib/practice";
-import { ArrowRight, Menu, X } from "lucide-react";
 import MaxButton from "./MaxButton";
 import "./site-shell.css";
 
 const navLinks = [
-  { href: "/", label: "Главная" },
-  { href: "/blog", label: "Блог" },
-  { href: "/test/depression", label: "Тест на депрессию" },
-  { href: "/test/anxiety", label: "Тест на тревогу" },
+  { href: "/#podhod", label: "О подходе" },
+  { href: "/blog", label: "Статьи" },
+  { href: "/proverit-sebya", label: "Самопроверка" },
   { href: "/panicheskaya-ataka", label: "Помощь сейчас" },
 ];
 
-const mobileLinks = [...navLinks, { href: "/contact", label: "Контакты" }];
-const footerLinks = [
-  ...mobileLinks,
+const siteLinks = [
+  { href: "/", label: "Главная" },
+  ...navLinks,
+  { href: "/contact", label: "Запись на консультацию" },
+];
+const resourceLinks = [
+  { href: "/test/depression", label: "Тест на депрессию" },
+  { href: "/test/anxiety", label: "Тест на тревогу" },
   { href: "/faq", label: "Частые вопросы" },
-  { href: "/proverit-sebya", label: "Быстрая самопроверка" },
   { href: "/slovar", label: "Словарь терминов" },
 ];
 
@@ -77,7 +79,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         } catch {
           // Invalid URL escapes have no corresponding fragment.
         }
-        const target = anchor || main.querySelector("h1") || main;
+        const heading = anchor?.matches("section, article")
+          ? anchor.querySelector<HTMLElement>("h1, h2, h3")
+          : null;
+        const target = heading || anchor || main.querySelector("h1") || main;
         if (target.tabIndex < 0) target.tabIndex = -1;
         target.focus({ preventScroll: true });
         if (anchor) anchor.scrollIntoView({ behavior: "instant" });
@@ -137,7 +142,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container site-header__bar">
           <Link href="/" className="site-wordmark" onClick={() => setMobileOpen(false)}>
             <span className="site-wordmark__name">Александра Федорова</span>
-            <span className="site-wordmark__practice">Психолог · КПТ</span>
           </Link>
           <nav className="site-navigation" aria-label="Основная навигация">
             {navLinks.map(({ href, label }) => (
@@ -153,7 +157,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               aria-current={location === "/contact" ? "page" : undefined}
               onClick={() => setMobileOpen(false)}
             >
-              Записаться <ArrowRight size={15} aria-hidden="true" />
+              Записаться
             </Link>
             <details
               className="site-menu"
@@ -168,12 +172,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-navigation"
               >
-                <Menu className="site-menu-icon" size={22} aria-hidden="true" />
-                <X className="site-menu-close" size={22} aria-hidden="true" />
+                <span className="site-menu-open">Меню</span>
+                <span className="site-menu-close">Закрыть</span>
               </summary>
               <nav id="mobile-navigation" aria-label="Основная навигация" className="site-mobile-navigation">
                 <div className="container">
-                  {mobileLinks.map(({ href, label }) => (
+                  {[...siteLinks, ...resourceLinks].map(({ href, label }) => (
                     <Link
                       key={href}
                       href={href}
@@ -183,7 +187,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       {label}
                     </Link>
                   ))}
-                  <MaxButton inMenu />
+                  <MaxButton />
                 </div>
               </nav>
             </details>
@@ -197,33 +201,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container">
           <div className="site-footer__grid">
             <div className="site-footer__identity">
-              <h2>Александра Федорова</h2>
-              <p>Психолог · КПТ, ACT и CFT. Помощь при тревоге, апатии, последствиях травмы и высокой самокритике. Онлайн.</p>
-            </div>
-            <div>
-              <h3 className="site-footer__label">Навигация</h3>
-              <nav aria-label="Навигация в подвале" className="site-footer__navigation">
-                {footerLinks.map(({ href, label }) => (
-                  <Link key={href} href={href}>{label}</Link>
-                ))}
-              </nav>
-            </div>
-            <div>
-              <h3 className="site-footer__label">Контакты</h3>
+              <Link href="/">Александра Федорова</Link>
+              <p>Частная практика психолога</p>
               <div className="site-footer__contacts">
-                <a href={CONTACT_LINKS.telegram} target="_blank" rel="noopener noreferrer">Telegram @ALEKSA_FVVA</a>
-                <a href={CONTACT_LINKS.max} target="_blank" rel="noopener noreferrer">Написать в MAX</a>
-                <a href={CONTACT_LINKS.vk} target="_blank" rel="noopener noreferrer">ВКонтакте: vk.com/fedorovaapsy</a>
+                <a href={CONTACT_LINKS.telegram} target="_blank" rel="noopener noreferrer">Telegram</a>
+                <MaxButton />
+                <a href={CONTACT_LINKS.vk} target="_blank" rel="noopener noreferrer">ВКонтакте</a>
               </div>
             </div>
+            <nav aria-label="Навигация в подвале" className="site-footer__navigation">
+              {siteLinks.map(({ href, label }) => <Link key={href} href={href}>{label}</Link>)}
+            </nav>
+            <nav aria-label="Полезные материалы" className="site-footer__navigation">
+              {resourceLinks.map(({ href, label }) => <Link key={href} href={href}>{label}</Link>)}
+            </nav>
           </div>
           <div className="site-footer__notes">
             <p>Результаты тестов носят информационный характер и не являются диагнозом. При необходимости обратитесь к специалисту.</p>
-            <p>&copy; {new Date().getFullYear()} Александра Федорова. Все права защищены.</p>
+            <p>&copy; {new Date().getFullYear()} Александра Федорова</p>
           </div>
         </div>
       </footer>
-      <MaxButton />
     </div>
   );
 }

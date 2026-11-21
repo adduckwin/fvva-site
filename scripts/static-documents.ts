@@ -30,6 +30,8 @@ export function staticDocumentsPlugin(projectRoot: string): Plugin {
           outfile: renderer,
           bundle: true,
           platform: "node",
+          // Vite already bundled the browser styles and their public assets.
+          loader: { ".css": "empty" },
           format: "cjs",
           jsx: "automatic",
           tsconfig: "tsconfig.json",

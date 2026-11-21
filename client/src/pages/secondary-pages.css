@@ -1,0 +1,89 @@
+.secondary-page {
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+.secondary-title {
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 4.6vw, 3.65rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  font-weight: 450;
+}
+.secondary-intro { text-align: left; }
+.secondary-page .secondary-back,
+.secondary-page .secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-height: 2.75rem;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  padding: .4rem .16rem;
+  background: transparent;
+  box-shadow: none;
+  font: 500 1rem/1.35 var(--font-sans);
+  color: #424b81;
+  text-decoration: underline;
+  text-underline-offset: .28em;
+  text-decoration-thickness: 1px;
+}
+.secondary-page .secondary-action:disabled { opacity: .5; }
+.secondary-page :is(.secondary-action, .secondary-back):hover { text-decoration-thickness: 2px; }
+.secondary-page :is(.secondary-action, .secondary-back, summary):focus-visible {
+  outline: 2px solid #424b81;
+  outline-offset: .2rem;
+}
+
+.questionnaire-width {
+  width: min(100% - 2.5rem, 49rem);
+  margin-inline: auto;
+}
+.questionnaire-intro {
+  padding-block: clamp(1.25rem, 3.8vw, 3rem) 0;
+}
+.questionnaire-heading { max-width: 44rem; }
+.questionnaire-heading .secondary-back { margin-bottom: .8rem; font-size: .95rem; }
+.questionnaire-lead {
+  margin-top: 1rem;
+  max-width: 61ch;
+  font-size: clamp(1.07rem, 1.55vw, 1.22rem);
+  line-height: 1.5;
+}
+.questionnaire-note {
+  margin-top: .55rem;
+  font-size: .94rem;
+  line-height: 1.45;
+  color: #625f69;
+}
+.questionnaire-body {
+  padding-block: clamp(1.75rem, 3.8vw, 3rem) clamp(3rem, 7vw, 6rem);
+}
+.questionnaire-question { margin-block: 1rem; }
+.questionnaire-answers { overflow: hidden; }
+.questionnaire-step {
+  display: grid;
+  place-items: center;
+  min-width: 2.35rem;
+  min-height: 2.35rem;
+  border: 1px solid transparent;
+  border-radius: .2rem;
+  color: #514f5e;
+  font-size: .92rem;
+}
+.questionnaire-step:hover,
+.questionnaire-step.is-answered { background: #e6e7f1; color: #373e71; }
+.questionnaire-step.is-current { border-color: #424b81; color: #292830; font-weight: 700; }
+.questionnaire-step:focus-visible { outline: 2px solid #424b81; outline-offset: 2px; }
+.faq-row { border-bottom: 1px solid #d9d8df; }
+.faq-row summary { font-weight: 500; }
+.faq-row[open] summary { color: #424b81; }
+.secondary-search {
+  background: transparent;
+  border: 1px solid #858491;
+  border-radius: .3rem;
+}
+.glossary-entry { padding-block: .8rem 1.2rem; }
+.selfcheck-block { padding-block: .8rem 1.6rem; }

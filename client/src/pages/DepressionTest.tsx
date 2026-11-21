@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 /**
  * DepressionTest page — Beck Depression Inventory (BDI-II)
  * Full 21-question test with anonymous scoring.
@@ -338,36 +339,33 @@ export default function DepressionTest() {
   };
 
   return (
-    <div>
+    <div className="secondary-page questionnaire">
       {/* Header */}
-      <section className="pt-4 lg:pt-6 pb-8">
-        <div className="container max-w-3xl mx-auto">
-          <div className="surface-inverse rounded-3xl p-8 md:p-10">
+      <section className="questionnaire-intro">
+        <div className="questionnaire-width">
+          <div className="questionnaire-heading">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-cream/85 hover:text-cream text-sm mb-5 no-underline transition-colors"
+            className="secondary-back"
           >
             <ArrowLeft size={14} /> На главную
           </Link>
-          <span className="eyebrow text-terracotta-light">
-            Самодиагностика · Шкала Бека
-          </span>
-          <h1 className="text-3xl md:text-4xl text-cream mt-4">
+          <h1 className="secondary-title">
             Шкала депрессии Бека (BDI-II)
           </h1>
-          <p className="text-cream/70 mt-3">
+          <p className="questionnaire-lead">
             Выберите одно утверждение в каждой группе, которое лучше всего
             описывает ваше состояние за последние две недели, включая сегодня.
           </p>
-          <p className="text-cream/80 text-sm mt-2">
+          <p className="questionnaire-note">
             Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
           </p>
           </div>
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container max-w-3xl mx-auto">
+      <section className="questionnaire-body">
+        <div className="questionnaire-width">
           <AnimatePresence mode="wait">
             {showResult ? (
               <motion.div
@@ -456,12 +454,12 @@ export default function DepressionTest() {
                     <Button
                       onClick={handleReset}
                       variant="outline"
-                      className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
+                      className="secondary-action"
                     >
                       <RotateCcw size={16} className="mr-2" /> Пройти заново
                     </Button>
                     {!hasSuicidalThoughts && (
-                      <Link href="/contact" className="inline-flex items-center rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-4 py-2 text-sm font-medium">
+                      <Link href="/contact" className="secondary-action">
                         Записаться на консультацию
                       </Link>
                     )}
@@ -503,12 +501,12 @@ export default function DepressionTest() {
                       onClick={() => goToQuestion(i)}
                       aria-label={`Вопрос ${i + 1}${answers[q.id] !== undefined ? ", ответ дан" : ""}`}
                       aria-current={i === currentQ ? "step" : undefined}
-                      className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${
+                      className={`questionnaire-step ${
                         i === currentQ
-                          ? "bg-forest text-cream"
+                          ? "is-current"
                           : answers[q.id] !== undefined
-                            ? "bg-terracotta text-white"
-                            : "bg-forest/10 text-muted-foreground hover:bg-forest/20"
+                            ? "is-answered"
+                            : ""
                       }`}
                     >
                       {i + 1}
@@ -524,7 +522,7 @@ export default function DepressionTest() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="surface rounded-2xl p-6 md:p-8"
+                    className="questionnaire-question"
                   >
                     <h3
                       tabIndex={-1}
@@ -552,7 +550,7 @@ export default function DepressionTest() {
                             onClick={() =>
                               handleAnswer(questions[currentQ].id, optIdx)
                             }
-                            className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${
+                            className={`w-full text-left p-4 rounded-md border-2 transition-colors ${
                               selected
                                 ? "border-forest bg-forest/5"
                                 : "border-forest/10 hover:border-terracotta/40 hover:bg-cream"
@@ -593,7 +591,7 @@ export default function DepressionTest() {
                     variant="outline"
                     onClick={() => goToQuestion(currentQ - 1)}
                     disabled={currentQ === 0}
-                    className="rounded-full border-forest/20 text-forest"
+                    className="secondary-action"
                   >
                     <ArrowLeft size={16} className="mr-2" /> Назад
                   </Button>
@@ -601,7 +599,7 @@ export default function DepressionTest() {
                   {currentQ < totalQuestions - 1 ? (
                     <Button
                       onClick={() => goToQuestion(currentQ + 1)}
-                      className="rounded-full bg-forest hover:bg-forest-deep text-cream"
+                      className="secondary-action"
                     >
                       Далее <ArrowRight size={16} className="ml-2" />
                     </Button>
@@ -609,7 +607,7 @@ export default function DepressionTest() {
                     <Button
                       onClick={handleSubmit}
                       disabled={answeredCount < totalQuestions}
-                      className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white transition-transform duration-200 hover:-translate-y-0.5"
+                      className="secondary-action"
                     >
                       Показать результат
                     </Button>

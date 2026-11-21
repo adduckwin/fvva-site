@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -32,11 +33,11 @@ function Grounding() {
     <div className="surface rounded-3xl p-8 md:p-10 max-w-xl mx-auto">
       {!done ? (
         <div className="text-center">
-          <div className="w-14 h-14 rounded-full bg-terracotta/12 flex items-center justify-center mx-auto mb-5">
+          <div className="flex items-center justify-center mx-auto mb-4">
             <Icon className="text-terracotta" size={26} />
           </div>
           <div className="flex items-baseline justify-center gap-2 mb-2">
-            <span className="font-serif text-5xl text-forest leading-none">
+            <span className="font-sans text-5xl text-forest leading-none">
               {item.n}
             </span>
             <span className="text-lg text-ink/80">
@@ -49,7 +50,7 @@ function Grounding() {
           </p>
           <button
             onClick={() => setStep((s) => s + 1)}
-            className="inline-flex items-center gap-2 rounded-full bg-forest hover:bg-forest-deep text-cream px-6 py-3 text-base font-medium transition-colors active:scale-[0.98]"
+            className="secondary-action"
           >
             {step === GROUNDING.length - 1 ? "Завершить" : "Дальше"}
             <ArrowRight size={18} />
@@ -67,7 +68,7 @@ function Grounding() {
         </div>
       ) : (
         <div className="text-center">
-          <p className="font-serif text-2xl text-forest mb-3">
+          <p className="font-sans text-2xl text-forest mb-3">
             Вы здесь и сейчас
           </p>
           <p className="text-ink/75 mb-7 max-w-sm mx-auto">
@@ -76,7 +77,7 @@ function Grounding() {
           </p>
           <button
             onClick={() => setStep(0)}
-            className="inline-flex items-center gap-2 rounded-full bg-cream-dark hover:bg-border text-forest px-6 py-3 text-base font-medium transition-colors"
+            className="secondary-action"
           >
             <RotateCcw size={18} />
             Пройти заново
@@ -97,25 +98,18 @@ export default function PanicAttack() {
   });
 
   return (
-    <div className="relative">
+    <div className="secondary-page">
       <div className="container py-14 md:py-20">
         {/* Hero + breathing */}
         <motion.div
           initial="hidden"
           animate="visible"
-          className="max-w-2xl mx-auto text-center mb-10"
+          className="secondary-intro max-w-2xl mx-auto mb-10"
         >
-          <motion.span
-            custom={0}
-            variants={fadeUp}
-            className="eyebrow eyebrow-center"
-          >
-            Помощь сейчас
-          </motion.span>
           <motion.h1
             custom={1}
             variants={fadeUp}
-            className="text-3xl md:text-5xl text-forest mt-4 mb-5"
+            className="secondary-title mb-5"
           >
             Что делать в момент панической атаки
           </motion.h1>
@@ -153,9 +147,6 @@ export default function PanicAttack() {
             viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-8"
           >
-            <motion.span custom={0} variants={fadeUp} className="eyebrow eyebrow-center">
-              Вернуться в момент
-            </motion.span>
             <motion.h2
               custom={1}
               variants={fadeUp}
@@ -191,11 +182,11 @@ export default function PanicAttack() {
             variants={fadeUp}
             className="surface rounded-3xl p-6 md:p-8 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left"
           >
-            <div className="w-14 h-14 rounded-2xl bg-terracotta/12 flex items-center justify-center shrink-0">
+            <div className="flex items-center justify-center shrink-0">
               <FileText className="text-terracotta" size={26} />
             </div>
             <div className="flex-1">
-              <h3 className="font-serif text-xl text-forest mb-1">
+              <h3 className="font-sans text-xl text-forest mb-1">
                 Памятка «7 техник при тревоге»
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
@@ -206,7 +197,7 @@ export default function PanicAttack() {
             <a
               href="/7-tehnik-pri-trevoge.pdf"
               download
-              className="inline-flex items-center gap-2 rounded-full bg-forest hover:bg-forest-deep text-cream px-6 py-3 text-base font-medium transition-colors shrink-0 active:scale-[0.98]"
+              className="secondary-action"
             >
               <Download size={18} /> Скачать PDF
             </a>
@@ -272,7 +263,7 @@ export default function PanicAttack() {
               Если страх нового приступа мешает вам выходить из дома или
               заниматься привычными делами, об этом можно поговорить на консультации.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
+            <Link href="/contact" className="secondary-action">
               Написать Александре
               <ArrowRight size={18} />
             </Link>

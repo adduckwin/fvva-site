@@ -1,18 +1,20 @@
 import { lazy, Suspense } from "react";
 import { useParams, Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import Markdown from "react-markdown";
 import { articles, type Article } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
 import NotFound from "./NotFound";
+import { articleArt } from "./reading-topics";
 import "./reading.css";
 
 // Keep the article readable in static HTML. Browsers load the Markdown parser on demand.
-const ArticleMarkdown = import.meta.env.SSR ? Markdown : lazy(() => import("react-markdown"));
+const ArticleMarkdown = import.meta.env.SSR
+  ? Markdown
+  : lazy(() => import("react-markdown"));
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
-  const article = articles.find((a) => a.slug === slug);
+  const article = articles.find(a => a.slug === slug);
   return article ? <ArticleView article={article} /> : <NotFound />;
 }
 
@@ -21,6 +23,7 @@ function ArticleView({ article }: { article: Article }) {
   const body = article.content.startsWith(repeatedHeading)
     ? article.content.slice(repeatedHeading.length)
     : article.content;
+  const illustration = articleArt[article.slug];
   useMeta({
     title: article.meta.title || article.title,
     description: article.meta.description || article.excerpt,
@@ -32,39 +35,43 @@ function ArticleView({ article }: { article: Article }) {
   return (
     <div className="reading-room">
       <article className="reading-page">
-        <Link href="/blog" className="reading-back">
-          <ArrowLeft size={16} aria-hidden="true" /> Все статьи
-        </Link>
-        <header className={article.image ? "reading-title reading-title-illustrated" : "reading-title"}>
+        <header
+          className={
+            illustration ? "article-opening with-image" : "article-opening"
+          }
+        >
           <div>
-            <p className="reading-topic">{article.category}</p>
+            <Link href="/blog" className="reading-back">
+              Все статьи
+            </Link>
             <h1>{article.title}</h1>
           </div>
-          {article.image && <img src={article.image} alt="" decoding="async" />}
+          {illustration && (
+            <img
+              src={illustration.src}
+              alt=""
+              width="960"
+              height="640"
+              decoding="async"
+              style={{ backgroundImage: `url(${illustration.placeholder})` }}
+            />
+          )}
         </header>
         <div className="prose reading-prose">
           <Suspense fallback={<p role="status">Загрузка статьи…</p>}>
             <ArticleMarkdown>{body}</ArticleMarkdown>
           </Suspense>
         </div>
-        <aside className="reading-next">
-          <h2>Нужна профессиональная помощь?</h2>
-          <p>
-            Если вы узнали себя в описанных ситуациях, не откладывайте
-            обращение к специалисту. Первый шаг — самый важный.
-          </p>
-          <div className="reading-actions">
-            <Link href="/contact" className="reading-book">
-              Записаться на консультацию
+        <nav className="reading-after" aria-label="После статьи">
+          {article.relatedTest && (
+            <Link href={`/test/${article.relatedTest}`}>
+              {article.relatedTest === "anxiety"
+                ? "Пройти тест на тревогу"
+                : "Пройти тест на депрессию"}
             </Link>
-            {article.relatedTest && (
-              <Link href={`/test/${article.relatedTest}`} className="reading-link">
-                {article.relatedTest === "anxiety" ? "Пройти тест на тревогу" : "Пройти тест на депрессию"}
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            )}
-          </div>
-        </aside>
+          )}
+          <Link href="/contact">Записаться на консультацию</Link>
+        </nav>
       </article>
     </div>
   );

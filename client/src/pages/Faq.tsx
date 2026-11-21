@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ChevronDown, ArrowRight } from "lucide-react";
@@ -231,12 +232,12 @@ const fadeUp = {
 
 function Row({ item }: { item: Item }) {
   return (
-    <details className="group surface rounded-2xl overflow-hidden">
-      <summary className="flex items-center justify-between gap-4 text-left px-6 py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-        <span className="font-serif text-lg text-forest">{item.q}</span>
+    <details className="group faq-row">
+      <summary className="flex items-center justify-between gap-4 text-left py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <span className="font-sans text-lg text-forest">{item.q}</span>
         <ChevronDown aria-hidden="true" size={20} className="shrink-0 text-terracotta transition-transform group-open:rotate-180" />
       </summary>
-      <div className="px-6 pb-6 text-ink/75 leading-relaxed">{item.a ?? <p>{item.plain}</p>}</div>
+      <div className="pb-6 text-ink/75 leading-relaxed">{item.a ?? <p>{item.plain}</p>}</div>
     </details>
   );
 }
@@ -251,20 +252,17 @@ export default function Faq() {
   });
 
   return (
-    <div className="container py-14 md:py-20">
+    <div className="secondary-page container py-12 md:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c") }} />
       <motion.div
         initial="hidden"
         animate="visible"
-        className="max-w-2xl mx-auto text-center mb-12"
+        className="secondary-intro max-w-2xl mx-auto mb-12"
       >
-        <motion.span custom={0} variants={fadeUp} className="eyebrow eyebrow-center">
-          Частые вопросы
-        </motion.span>
         <motion.h1
           custom={1}
           variants={fadeUp}
-          className="text-3xl md:text-5xl text-forest mt-4 mb-5"
+          className="secondary-title mb-5"
         >
           Первая консультация с психологом онлайн
         </motion.h1>
@@ -291,7 +289,7 @@ export default function Faq() {
             >
               {section.title}
             </motion.h2>
-            <div className="space-y-3">
+            <div>
               {section.items.map((item) => (
                 <Row key={item.q} item={item} />
               ))}
@@ -305,12 +303,12 @@ export default function Faq() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={fadeUp}
-        className="max-w-2xl mx-auto text-center mt-16"
+        className="max-w-2xl mx-auto mt-16"
       >
         <p className="text-ink/75 leading-relaxed mb-5">
           Если хотите уточнить стоимость или выбрать время, напишите мне в Telegram или MAX.
         </p>
-        <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-8 py-3.5 text-base font-medium transition-colors active:scale-[0.98]">
+        <Link href="/contact" className="secondary-action">
           Написать Александре
           <ArrowRight size={18} />
         </Link>

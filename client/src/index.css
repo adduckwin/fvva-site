@@ -3,20 +3,38 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 900;
+  src: url(/fonts/rubik-cyrillic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 900;
+  src: url(/fonts/rubik-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
 :root {
   --radius: 0.625rem;
 
-  --forest: #214b41;
-  --forest-deep: #173b32;
-  --forest-light: #487465;
-  --cream: #f7f6f0;
-  --cream-dark: #eaece2;
-  --terracotta: #814537;
-  --terracotta-deep: #66342b;
-  --terracotta-light: #edc6ab;
-  --terracotta-text: #814537;
-  --warm-gray: #566660;
-  --ink: #213b34;
+  --forest: #424b81;
+  --forest-deep: #303650;
+  --forest-light: #6773a6;
+  --cream: #faf9f6;
+  --cream-dark: #ececf0;
+  --terracotta: #424b81;
+  --terracotta-deep: #303650;
+  --terracotta-light: #d9dbf0;
+  --terracotta-text: #424b81;
+  --warm-gray: #5e6069;
+  --ink: #292830;
 
   /* Semantic (shadcn) — mapped to brand */
   --background: var(--cream);
@@ -35,8 +53,8 @@
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: #ccd5c9;
-  --input: #ccd5c9;
+  --border: #d8d7da;
+  --input: #d8d7da;
   --ring: var(--terracotta);
 
   --chart-1: var(--forest);
@@ -110,8 +128,8 @@
   --color-warm-gray: var(--warm-gray);
   --color-ink: var(--ink);
 
-  --font-sans: "Source Sans 3", system-ui, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Rubik", system-ui, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
 }
 
 @layer base {
@@ -127,7 +145,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-weight: 500;
     font-optical-sizing: auto;
     font-style: normal;
@@ -188,7 +206,7 @@
   }
 
   .surface {
-    background: #fffefa;
+    background: #fffefd;
     border: 1px solid var(--border);
     color: var(--ink);
   }
@@ -198,26 +216,10 @@
     color: var(--cream);
   }
 
-  /* Editorial eyebrow */
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    color: var(--terracotta-text);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .eyebrow::before {
-    content: "";
-    width: 1.9rem;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.8;
-  }
-  .eyebrow-center {
-    justify-content: center;
+    color: var(--warm-gray);
+    font-size: 1rem;
+    font-weight: 450;
   }
 
 }
@@ -239,6 +241,11 @@
   outline: 2px solid var(--cream);
   outline-offset: 2px;
   box-shadow: 0 0 0 2px var(--forest-deep);
+}
+
+/* Headings receive focus to announce a route or fragment to screen readers. */
+main :is(h1, h2, h3)[tabindex="-1"]:focus {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {

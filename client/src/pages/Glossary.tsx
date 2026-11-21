@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -52,22 +53,19 @@ export default function Glossary() {
   }, [q, sorted]);
 
   return (
-    <div className="container py-14 md:py-20">
+    <div className="secondary-page container py-12 md:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(GLOSSARY_SCHEMA).replace(/</g, "\\u003c") }} />
       <motion.div
         initial="hidden"
         animate="visible"
-        className="max-w-2xl mx-auto text-center mb-8"
+        className="secondary-intro max-w-2xl mx-auto mb-8"
       >
-        <motion.span custom={0} variants={fadeUp} className="eyebrow eyebrow-center">
-          Словарь
-        </motion.span>
         <motion.h1
           custom={1}
           variants={fadeUp}
-          className="text-3xl md:text-5xl text-forest mt-4 mb-5"
+          className="secondary-title mb-5"
         >
-          Понятным языком о подходах
+          Словарь психологических терминов
         </motion.h1>
         <motion.p
           custom={2}
@@ -75,13 +73,12 @@ export default function Glossary() {
           className="text-lg text-ink/75 leading-relaxed"
         >
           Короткие объяснения слов, которые встречаются на сайте и на встречах.
-          Без жаргона — чтобы было яснее, что происходит и как это работает.
         </motion.p>
       </motion.div>
 
       {/* Search */}
-      <div className="max-w-xl mx-auto mb-8">
-        <div className="surface rounded-full flex items-center gap-3 px-5 py-3">
+      <div className="max-w-2xl mx-auto mb-8">
+        <div className="secondary-search flex items-center gap-3 px-5 py-3">
           <Search size={18} className="text-muted-foreground shrink-0" />
           <input
             value={q}
@@ -103,9 +100,9 @@ export default function Glossary() {
             animate="visible"
             custom={Math.min(i, 8)}
             variants={fadeUp}
-            className="surface rounded-2xl p-5 md:p-6 scroll-mt-24"
+            className="glossary-entry scroll-mt-24"
           >
-            <h2 className="font-serif text-lg text-forest mb-1.5">{t.term}</h2>
+            <h2 className="font-sans text-lg text-forest mb-1.5">{t.term}</h2>
             <p className="text-ink/75 text-sm leading-relaxed">{t.definition}</p>
             {t.link && (
               <Link

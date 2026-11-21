@@ -1,3 +1,4 @@
+import "./secondary-pages.css";
 /**
  * AnxietyTest page — Beck Anxiety Inventory (BAI)
  * Full 21-question test with anonymous scoring.
@@ -134,36 +135,33 @@ export default function AnxietyTest() {
   };
 
   return (
-    <div>
+    <div className="secondary-page questionnaire">
       {/* Header */}
-      <section className="pt-4 lg:pt-6 pb-8">
-        <div className="container max-w-3xl mx-auto">
-          <div className="surface-inverse rounded-3xl p-8 md:p-10">
+      <section className="questionnaire-intro">
+        <div className="questionnaire-width">
+          <div className="questionnaire-heading">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-cream/85 hover:text-cream text-sm mb-5 no-underline transition-colors"
+            className="secondary-back"
           >
             <ArrowLeft size={14} /> На главную
           </Link>
-          <span className="eyebrow text-terracotta-light">
-            Самодиагностика · Шкала Бека
-          </span>
-          <h1 className="text-3xl md:text-4xl text-cream mt-4">
+          <h1 className="secondary-title">
             Шкала тревоги Бека (BAI)
           </h1>
-          <p className="text-cream/70 mt-3">
+          <p className="questionnaire-lead">
             Оцените, насколько каждый из перечисленных симптомов беспокоил вас в
             течение последней недели, включая сегодня.
           </p>
-          <p className="text-cream/80 text-sm mt-2">
+          <p className="questionnaire-note">
             Ответы остаются в этой вкладке. После обновления страницы тест начнётся заново.
           </p>
           </div>
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container max-w-3xl mx-auto">
+      <section className="questionnaire-body">
+        <div className="questionnaire-width">
           <AnimatePresence mode="wait">
             {showResult ? (
               <motion.div
@@ -247,11 +245,11 @@ export default function AnxietyTest() {
                     <Button
                       onClick={handleReset}
                       variant="outline"
-                      className="rounded-full border-forest text-forest hover:bg-forest hover:text-cream"
+                      className="secondary-action"
                     >
                       <RotateCcw size={16} className="mr-2" /> Пройти заново
                     </Button>
-                    <Button asChild className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white transition-transform duration-200 hover:-translate-y-0.5">
+                    <Button asChild className="secondary-action">
                       <Link href="/contact">
                         Записаться на консультацию
                       </Link>
@@ -293,9 +291,9 @@ export default function AnxietyTest() {
                 </div>
 
                 {/* All symptoms in a table-like layout */}
-                <div className="surface rounded-2xl overflow-hidden">
+                <div className="questionnaire-answers">
                   {/* Header row - visible on md+ */}
-                  <div className="hidden md:grid md:grid-cols-[1fr_repeat(4,120px)] bg-forest text-cream p-4 text-xs font-medium">
+                  <div className="hidden md:grid md:grid-cols-[1fr_repeat(4,120px)] bg-secondary text-ink p-4 text-sm font-medium">
                     <span>Симптом</span>
                     {ratingLabels.map((label, i) => (
                       <span key={i} className="text-center">
@@ -320,7 +318,7 @@ export default function AnxietyTest() {
                       {ratingLabels.map((label, value) => (
                         <label
                           key={value}
-                          className="relative mt-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-forest/25 p-3 text-sm text-ink hover:bg-cream has-checked:border-forest has-checked:bg-forest/10 has-focus-visible:outline-2 has-focus-visible:outline-forest md:mt-0 md:min-h-[52px] md:justify-center md:self-stretch md:rounded-xl md:border-transparent"
+                          className="relative mt-2 flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-forest/25 p-3 text-sm text-ink hover:bg-cream has-checked:border-forest has-checked:bg-forest/10 has-focus-visible:outline-2 has-focus-visible:outline-forest md:mt-0 md:min-h-[52px] md:justify-center md:self-stretch md:rounded-md md:border-transparent"
                         >
                           <input
                             type="radio"
@@ -342,7 +340,7 @@ export default function AnxietyTest() {
                   <Button
                     onClick={handleSubmit}
                     disabled={answeredCount < totalQuestions}
-                    className="rounded-full bg-terracotta hover:bg-terracotta-deep text-white px-10 py-5 text-base transition-transform duration-200 hover:-translate-y-0.5"
+                    className="secondary-action"
                   >
                     Показать результат
                   </Button>
