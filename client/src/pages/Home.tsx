@@ -116,7 +116,6 @@ export default function Home() {
             alt="Александра Федорова"
             fetchPriority="high"
           />
-          <img className="studio-cover-tape" src="/images/desk-corner.webp" width="280" height="54" alt="" />
         </figure>
         <div className="studio-intro-body">
           <p>

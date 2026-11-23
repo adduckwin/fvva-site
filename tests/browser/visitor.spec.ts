@@ -7,6 +7,17 @@ test.beforeEach(async ({ context, baseURL }) => {
   );
 });
 
+test("мобильный портрет отображается при блокировке картинки декоративной ленты", async ({ page }) => {
+  await page.setViewportSize({ width: 428, height: 800 });
+  await page.route("**/images/desk-corner.webp", route => route.abort());
+  await page.goto("/");
+  const cover = page.locator(".studio-cover");
+  await expect(cover.getByAltText("Александра Федорова")).toBeInViewport();
+  await expect.poll(() => cover.locator("img").evaluateAll(images =>
+    images.every(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0)
+  )).toBe(true);
+});
+
 test("нижняя кнопка записи открывает первый экран контактов", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Связаться со мной" }).click();

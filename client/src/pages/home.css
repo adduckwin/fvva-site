@@ -435,12 +435,16 @@
   border-bottom-width: clamp(8px, 1vw, 17px);
   box-shadow: 1px 3px 8px #30291e2b;
 }
-.studio-cover .studio-cover-tape {
+.studio-cover::after {
+  content: "";
+  position: absolute;
   width: 24%;
-  height: auto;
+  aspect-ratio: 280 / 54;
   left: 36.5%;
   top: 7%;
   transform: rotate(-12deg);
+  background: linear-gradient(165deg, #e8e2cfba, #f1eaddba 54%, #ddd7c4bc);
+  clip-path: polygon(1% 4%, 99% 0, 100% 16%, 98.5% 32%, 100% 51%, 98.5% 68%, 100% 96%, 0 100%, 1% 81%, 0 61%, 1.5% 42%, 0 24%);
   pointer-events: none;
 }
 .diary-stack {
@@ -556,7 +560,7 @@
 }
 .studio-reading li img { width: 5rem; height: 3.5rem; object-fit: cover; flex: none; }
 @media (max-width: 640px) {
-  .studio-cover .studio-cover-tape { left: 44%; top: 3.5%; width: 23%; }
+  .studio-cover::after { left: 44%; top: 3.5%; width: 23%; }
   .studio-cover-paper { width: 91%; }
   .studio-example { padding: 1.9rem 1.65rem 2.35rem 1.25rem; }
   .diary-leaves dl { min-height: 0; }
