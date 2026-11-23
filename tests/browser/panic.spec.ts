@@ -7,7 +7,7 @@ test.describe("Мобильная помощь при панике", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "Меню" }).tap();
     await page.getByRole("link", { name: "Помощь сейчас", exact: true }).filter({ visible: true }).first().tap();
-    await expect(page.getByText(/Вызовите скорую/)).toBeInViewport({ ratio: 1 });
+    await expect(page.getByRole("heading", { name: "При знакомом приступе" })).toBeInViewport({ ratio: 1 });
     await expect(page.getByRole("link", { name: "Подышать" })).toBeInViewport({ ratio: 1 });
     await expect(page.getByText(/Почувствуйте опору под ногами/)).toBeInViewport({ ratio: 1 });
     const grounding = page.getByRole("link", { name: "Пройти по шагам" });

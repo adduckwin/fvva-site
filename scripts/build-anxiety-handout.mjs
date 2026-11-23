@@ -27,7 +27,6 @@ const html = `<!doctype html>
   section :is(h2, h3) { font-size: 19px; font-weight: 550; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 5px; }
   section { margin-top: 18px; }
   p + p { margin-top: 6px; }
-  .urgent { border-left: 3px solid #96543c; padding-left: 11px; }
   .senses { margin: 8px 0; list-style: none; padding: 0; }
   a { color: #454467; text-decoration: underline; }
   footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: auto; padding-top: 15px; font-size: 13px; color: #54505a; }
@@ -35,11 +34,6 @@ const html = `<!doctype html>
 <body>
   <article>
     <h1>7 техник при тревоге</h1>
-    <section class="urgent">
-      <h2>Если сильно болит грудь или очень трудно дышать</h2>
-      <p>Вызовите скорую.</p>
-      <p>Новые или непривычные симптомы обсудите с врачом, даже если они прошли.</p>
-    </section>
     <section>
       <h2>При знакомом приступе</h2>
       <p>Почувствуйте опору под ногами или спиной. Назовите про себя один предмет рядом.</p>
