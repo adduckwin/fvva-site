@@ -15,6 +15,11 @@
   background: var(--shell-paper);
 }
 
+/* A native fragment jump must be able to scroll the open static menu offscreen. */
+@media (max-width: 46.999rem) {
+  .site-header:not([data-menu-ready]) { position: relative; }
+}
+
 .site-header__bar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

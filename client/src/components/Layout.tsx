@@ -28,18 +28,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState<boolean>();
 
   const mainRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLDetailsElement>(null);
   const menuButton = useRef<HTMLElement>(null);
+
+  function closeMenu() {
+    if (menuRef.current) menuRef.current.open = false;
+  }
+
+  useEffect(() => {
+    setMobileOpen(menuRef.current?.open ?? false);
+  }, []);
 
   useEffect(() => {
     if (!mobileOpen) return;
+    function closeOnOutsidePress(event: PointerEvent) {
+      if (event.target instanceof Node && !menuRef.current?.contains(event.target)) closeMenu();
+    }
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setMobileOpen(false);
+        closeMenu();
         menuButton.current?.focus();
       }
     }
+    document.addEventListener("pointerdown", closeOnOutsidePress, true);
     document.addEventListener("keydown", closeOnEscape);
-    return () => document.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress, true);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
   }, [mobileOpen]);
 
   // Wouter keeps the document mounted across routes. Track positions by
@@ -141,14 +157,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         Перейти к содержанию
       </a>
-      <header
-        className="site-header"
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setMobileOpen(false);
-        }}
-      >
+      <header className="site-header" data-menu-ready={mobileOpen !== undefined ? "" : undefined}>
         <div className="container site-header__bar">
-          <Link href="/" className="site-wordmark" onClick={() => setMobileOpen(false)}>
+          <Link href="/" className="site-wordmark" onClick={closeMenu}>
             <img className="site-imprint" src="/images/press-imprint.webp" width="144" height="92" alt="" />
             <span className="site-wordmark__name">Александра Федорова</span>
           </Link>
@@ -164,14 +175,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href="/contact"
               className="site-booking-link"
               aria-current={location === "/contact" ? "page" : undefined}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMenu}
             >
               Записаться
             </Link>
             <details
+              ref={menuRef}
               className="site-menu"
-              open={mobileOpen}
               onToggle={(event) => setMobileOpen(event.currentTarget.open)}
+              onBlur={(event) => {
+                // WebKit can blur the summary with no next focus target before a link's click.
+                const next = event.relatedTarget;
+                if (next instanceof Element && next !== document.body && !event.currentTarget.contains(next)) closeMenu();
+              }}
             >
               <summary
                 ref={menuButton}
@@ -184,14 +200,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="site-menu-open">Меню</span>
                 <span className="site-menu-close">Закрыть</span>
               </summary>
-              <nav id="mobile-navigation" aria-label="Основная навигация" className="site-mobile-navigation">
+              <nav
+                id="mobile-navigation"
+                aria-label="Основная навигация"
+                className="site-mobile-navigation"
+                onClick={event => {
+                  if (event.target instanceof Element && event.target.closest("a")) closeMenu();
+                }}
+              >
                 <div className="container">
                   {[...siteLinks, ...resourceLinks].map(({ href, label }) => (
                     <Link
                       key={href}
                       href={href}
                       aria-current={location === href ? "page" : undefined}
-                      onClick={() => setMobileOpen(false)}
                     >
                       {label}
                     </Link>

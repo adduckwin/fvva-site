@@ -87,8 +87,50 @@ test("мобильное меню закрывается с клавиатуры
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
 });
 
+test.describe("касания в мобильном меню", () => {
+  test.use({ viewport: { width: 393, height: 750 }, hasTouch: true, isMobile: true });
+
+  test("ссылка дожидается касания после потери фокуса, а нажатие снаружи закрывает меню", async ({ page }) => {
+    await page.goto("/");
+    const toggle = page.locator(".site-menu summary");
+    const nav = page.locator("#mobile-navigation");
+    for (const [label, path] of [["Статьи", "/blog"], ["О подходе", "/#podhod"]]) {
+      await toggle.tap();
+      await toggle.focus();
+      const link = nav.getByRole("link", { name: label, exact: true });
+      // WebKit releases focus from summary before dispatching the link's click.
+      await link.evaluate(node => node.addEventListener("pointerdown", () => {
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      }, { once: true }));
+      await link.tap();
+      await expect(page).toHaveURL(path);
+      await expect(nav).toBeHidden();
+    }
+    await expect(page.locator("#podhod h2").first()).toBeInViewport();
+    await toggle.tap();
+    await expect(nav).toBeVisible();
+    await page.touchscreen.tap(10, 730);
+    await expect(nav).toBeHidden();
+  });
+});
+
 test.describe("сайт без JavaScript", () => {
   test.use({ javaScriptEnabled: false });
+
+  test("пункт О подходе открывает раздел вне выпадающего меню", async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 750 });
+    await page.goto("/");
+    await page.locator(".site-menu summary").click();
+    await page.locator("#mobile-navigation").getByRole("link", { name: "О подходе" }).click();
+    await expect(page).toHaveURL("/#podhod");
+    const title = page.locator("#podhod h2").first();
+    await expect(title).toBeInViewport();
+    await expect.poll(() => title.evaluate(node => {
+      const bounds = node.getBoundingClientRect();
+      const hit = document.elementFromPoint(bounds.left + 5, bounds.top + bounds.height / 2);
+      return Boolean(hit?.closest("#podhod"));
+    })).toBe(true);
+  });
 
   test("прямая ссылка отдаёт текст статьи и её карточку для мессенджеров", async ({ page }) => {
     const route = "/blog/trevoga-norma-ili-rasstrojstvo";
