@@ -12,6 +12,7 @@ function Head({ title, canonical, name, property }: PageHead) {
     {canonical === SITE_ORIGIN + "/" && <>
       <meta name="google-site-verification" content="gTejAmDgFXA-K8FQnNupahrW1K3y2mQquNLIxy1Tvss" />
       <meta name="yandex-verification" content="7ad7ffe81607f17b" />
+      <meta name="msvalidate.01" content="9522193B6BB768BA96F24B7B5DDF7430" />
     </>}
     {canonical && <link rel="canonical" href={canonical} />}
     {Object.entries(name).map(([key, content]) =>
