@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CONTACT_LINKS } from "@/lib/practice";
+import { usePublicPageView } from "@/hooks/usePublicPageView";
 import MaxButton from "./MaxButton";
 import "./site-shell.css";
 
@@ -25,6 +26,7 @@ const resourceLinks = [
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  usePublicPageView(location);
   const [mobileOpen, setMobileOpen] = useState<boolean>();
 
   const mainRef = useRef<HTMLElement>(null);
