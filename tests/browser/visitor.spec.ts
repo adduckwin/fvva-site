@@ -73,7 +73,7 @@ test("статья о тревоге ведёт к соответствующе�
   await expect(page.getByRole("link", { name: "Пройти тест на тревогу", exact: true })).toHaveAttribute("href", "/test/anxiety");
 });
 
-test.describe("переходы из статьи о панических атаках на телефоне", () => {
+test.describe("переходы из статей на телефоне", () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
   test("можно открыть раздел о консультации после приступа и перейти к записи", async ({ page }) => {
@@ -90,6 +90,29 @@ test.describe("переходы из статьи о панических ата
     await section.locator('a[href="/contact"]').tap();
     await expect(page).toHaveURL("/contact");
     await expect(page.getByRole("heading", { level: 1, name: "Напишите мне" })).toBeVisible();
+  });
+
+  test("из трёх статей можно открыть раздел об апатии и перейти к записи", async ({ page }) => {
+    const target = "/#pri-apatii";
+    const articleLink = page.locator(`main .prose a[href="${target}"]`);
+    for (const path of [
+      "/blog/prokrastinaciya-i-depressiya",
+      "/blog/kak-podderzhit-blizkogo-s-depressiej",
+      "/blog/chto-takoe-depressiya",
+    ]) {
+      await page.goto(path);
+      await expect(articleLink).toBeVisible();
+    }
+
+    await articleLink.tap();
+    await expect(page).toHaveURL(target);
+    const section = page.locator("#pri-apatii");
+    await expect(section.getByRole("heading", { name: /апати/i })).toBeInViewport({ ratio: 1 });
+    await section.locator('a[href="/contact"]').tap();
+    await expect(page).toHaveURL("/contact");
+    const main = page.getByRole("main");
+    await expect(main.getByRole("link", { name: /telegram/i })).toHaveAttribute("href", /^https:\/\/t\.me\/.+/);
+    await expect(main.getByRole("link", { name: /max/i })).toHaveAttribute("href", /^https:\/\/max\.ru\/.+/);
   });
 });
 

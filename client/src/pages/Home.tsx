@@ -118,7 +118,7 @@ export default function Home() {
         <div className="studio-intro-body">
           <p>
             Я Александра Федорова. Ко мне приходят, когда тревога мешает решиться
-            на важный разговор или из-за апатии трудно взяться за привычные дела.
+            на важный разговор или <a className="studio-inline" href="#pri-apatii">из-за апатии</a> трудно взяться за привычные дела.
             Мы встречаемся по видеосвязи.
           </p>
           <Link className="studio-invitation" href="/contact">
@@ -150,13 +150,25 @@ export default function Home() {
             Вспоминаете, что сказали и как на вас посмотрели. С такого эпизода можно
             начать <Link className="studio-inline" href="/psiholog-pri-trevoge">консультацию при тревоге</Link>.
           </p>
-          <p>
-            Иногда труднее всего объяснить, почему привычные дела теперь требуют
-            столько сил. Об этом тоже можно поговорить.
-          </p>
-          <a className="studio-link" href="#pervaya-vstrecha">
-            Как проходит встреча
-          </a>
+          <section id="pri-apatii" className="studio-apathy" aria-labelledby="apathy-heading">
+            <h3 id="apathy-heading">С чем прийти к психологу при апатии</h3>
+            <p>
+              Можно начать с одного вечера. Например, «Я всегда любила готовить.
+              А вчера открыла рецепт, прочитала две строчки и закрыла.
+              Даже выбирать, что будет на ужин, расхотелось».
+            </p>
+            <p>
+              На <a className="studio-inline" href="#pervaya-vstrecha">первой встрече</a> я
+              спрошу, давно ли вы это замечаете и чего вам больше всего не хватает.
+              Может быть, вы скучаете по самой готовке, а может, по ужинам с друзьями,
+              ради которых хотелось что-нибудь придумать.
+            </p>
+            <p className="studio-terms">
+              Встречаемся по видеосвязи. Консультация длится {PRACTICE.sessionLength}.
+              Стоимость {PRACTICE.priceSummary.toLowerCase()}.
+            </p>
+            <Link className="studio-link" href="/contact">Узнать стоимость и выбрать время в Telegram или MAX</Link>
+          </section>
         </div>
       </section>
 
