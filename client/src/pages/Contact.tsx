@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { useMeta } from "@/hooks/useMeta";
 import { BOOKING_TERMS, CONTACT_LINKS, PRACTICE, PRACTICE_FACTS } from "@/lib/practice";
+import { trackGoal } from "@/lib/analytics";
 import "./contact.css";
 
 const FIRST_MESSAGES = {
@@ -20,22 +21,28 @@ export default function Contact() {
   });
 
   const [topic, setTopic] = useState<MessageTopic>("appointment");
-  const [canCopy, setCanCopy] = useState(false);
+  const [ready, setReady] = useState(false);
   const [copyStatus, setCopyStatus] = useState<{ topic: MessageTopic; text: string } | null>(null);
 
   useEffect(() => {
-    setCanCopy(typeof navigator.clipboard?.writeText === "function");
+    setReady(true);
   }, []);
+  const canCopy = ready && typeof navigator.clipboard?.writeText === "function";
+  const telegramUrl = ready
+    ? `${CONTACT_LINKS.telegram}?text=${encodeURIComponent(FIRST_MESSAGES[topic])}`
+    : CONTACT_LINKS.telegram;
 
   function chooseTopic(next: MessageTopic) {
     setTopic(next);
     setCopyStatus(null);
+    if (next === "price") trackGoal("booking_price");
   }
 
   async function copyTemplate() {
     try {
       await navigator.clipboard.writeText(FIRST_MESSAGES[topic]);
       setCopyStatus({ topic, text: "Сообщение скопировано" });
+      trackGoal("booking_copy");
     } catch {
       setCopyStatus({ topic, text: "Выделите текст сообщения и скопируйте его вручную." });
     }
@@ -58,7 +65,7 @@ export default function Contact() {
             Стоимость {PRACTICE.priceSummary.toLowerCase()}. Выберите, где вам удобно обсудить время.
           </p>
           <div className="booking-channels">
-            <a href={CONTACT_LINKS.telegram} target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">Telegram</a>
+            <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">Telegram</a>
             <a href={CONTACT_LINKS.max} target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX">MAX</a>
           </div>
         </div>

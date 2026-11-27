@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { DESK_PREVIEWS } from "@/lib/desk-placeholders";
 import DiaryLeaves from "@/components/DiaryLeaves";
+import { PractitionerSchema } from "@/components/SearchSchema";
 import { useMeta } from "@/hooks/useMeta";
 import { PRACTICE } from "@/lib/practice";
 import { articles } from "@/lib/articles";
@@ -70,11 +71,11 @@ const methods = [
   },
 ];
 
-const featuredSlugs = [
-  "chto-takoe-depressiya",
-  "trevoga-norma-ili-rasstrojstvo",
-  "kak-kpt-pomogaet",
-];
+const featuredThumbnails: Record<string, string | undefined> = {
+  "chto-takoe-depressiya": "/images/thumbs/studio-mood",
+  "trevoga-norma-ili-rasstrojstvo": "/images/thumbs/studio-anxiety",
+  "kak-kpt-pomogaet": "/images/thumbs/folio-cbt",
+};
 
 const readingLead = articles.find(article => article.slug === "kak-poprosit-o-podderzhke");
 
@@ -83,11 +84,11 @@ export default function Home() {
     title: "КПТ-психолог онлайн при тревоге и апатии — Александра Федорова",
     description: `Онлайн-консультации в подходе КПТ с Александрой Федоровой. С чем можно прийти, как проходит первая встреча и как записаться. Встреча длится ${PRACTICE.sessionLength}, стоимость по запросу.`,
     ogType: "website",
-    ogImage: "/images/alexandra.jpg",
   });
 
   return (
     <div className="practice-home">
+      <PractitionerSchema />
       <section
         className="studio-intro studio-width"
         aria-labelledby="home-title"
@@ -255,14 +256,26 @@ export default function Home() {
           )}
           <div className="studio-reading">
             <ul>
-              {articles.filter(article => featuredSlugs.includes(article.slug)).map(article => (
-                <li key={article.slug}>
-                  <Link href={"/blog/" + article.slug}>
-                    {articleArt[article.slug] && <img src={articleArt[article.slug]?.src} width="120" height="86" loading="lazy" alt="" />}
-                    <span>{article.title}</span>
-                  </Link>
-                </li>
-              ))}
+              {articles.map(article => {
+                const thumbnail = featuredThumbnails[article.slug];
+                if (!thumbnail) return null;
+                return (
+                  <li key={article.slug}>
+                    <Link href={"/blog/" + article.slug}>
+                      <img
+                        src={thumbnail + "-160.webp"}
+                        srcSet={[80, 160, 240, 360].map(width => `${thumbnail}-${width}.webp ${width}w`).join(", ")}
+                        sizes="clamp(4.8rem, 8vw, 7.5rem)"
+                        width="120"
+                        height="80"
+                        loading="lazy"
+                        alt=""
+                      />
+                      <span>{article.title}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

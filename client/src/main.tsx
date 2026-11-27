@@ -1,5 +1,4 @@
 import { createRoot, hydrateRoot } from "react-dom/client";
-import { AnimatePresence } from "framer-motion";
 import { Router } from "wouter";
 import App from "./App";
 import "./index.css";
@@ -11,7 +10,7 @@ try {
   if (root.dataset.page === pathname) {
     hydrateRoot(root,
       <Router ssrPath={pathname}>
-        <AnimatePresence initial={false}><App /></AnimatePresence>
+        <App />
       </Router>
     );
   } else {

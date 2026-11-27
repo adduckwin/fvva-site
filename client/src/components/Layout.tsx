@@ -1,8 +1,10 @@
 import { Link, useLocation } from "wouter";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CONTACT_LINKS } from "@/lib/practice";
+import { trackGoal } from "@/lib/analytics";
 import { usePublicPageView } from "@/hooks/usePublicPageView";
 import MaxButton from "./MaxButton";
+import AnalyticsConsent from "./AnalyticsConsent";
 import "./site-shell.css";
 
 const navLinks = [
@@ -146,7 +148,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" onClickCapture={event => {
+      const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      const href = anchor?.getAttribute("href")?.split("?", 1)[0];
+      if (href === CONTACT_LINKS.telegram) trackGoal("contact_telegram");
+      if (href === CONTACT_LINKS.max) trackGoal("contact_max");
+      if (href === "/dnevnik-mysley-kpt.pdf") trackGoal("diary_download");
+    }}>
       <a
         href="#main-content"
         onClick={(event) => {
@@ -179,7 +187,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               aria-current={location === "/contact" ? "page" : undefined}
               onClick={closeMenu}
             >
-              Записаться
+              <span className="site-booking-short">Запись</span>
+              <span className="site-booking-full">Записаться</span>
             </Link>
             <details
               ref={menuRef}
@@ -253,6 +262,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <p>Результаты тестов носят информационный характер и не являются диагнозом. При необходимости обратитесь к специалисту.</p>
             <p>&copy; {new Date().getFullYear()} Александра Федорова</p>
           </div>
+          <AnalyticsConsent pathname={location} />
         </div>
       </footer>
     </div>

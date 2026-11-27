@@ -1,4 +1,3 @@
-import { AnimatePresence } from "framer-motion";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { Router } from "wouter";
 import App from "../client/src/App";
@@ -29,7 +28,7 @@ function renderPage(template: string, path: string) {
   const body = renderToString(
     <PrerenderMeta.Provider value={head => { metadata = head; }}>
       <Router ssrPath={path}>
-        <AnimatePresence initial={false}><App /></AnimatePresence>
+        <App />
       </Router>
     </PrerenderMeta.Provider>,
   );

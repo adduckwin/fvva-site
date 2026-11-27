@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { useParams, Link } from "wouter";
 import Markdown from "react-markdown";
 import ContinueReading from "@/components/ContinueReading";
+import { ArticleSchema } from "@/components/SearchSchema";
 import DiarySpread from "@/components/DiarySpread";
 import { articles, type Article } from "@/lib/articles";
 import { useMeta } from "@/hooks/useMeta";
@@ -45,16 +46,18 @@ function ArticleView({ article }: { article: Article }) {
   );
   const illustration = articleArt[article.slug];
   const isDiary = article.slug === "dnevnik-mysley-kpt";
+  const coverImage = isDiary ? "/images/dnevnik-primer.webp" : illustration?.src || article.image;
   useMeta({
     title: article.meta.title || article.title,
     description: article.meta.description || article.excerpt,
     keywords: article.meta.keywords,
-    ogImage: isDiary ? "/images/dnevnik-primer.webp" : illustration?.src || article.image,
+    ogImage: coverImage,
     ogType: "article",
   });
 
   return (
     <div className="reading-room">
+      <ArticleSchema article={article} image={coverImage} />
       <article className="reading-page">
         <header
           className={

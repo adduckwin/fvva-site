@@ -8,7 +8,6 @@ export default function AnxietyConsultation() {
   useMeta({
     title: "Психолог при тревоге онлайн — Александра Федорова",
     description: `Как проходит консультация при тревоге с КПТ-психологом Александрой Федоровой. Встреча по видеосвязи, ${PRACTICE.sessionLength}. Стоимость по запросу, запись в Telegram или MAX.`,
-    ogImage: "/images/sasha.jpg",
   });
 
   return (

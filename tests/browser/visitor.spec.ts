@@ -116,6 +116,25 @@ test.describe("переходы из статей на телефоне", () => 
   });
 });
 
+test("на узком экране из статьи можно перейти к записи и выбрать текст для Telegram", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto("/blog/kak-kpt-pomogaet");
+  const header = page.getByRole("banner");
+  const booking = header.getByRole("link", { name: "Запись", exact: true });
+  await expect(booking).toBeInViewport({ ratio: 1 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+  await booking.click();
+  await expect(page).toHaveURL("/contact");
+  const telegram = page.getByRole("main").getByRole("link", { name: "Написать в Telegram" });
+  const draft = page.locator(".booking-draft-message span:visible");
+  for (const topic of ["О записи", "О стоимости"]) {
+    await page.getByRole("radio", { name: topic }).check();
+    const url = new URL((await telegram.getAttribute("href"))!);
+    expect(url.origin + url.pathname).toBe("https://t.me/ALEKSA_FVVA");
+    expect(url.searchParams.get("text")).toBe(await draft.innerText());
+  }
+});
+
 test("мобильное меню закрывается с клавиатуры и возвращает фокус", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/");

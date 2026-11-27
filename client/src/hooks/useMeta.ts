@@ -19,10 +19,9 @@ function pageHead(options: MetaOptions, pathname: string) {
   const canonical = options.robots?.includes("noindex")
     ? undefined
     : SITE_ORIGIN + (pathname.replace(/\/+$/, "") || "/");
-  const title = options.title.includes("Александра Федорова")
-    ? options.title
-    : `${options.title} | ${SITE_NAME}`;
-  const image = new URL(options.ogImage || "/images/alexandra.jpg", SITE_ORIGIN).href;
+  const title = options.title;
+  const image = new URL(options.ogImage || "/images/fvva-social.jpg", SITE_ORIGIN).href;
+  const defaultImageAlt = options.ogImage ? undefined : "Александра Федорова, КПТ-психолог онлайн";
   const property = {
     "og:site_name": SITE_NAME,
     "og:locale": "ru_RU",
@@ -31,6 +30,10 @@ function pageHead(options: MetaOptions, pathname: string) {
     "og:description": options.ogDescription || options.description,
     "og:url": canonical,
     "og:image": image,
+    "og:image:alt": defaultImageAlt,
+    "og:image:type": options.ogImage ? undefined : "image/jpeg",
+    "og:image:width": options.ogImage ? undefined : "1200",
+    "og:image:height": options.ogImage ? undefined : "630",
   };
   const name = {
     description: options.description,
@@ -40,6 +43,7 @@ function pageHead(options: MetaOptions, pathname: string) {
     "twitter:title": property["og:title"],
     "twitter:description": property["og:description"],
     "twitter:image": image,
+    "twitter:image:alt": defaultImageAlt,
   };
   return { title, canonical, property, name };
 }
