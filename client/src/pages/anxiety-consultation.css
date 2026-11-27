@@ -1,0 +1,38 @@
+.anxiety-consultation .consultation-terms {
+  margin-top: 1rem;
+  color: var(--booking-muted);
+  line-height: 1.55;
+}
+
+.consultation-section {
+  display: grid;
+  align-items: baseline;
+  gap: .85rem;
+  margin-top: clamp(2.4rem, 5vw, 4.4rem);
+  padding-top: clamp(1.3rem, 3vw, 2.4rem);
+  border-top: 1px solid var(--booking-rule);
+}
+
+.consultation-section h2 {
+  max-width: 18ch;
+  font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.consultation-section p {
+  max-width: 58ch;
+  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  line-height: 1.6;
+}
+
+.consultation-section p + p {
+  margin-top: .95rem;
+}
+
+@media (min-width: 46rem) {
+  .consultation-section {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    column-gap: clamp(2.2rem, 6vw, 5.5rem);
+  }
+}

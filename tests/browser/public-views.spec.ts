@@ -20,6 +20,9 @@ const test = base.extend<{ external: Request[] }>({
       return route.fulfill({ status: 204 });
     });
     await use(external);
+    // Let intercepted asset requests finish before Playwright disposes their responses.
+    await context.setOffline(true);
+    await context.unrouteAll({ behavior: "wait" });
   },
 });
 
@@ -108,6 +111,22 @@ test("локальный просмотр не попадает в статис�
   await page.getByRole("link", { name: "Все статьи", exact: true }).click();
   await expect(page.getByRole("searchbox")).toBeVisible();
   expect(external).toEqual([]);
+});
+
+test("переход на консультацию обновляет canonical и сохраняет тему обращения в приватности", async ({ page, external }) => {
+  const route = "/psiholog-pri-trevoge";
+  const canonical = page.locator('link[rel="canonical"]');
+  await page.goto(site + "/");
+  await expectViews(external, ["/"]);
+  await page.locator(`main a[href="${route}"]`).first().click();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(/тревог/i);
+  await expect(canonical).toHaveAttribute("href", site + route);
+  await page.locator('main a[href="/contact"]').first().click();
+  await expect(canonical).toHaveAttribute("href", site + "/contact");
+  await expectViews(external, ["/", "/contact"]);
+  await page.goBack();
+  await expect(canonical).toHaveAttribute("href", site + route);
+  await expectViews(external, ["/", "/contact"]);
 });
 
 for (const [preference, value] of [["doNotTrack", "1"], ["globalPrivacyControl", true]] as const) {

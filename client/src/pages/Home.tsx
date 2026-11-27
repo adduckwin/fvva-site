@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { DESK_PREVIEWS } from "@/lib/desk-placeholders";
 import DiaryLeaves from "@/components/DiaryLeaves";
 import { useMeta } from "@/hooks/useMeta";
-import { BOOKING_TERMS, PRACTICE } from "@/lib/practice";
+import { PRACTICE } from "@/lib/practice";
 import { articles } from "@/lib/articles";
 import { articleArt } from "./reading-topics";
 import "./home.css";
@@ -81,9 +81,7 @@ const readingLead = articles.find(article => article.slug === "kak-poprosit-o-po
 export default function Home() {
   useMeta({
     title: "КПТ-психолог онлайн при тревоге и апатии — Александра Федорова",
-    description: `Консультации Александры Федоровой при тревоге, панических атаках и апатии. ${BOOKING_TERMS}`,
-    keywords:
-      "психолог, сниженное настроение, апатия, тревога, КПТ, ACT, CFT, ПТСР, психология эмиграции, Александра Федорова, когнитивно-поведенческий подход, тест Бека, психолог онлайн",
+    description: `Онлайн-консультации в подходе КПТ с Александрой Федоровой. С чем можно прийти, как проходит первая встреча и как записаться. Встреча длится ${PRACTICE.sessionLength}, стоимость по запросу.`,
     ogType: "website",
     ogImage: "/images/alexandra.jpg",
   });
@@ -95,9 +93,9 @@ export default function Home() {
         aria-labelledby="home-title"
       >
         <h1 id="home-title">
-          Я Александра,{" "}
+          КПТ-психолог{" "}
           <br />
-          психолог.
+          онлайн
         </h1>
         <figure className="studio-cover">
           <img
@@ -119,9 +117,9 @@ export default function Home() {
         </figure>
         <div className="studio-intro-body">
           <p>
-            Я консультирую онлайн. Ко мне приходят с тревогой и апатией. На
-            первой встрече можно рассказать об одной ситуации, которая не
-            отпускает.
+            Я Александра Федорова. Ко мне приходят, когда тревога мешает решиться
+            на важный разговор или из-за апатии трудно взяться за привычные дела.
+            Мы встречаемся по видеосвязи.
           </p>
           <Link className="studio-invitation" href="/contact">
             Записаться на консультацию
@@ -149,8 +147,8 @@ export default function Home() {
           <p>
             Разговор давно закончился, а вы всё ещё{" "}
             <Link className="studio-inline" href="/blog/posle-razgovora-prokruchivayu-v-golove">прокручиваете его в голове</Link>.
-            Вспоминаете, что сказали и как на вас посмотрели. Можно начать прямо
-            с этого.
+            Вспоминаете, что сказали и как на вас посмотрели. С такого эпизода можно
+            начать <Link className="studio-inline" href="/psiholog-pri-trevoge">консультацию при тревоге</Link>.
           </p>
           <p>
             Иногда труднее всего объяснить, почему привычные дела теперь требуют
@@ -208,7 +206,7 @@ export default function Home() {
         </ol>
       </section>
 
-      <section className="studio-width studio-education">
+      <section id="obrazovanie" className="studio-width studio-education">
         <details>
           <summary>
             <img src="/images/desk-studies.webp" width="900" height="600" loading="lazy" alt="" style={{ backgroundImage: "url(" + DESK_PREVIEWS.studies + ")" }} />

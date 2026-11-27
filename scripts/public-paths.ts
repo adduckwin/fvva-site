@@ -3,7 +3,7 @@ import { SITE_ORIGIN } from "../shared/const";
 
 export const publicPaths = [
   "/", "/blog", "/test/depression", "/test/anxiety", "/panicheskaya-ataka",
-  "/faq", "/proverit-sebya", "/slovar", "/contact",
+  "/faq", "/proverit-sebya", "/slovar", "/contact", "/psiholog-pri-trevoge",
   ...articles.map(article => `/blog/${article.slug}`),
 ];
 

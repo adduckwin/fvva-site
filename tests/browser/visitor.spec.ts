@@ -142,6 +142,22 @@ test.describe("сайт без JavaScript", () => {
     await expect(page.locator("meta[property='og:image']")).toHaveAttribute("content", /^https:\/\/fvva\.ru\/images\//);
   });
 
+  test("консультация при тревоге доступна поисковому роботу по адресу из карты сайта", async ({ page, request }) => {
+    const route = "/psiholog-pri-trevoge";
+    const canonical = "https://fvva.ru" + route;
+    const sitemap = await request.get("/sitemap.xml");
+    expect(sitemap.ok()).toBe(true);
+    expect(await sitemap.text()).toContain(`<loc>${canonical}</loc>`);
+
+    const response = await page.goto(route + "?source=search#details");
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/тревог/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", canonical);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", canonical);
+    await expect(page.locator('meta[name="robots"][content*="noindex" i]')).toHaveCount(0);
+    await expect(page.locator('main a[href="/contact"]').first()).toBeVisible();
+  });
+
   test("неизвестная статья и неизвестный адрес возвращают 404", async ({ page }) => {
     for (const route of ["/blog/nesushchestvuyushchaya-statya", "/nesushchestvuyushchaya-stranitsa"]) {
       const response = await page.goto(route);
