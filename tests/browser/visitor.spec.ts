@@ -73,6 +73,26 @@ test("статья о тревоге ведёт к соответствующе�
   await expect(page.getByRole("link", { name: "Пройти тест на тревогу", exact: true })).toHaveAttribute("href", "/test/anxiety");
 });
 
+test.describe("переходы из статьи о панических атаках на телефоне", () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+
+  test("можно открыть раздел о консультации после приступа и перейти к записи", async ({ page }) => {
+    await page.goto("/blog/panicheskie-ataki");
+    const article = page.locator("main .prose");
+    await expect(article.getByRole("link", { name: /инструкци.*паники/ })).toHaveAttribute("href", "/panicheskaya-ataka");
+
+    const target = "/psiholog-pri-trevoge#panicheskie-ataki";
+    await article.locator(`a[href="${target}"]`).tap();
+    await expect(page).toHaveURL(target);
+    const heading = page.getByRole("heading", { name: "Что обсудить с психологом после панической атаки", exact: true });
+    await expect(heading).toBeInViewport({ ratio: 1 });
+    const section = page.locator("section").filter({ has: heading });
+    await section.locator('a[href="/contact"]').tap();
+    await expect(page).toHaveURL("/contact");
+    await expect(page.getByRole("heading", { level: 1, name: "Напишите мне" })).toBeVisible();
+  });
+});
+
 test("мобильное меню закрывается с клавиатуры и возвращает фокус", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/");
