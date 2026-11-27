@@ -6,6 +6,7 @@ export interface GlossaryTerm {
   slug: string;
   term: string;
   definition: string;
+  example?: string;
   link?: { href: string; label: string };
 }
 
@@ -56,6 +57,15 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: "Когнитивные искажения",
     definition:
       "Привычные сбои мышления, из-за которых картина мира искажается в негативную сторону — например, катастрофизация или «чтение мыслей». В КПТ их учатся замечать и проверять.",
+  },
+  {
+    slug: "katastrofizaciya",
+    term: "Катастрофизация мыслей",
+    definition:
+      "Катастрофическое мышление — привычка представлять худший исход и считать, что именно так всё и случится.",
+    example:
+      "Руководитель пишет «Давай завтра созвонимся», и первая мысль — «Меня уволят». Пока известно только, что он хочет поговорить. О чём ещё может быть этот звонок?",
+    link: { href: "/blog/dnevnik-mysley-kpt", label: "Как проверить такую мысль в дневнике КПТ" },
   },
   {
     slug: "avtomaticheskie-mysli",

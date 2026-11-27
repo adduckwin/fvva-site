@@ -110,10 +110,11 @@ export default function Glossary() {
             <section key={letter} className="lexicon-group" aria-labelledby={`letter-${letter}`}>
               <h2 id={`letter-${letter}`} tabIndex={-1} className="lexicon-letter">{letter}</h2>
               <div>
-                {terms.map(({ slug, term, definition, link }) => (
+                {terms.map(({ slug, term, definition, example, link }) => (
                   <article key={slug} id={slug} className="lexicon-entry">
                     <h3>{term}</h3>
                     <p>{definition}</p>
+                    {example && <p>{example}</p>}
                     {link && <Link href={link.href}>{link.label}</Link>}
                   </article>
                 ))}

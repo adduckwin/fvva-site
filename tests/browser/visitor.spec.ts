@@ -180,6 +180,26 @@ test("в статье работают ссылки на упражнение и
   expect(response.headers()["content-type"]).toContain("application/pdf");
 });
 
+test("из статьи о КПТ можно найти катастрофизацию в словаре и открыть дневник мыслей", async ({ page }) => {
+  await page.goto("/blog/kak-kpt-pomogaet");
+  await page.locator('main a[href="/slovar#katastrofizaciya"]').click();
+  await expect(page).toHaveURL(/\/slovar#katastrofizaciya$/);
+
+  const term = page.locator("article#katastrofizaciya");
+  const heading = term.getByRole("heading", { name: "Катастрофизация мыслей", exact: true });
+  await expect(heading).toBeInViewport();
+  const search = page.getByRole("searchbox", { name: "Поиск по словарю" });
+  for (const query of ["Катастрофизация мыслей", "катастрофическое мышление"]) {
+    await search.fill(query);
+    await expect(heading).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Ценности", exact: true })).toHaveCount(0);
+  }
+
+  await term.locator('a[href="/blog/dnevnik-mysley-kpt"]').click();
+  await expect(page).toHaveURL(/\/blog\/dnevnik-mysley-kpt$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Дневник мыслей");
+});
+
 test("поиск сохраняет фокус и восстанавливает результаты после чтения статьи", async ({ page }) => {
   await page.goto("/blog");
   const input = page.getByRole("searchbox", { name: "Найти статью" });
