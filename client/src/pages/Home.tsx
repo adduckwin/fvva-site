@@ -99,22 +99,37 @@ export default function Home() {
           онлайн
         </h1>
         <figure className="studio-cover">
-          <img
-            className="studio-cover-paper"
-            src="/images/desk-cover.webp"
-            width="1280"
-            height="880"
-            alt=""
-            style={{ backgroundImage: "url(" + DESK_PREVIEWS.cover + ")" }}
-          />
-          <img
-            className="studio-cover-portrait"
-            src="/images/alexandra.jpg"
-            width="820"
-            height="1080"
-            alt="Александра Федорова"
-            fetchPriority="high"
-          />
+          <picture>
+            <source
+              type="image/webp"
+              media="(max-width: 430px) and (max-resolution: 1dppx)"
+              srcSet="/images/desk-cover-320.webp 320w, /images/desk-cover-360.webp 360w"
+              sizes="calc(91vw - 2.275rem)"
+            />
+            <img
+              className="studio-cover-paper"
+              src="/images/desk-cover.webp"
+              width="1280"
+              height="880"
+              alt=""
+              fetchPriority="high"
+              style={{ backgroundImage: "url(" + DESK_PREVIEWS.cover + ")" }}
+            />
+          </picture>
+          <picture>
+            <source
+              type="image/webp"
+              media="(max-width: 430px) and (max-resolution: 1dppx)"
+              srcSet="/images/alexandra-192.webp"
+            />
+            <img
+              className="studio-cover-portrait"
+              src="/images/alexandra.jpg"
+              width="820"
+              height="1080"
+              alt="Александра Федорова"
+            />
+          </picture>
         </figure>
         <div className="studio-intro-body">
           <p>

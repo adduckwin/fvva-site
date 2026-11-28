@@ -87,6 +87,9 @@
   text-decoration-color: #959bb5;
 }
 .booking-channels a:hover { text-decoration-color: currentColor; }
+.booking-channels [data-message="price"],
+.booking-page:has([value="price"]:checked) [data-message="appointment"] { display: none; }
+.booking-page:has([value="price"]:checked) [data-message="price"] { display: inline-flex; }
 
 .booking-draft {
   position: relative;

@@ -179,6 +179,16 @@ test.describe("касания в мобильном меню", () => {
 test.describe("сайт без JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
+  test("ссылка Telegram содержит выбранный текст до загрузки скриптов", async ({ page }) => {
+    await page.goto("/contact");
+    for (const name of ["О записи", "О стоимости"]) {
+      await page.getByRole("radio", { name }).check();
+      const link = page.getByRole("main").getByRole("link", { name: "Написать в Telegram" });
+      const href = new URL((await link.getAttribute("href"))!);
+      expect(href.searchParams.get("text")).toBe(await page.locator(".booking-draft-message span:visible").innerText());
+    }
+  });
+
   test("пункт О подходе открывает раздел вне выпадающего меню", async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 750 });
     await page.goto("/");

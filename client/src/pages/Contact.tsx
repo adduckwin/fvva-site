@@ -28,9 +28,6 @@ export default function Contact() {
     setReady(true);
   }, []);
   const canCopy = ready && typeof navigator.clipboard?.writeText === "function";
-  const telegramUrl = ready
-    ? `${CONTACT_LINKS.telegram}?text=${encodeURIComponent(FIRST_MESSAGES[topic])}`
-    : CONTACT_LINKS.telegram;
 
   function chooseTopic(next: MessageTopic) {
     setTopic(next);
@@ -65,7 +62,10 @@ export default function Contact() {
             Стоимость {PRACTICE.priceSummary.toLowerCase()}. Выберите, где вам удобно обсудить время.
           </p>
           <div className="booking-channels">
-            <a href={telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">Telegram</a>
+            {Object.entries(FIRST_MESSAGES).map(([key, message]) => (
+              <a key={key} data-message={key} href={`${CONTACT_LINKS.telegram}?text=${encodeURIComponent(message)}`}
+                target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram">Telegram</a>
+            ))}
             <a href={CONTACT_LINKS.max} target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX">MAX</a>
           </div>
         </div>
